@@ -8,6 +8,7 @@ public class SRWeapon : BaseWeapon
     float _nowTime;
     public SRWeapon()
     {
+        _Damage = 5;
         _weaponName = "SR";
         _bulletNum = 10;
         _recustTime = 2f;
@@ -33,7 +34,9 @@ public class SRWeapon : BaseWeapon
         {
             if (hit.collider.gameObject.tag == "Enemy")
             {
-                Debug.Log("あったった");
+                BaseEnemy _enemy = hit.collider.GetComponent<BaseEnemy>();
+                _enemy.GetSetHP -= _Damage;
+                _manager.ObjectInctance(_particle,hit.point);
             }
         }
     }

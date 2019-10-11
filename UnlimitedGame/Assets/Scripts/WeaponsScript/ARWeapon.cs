@@ -12,6 +12,7 @@ public class ARWeapon : BaseWeapon
         _recustTime = 0.25f;
         _nowTime = 0f;
         _distance = 15f;
+        _Damage = 1;
         _recustSlider.maxValue = _recustTime;
     }
     public override void Update()
@@ -32,7 +33,14 @@ public class ARWeapon : BaseWeapon
         {
             if (hit.collider.gameObject.tag == "Enemy")
             {
-                Debug.Log("あったった");
+                BaseEnemy _enemy = hit.collider.GetComponent<BaseEnemy>();
+                _enemy.GetSetHP -= _Damage;
+                _manager.ObjectInctance(_particle, hit.point);
+
+            }
+            else
+            {
+                Debug.Log(hit.collider.name);
             }
         }
     }
