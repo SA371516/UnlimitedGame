@@ -1,35 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class SRWeapon : BaseWeapon
+public class ARWeapon : BaseWeapon
 {
     float _nowTime;
-    public SRWeapon()
+    public ARWeapon()
     {
-        _weaponName = "SR";
-        _bulletNum = 10;
-        _recustTime = 2f;
-        _nowTime = 5f;
-        _distance = 30f;
+        _weaponName = "AR";
+        _bulletNum = 30;
+        _recustTime = 0.25f;
+        _nowTime = 0f;
+        _distance = 15f;
         _recustSlider.maxValue = _recustTime;
-
     }
     public override void Update()
     {
         if (_bulletNum <= 0) return;
-        if(_nowTime>=_recustTime&&Input.GetMouseButtonDown(0)) Attack();//次の弾を撃つラグ
+        if (Input.GetMouseButton(0)&&_nowTime>=_recustTime) Attack();//次の弾を撃つラグ
         _nowTime += Time.deltaTime;
         _recustSlider.value = _nowTime;
+
     }
     public override void Attack()
     {
         _nowTime = 0f;
         _bulletNum--;
         Ray ray = GetRay();
-        //単発銃、射程距離30ｍ
-        if(Physics.Raycast(ray, out hit, _distance))
+        //連射銃、射程距離15ｍ
+        if (Physics.Raycast(ray, out hit, _distance))
         {
             if (hit.collider.gameObject.tag == "Enemy")
             {
@@ -37,4 +36,5 @@ public class SRWeapon : BaseWeapon
             }
         }
     }
+
 }

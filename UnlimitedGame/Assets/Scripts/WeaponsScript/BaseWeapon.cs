@@ -11,12 +11,26 @@ public abstract class BaseWeapon
     protected float _distance;
     protected float _recustTime;
     protected Slider _recustSlider;
+    protected int _bulletNum;
+    protected string _weaponName;
+
+    public string GetSetWeaponName
+    {
+        get { return _weaponName; }
+        set { _weaponName=value; }
+    }
+    public int GetSetBulletNum
+    {
+        get { return _bulletNum; }
+        set { _bulletNum = value; }
+    }
+    
 
     // Start is called before the first frame update
     protected BaseWeapon()
     {
-        Mycamera = GameObject.Find("FirstPersonCamera").GetComponent<Camera>();
         _recustSlider = GameObject.Find("Slider").GetComponent<Slider>();
+        Mycamera = GameObject.Find("FirstPersonCamera").GetComponent<Camera>();
     }
     protected Ray GetRay()
     {

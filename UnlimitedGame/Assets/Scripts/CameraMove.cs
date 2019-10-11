@@ -10,7 +10,6 @@ public class CameraMove : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
         verRot = transform.parent;
         horRot = GetComponent<Transform>();
     }
