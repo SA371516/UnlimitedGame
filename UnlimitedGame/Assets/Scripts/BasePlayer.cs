@@ -7,6 +7,9 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Rigidbody))]
 public class BasePlayer : MonoBehaviour
 {
+    UIManager _iManager;
+    GameManager _manager;
+
     protected RaycastHit hit;
     protected Rigidbody rig;
     [SerializeField]
@@ -17,8 +20,9 @@ public class BasePlayer : MonoBehaviour
     Text _GetLog;
     Camera _Camera;
     BaseWeapon _haveWeapon;
-    UIManager _iManager;
-    // Start is called before the first frame update
+
+    public List<Weapons> _weaponName = new List<Weapons>();
+
     protected virtual void Start()
     {
         _iManager = GameObject.Find("Manager").GetComponent<UIManager>();
@@ -58,13 +62,15 @@ public class BasePlayer : MonoBehaviour
                 {
                     switch (hit.collider.gameObject.name)
                     {
-                        case "SR":
+                        case "SR(Clone)":
                             _haveWeapon = new SRWeapon();
                             _iManager._weapon = _haveWeapon;
+                            _weaponName.Add(Weapons.SR);
                             break;
-                        case "AR":
+                        case "AR(Clone)":
                             _haveWeapon = new ARWeapon();
                             _iManager._weapon = _haveWeapon;
+                            _weaponName.Add(Weapons.AR);
                             break;
                     }
                     _GetLog.text = "";
