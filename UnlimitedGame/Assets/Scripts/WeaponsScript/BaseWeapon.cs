@@ -15,6 +15,7 @@ public abstract class BaseWeapon
     protected Slider _recustSlider;
     protected int _Damage;
     protected int _bulletNum;
+    protected int _accuracy;
     protected string _weaponName;
 
     public string GetSetWeaponName
@@ -37,9 +38,9 @@ public abstract class BaseWeapon
         _manager = GameObject.Find("Manager").GetComponent<GameManager>();
         Mycamera = GameObject.Find("FirstPersonCamera").GetComponent<Camera>();
     }
-    protected Ray GetRay()
+    protected Ray GetRay(int a)
     {
-        Vector2 vec = Random.insideUnitCircle * 10;
+        Vector2 vec = Random.insideUnitCircle * a;
        return Mycamera.ScreenPointToRay(new Vector3(Screen.width / 2+vec.x, Screen.height / 2+ vec.y, 10));
     }
 

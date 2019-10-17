@@ -7,8 +7,9 @@ public class ARWeapon : BaseWeapon
     float _nowTime;
     public ARWeapon()
     {
+        _accuracy = 70;
         _weaponName = "AR";
-        _bulletNum = 30;
+        _bulletNum = 50;
         _recustTime = 0.25f;
         _nowTime = 0f;
         _distance = 15f;
@@ -27,7 +28,7 @@ public class ARWeapon : BaseWeapon
     {
         _nowTime = 0f;
         _bulletNum--;
-        Ray ray = GetRay();
+        Ray ray = GetRay(_accuracy);
         //連射銃、射程距離15ｍ
         if (Physics.Raycast(ray, out hit, _distance))
         {
@@ -40,7 +41,7 @@ public class ARWeapon : BaseWeapon
             }
             else
             {
-                Debug.Log(hit.collider.name);
+                Debug.Log("!!!!!!!!!!!!!!!!!!!!!!" + hit.collider.gameObject.name);
             }
         }
     }

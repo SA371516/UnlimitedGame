@@ -11,14 +11,16 @@ public class GameManager : MonoBehaviour
 {
     List<Transform> _weponlis = new List<Transform>();
     List<Transform> _lis = new List<Transform>();
-    [SerializeField]
     List<GameObject> _weaponControll = new List<GameObject>();
+    List<GameObject> _nowEnemy = new List<GameObject>();
     [SerializeField]
-    GameObject[] _enemys, _weapons;
-    int _Enemycount;
+    GameObject[] _enemys;
+    [SerializeField]
+    List<GameObject> _weapons = new List<GameObject>();
     float _time;
     float _nextime;
     BasePlayer _player;
+    
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<BasePlayer>();
@@ -53,21 +55,25 @@ public class GameManager : MonoBehaviour
                     switch (v)
                     {
                         case Weapons.AR:
-                            _weaponControll.Add(ObjectInctance( _weapons.Where(item=>item.name=="SR"), _weponlis[Random.Range(0, 4)].position));
+                            _weaponControll.Add(ObjectInctance( _weapons.Find(item=>item.name=="AR"), _weponlis[Random.Range(0, 4)].position));//武器を探して出現させる
+                            //_weaponControll.Add(ObjectInctance( _weapons.Where(item => item.name == "AR"), _weponlis[Random.Range(0, 4)].position));//
                             break;
                         case Weapons.SR:
+                            _weaponControll.Add(ObjectInctance(_weapons.Find(item => item.name == "SR"), _weponlis[Random.Range(0, 4)].position));//武器を探して出現させる
                             break;
                         default:
                             Debug.Log("異なる値が挿入されています");
                             break;
                     }
                 }
+                _player._weaponName.Clear();
             }
+            _nowEnemy = _nowEnemy.Where(j => j != null).ToList(); //Null以外を挿入
+            int _Enemycount = _nowEnemy.Count;
             if (_Enemycount > 10) return;
             //敵生成
             _time = 0f;
-            ObjectInctance(_enemys[0], _lis[Random.Range(0, 4)].position);
-            _Enemycount++;
+            _nowEnemy.Add(ObjectInctance(_enemys[0], _lis[Random.Range(0, 4)].position));
         }
     }
 

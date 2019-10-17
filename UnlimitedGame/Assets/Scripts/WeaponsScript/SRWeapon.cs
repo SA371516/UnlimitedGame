@@ -8,6 +8,7 @@ public class SRWeapon : BaseWeapon
     float _nowTime;
     public SRWeapon()
     {
+        _accuracy = 20;
         _Damage = 5;
         _weaponName = "SR";
         _bulletNum = 10;
@@ -28,7 +29,7 @@ public class SRWeapon : BaseWeapon
     {
         _nowTime = 0f;
         _bulletNum--;
-        Ray ray = GetRay();
+        Ray ray = GetRay(_accuracy);
         //単発銃、射程距離30ｍ
         if(Physics.Raycast(ray, out hit, _distance))
         {
@@ -37,6 +38,10 @@ public class SRWeapon : BaseWeapon
                 BaseEnemy _enemy = hit.collider.GetComponent<BaseEnemy>();
                 _enemy.GetSetHP -= _Damage;
                 _manager.ObjectInctance(_particle,hit.point);
+            }
+            else
+            {
+                Debug.Log("!!!!!!!!!!!!!!!!!!!!!!"+hit.collider.gameObject.name);
             }
         }
     }

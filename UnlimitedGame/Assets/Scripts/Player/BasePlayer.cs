@@ -10,6 +10,12 @@ public class BasePlayer : MonoBehaviour
     UIManager _iManager;
     GameManager _manager;
 
+    int _hp;
+    public int GetSetHP
+    {
+        get { return _hp; }
+        set { _hp = value; }
+    }
     protected RaycastHit hit;
     protected Rigidbody rig;
     [SerializeField]
@@ -22,6 +28,11 @@ public class BasePlayer : MonoBehaviour
     BaseWeapon _haveWeapon;
 
     public List<Weapons> _weaponName = new List<Weapons>();
+
+    private void Awake()
+    {
+        _hp = 10;
+    }
 
     protected virtual void Start()
     {
@@ -44,7 +55,9 @@ public class BasePlayer : MonoBehaviour
             _haveWeapon.Update();
         }
         ItemGet();
-        
+
+        if (_hp >= 0) return;
+        Debug.Log("GameOver");
     }
     
     protected void ItemGet()
@@ -65,6 +78,7 @@ public class BasePlayer : MonoBehaviour
                         case "SR(Clone)":
                             _haveWeapon = new SRWeapon();
                             _iManager._weapon = _haveWeapon;
+
                             _weaponName.Add(Weapons.SR);
                             break;
                         case "AR(Clone)":

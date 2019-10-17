@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-[RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(NavMeshAgent))]
 public class Zonbi : BaseEnemy
 {
@@ -17,7 +16,6 @@ public class Zonbi : BaseEnemy
     {
         _Speed = 0.1f;
         _moveFlag = 0;
-        rig = GetComponent<Rigidbody>();
         _nav = GetComponent<NavMeshAgent>();
         _target = GameObject.Find("Player").transform;
     }

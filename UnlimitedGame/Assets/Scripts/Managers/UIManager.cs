@@ -7,10 +7,20 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField]
     Text _weaponName, _bulletNum;
+    [SerializeField]
+    Slider  _hp;
     public BaseWeapon _weapon;
-    // Update is called once per frame
+    BasePlayer _playerInfo;
+    private void Start()
+    {
+        _playerInfo = GameObject.FindWithTag("Player").GetComponent<BasePlayer>();
+        _hp.maxValue = _playerInfo.GetSetHP;
+    }
+
     void Update()
     {
+        _hp.value = _playerInfo.GetSetHP;
+        //武器アイコン処理
         if (_weapon == null) {
             _weaponName.text = "NotWeapon";
             _bulletNum.text = "0";
