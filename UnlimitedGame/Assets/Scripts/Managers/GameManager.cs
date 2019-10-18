@@ -9,7 +9,6 @@ public  enum Weapons
 }
 public class GameManager : MonoBehaviour
 {
-    List<Transform> _weponlis = new List<Transform>();
     [SerializeField]
     Transform[] _Wp;
     List<Transform> _lis = new List<Transform>();
@@ -21,22 +20,25 @@ public class GameManager : MonoBehaviour
     List<GameObject> _weapons = new List<GameObject>();
     float _time;
     float _nextime;
+    float _gameTime;
     BasePlayer _player;
+
+    public int _enemyHPChange;
+
     
     void Start()      
     {
+        //=========マウス処理========
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        //=========================
         _player = GameObject.Find("Player").GetComponent<BasePlayer>();
         _time = 0;
         _nextime = 2f;
+        _gameTime = 10f;
         foreach(Transform v in transform.GetChild(0).transform)
         {
             _lis.Add(v);
-        }
-        foreach (Transform v in transform.GetChild(1).transform)
-        {
-            _weponlis.Add(v);
         }
         for(int i=0;i<_weapons.Count*2;++i)
         {
@@ -50,6 +52,14 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         _time += Time.deltaTime;
+
+        if (Time.time > _gameTime)
+        {
+            Debug.Log("レベルアップ");
+            _gameTime *= 2;
+            _enemyHPChange += 2;
+        }
+
         if (_time > _nextime)
         {
             _weaponControll = _weaponControll.Where(j => j != null).ToList(); //Null以外を挿入
@@ -75,12 +85,17 @@ public class GameManager : MonoBehaviour
                 }
                 _player._weaponName.Clear();
             }
+
+            //敵管理
             _nowEnemy = _nowEnemy.Where(j => j != null).ToList(); //Null以外を挿入
             int _Enemycount = _nowEnemy.Count;
             if (_Enemycount > 10) return;
+
             //敵生成
             _time = 0f;
-            _nowEnemy.Add(ObjectInctance(_enemys[0], _lis[Random.Range(0, 4)].position));
+            var obj = ObjectInctance(_enemys[0], _lis[Random.Range(0, 4)].position);
+            _nowEnemy.Add(obj);
+            obj.AddComponent<Zonbi>();
         }
     }
 

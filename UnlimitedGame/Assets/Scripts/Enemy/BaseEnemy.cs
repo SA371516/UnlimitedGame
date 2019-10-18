@@ -11,12 +11,14 @@ public class BaseEnemy : MonoBehaviour
         get { return _HP; }
         set { _HP = value; }
     }
+    public int _HPchange;
     protected float _Speed;
     protected int _moveFlag;
 
-    protected BaseEnemy()
+    protected virtual void Start()
     {
-        _HP = 5;
+        _HPchange = GameObject.Find("Manager").GetComponent<GameManager>()._enemyHPChange;
+        _HP = 5 + _HPchange;
     }
    protected  virtual void  Update()
     {

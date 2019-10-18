@@ -9,6 +9,7 @@ public class BasePlayer : MonoBehaviour
 {
     UIManager _iManager;
     GameManager _manager;
+    Confug _confug;
 
     int _hp;
     public int GetSetHP
@@ -28,6 +29,13 @@ public class BasePlayer : MonoBehaviour
 
     public List<Weapons> _weaponName = new List<Weapons>();
 
+    KeyCode Dush;
+    KeyCode Up;
+    KeyCode Down;
+    KeyCode Left;
+    KeyCode Right;
+
+
     private void Awake()
     {
         _hp = 10;
@@ -35,6 +43,14 @@ public class BasePlayer : MonoBehaviour
 
     protected virtual void Start()
     {
+        _confug = Confug._confug;
+        Up = _confug.StatusInctance<KeyCode>("",0);
+        Down = _confug.StatusInctance<KeyCode>("",1);
+        Left = _confug.StatusInctance<KeyCode>("",2);
+        Right = _confug.StatusInctance<KeyCode>("",3);
+        Dush = _confug.StatusInctance<KeyCode>("",4);
+
+
         speed = 5f;
         _iManager = GameObject.Find("Manager").GetComponent<UIManager>();
         _Camera = _Mycamera.GetComponent<Camera>();
@@ -46,11 +62,18 @@ public class BasePlayer : MonoBehaviour
     protected virtual void Update()
     {
         //移動
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-        if (Input.GetKey(KeyCode.LeftShift))
+        //float h = Input.GetAxis("Horizontal");
+        //float v = Input.GetAxis("Vertical");
+        float h=0;
+        float v=0;
+        if (Input.GetKey(Up)) h = 1f;
+        else if (Input.GetKey(Down)) h = -1f;
+        if (Input.GetKey(Left)) v = 1f;
+        else if (Input.GetKey(Right)) v = -1f;
+
+        if (Input.GetKey(Dush))
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (Input.GetKeyDown(Dush))
             {
                 speed *= 2;
             }

@@ -9,9 +9,11 @@ public class Zonbi : BaseEnemy
 {
     NavMeshAgent _nav;
     Transform _target;
-    // Start is called before the first frame update
-    void Start()
+
+    protected override void Start()
     {
+        Debug.Log("出現");
+        base.Start();
         _Speed = 0.1f;
         _moveFlag = 0;
         _nav = GetComponent<NavMeshAgent>();

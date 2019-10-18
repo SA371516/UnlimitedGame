@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5492290305140409200}
   - component: {fileID: 5492290305140409201}
   - component: {fileID: 292381436617456834}
-  - component: {fileID: 1595573969479639888}
   m_Layer: 0
   m_Name: Zonbi
   m_TagString: Enemy
@@ -116,15 +115,3 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1595573969479639888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5492290305140409214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 654101678643b314497e810eb7004ca3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
