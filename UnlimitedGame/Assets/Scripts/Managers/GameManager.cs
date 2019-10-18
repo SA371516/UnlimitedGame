@@ -10,6 +10,8 @@ public  enum Weapons
 public class GameManager : MonoBehaviour
 {
     List<Transform> _weponlis = new List<Transform>();
+    [SerializeField]
+    Transform[] _Wp;
     List<Transform> _lis = new List<Transform>();
     List<GameObject> _weaponControll = new List<GameObject>();
     List<GameObject> _nowEnemy = new List<GameObject>();
@@ -21,8 +23,10 @@ public class GameManager : MonoBehaviour
     float _nextime;
     BasePlayer _player;
     
-    void Start()
+    void Start()      
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         _player = GameObject.Find("Player").GetComponent<BasePlayer>();
         _time = 0;
         _nextime = 2f;
@@ -34,9 +38,11 @@ public class GameManager : MonoBehaviour
         {
             _weponlis.Add(v);
         }
-        foreach(var v in _weapons)
+        for(int i=0;i<_weapons.Count*2;++i)
         {
-            _weaponControll.Add(ObjectInctance(v, _weponlis[Random.Range(0, 4)].position));
+            Vector3 vec = new Vector3(Random.Range(_Wp[0].position.x, _Wp[1].position.x), 1, Random.Range(_Wp[0].position.z, _Wp[1].position.z));
+            int _weaponsLength = i % _weapons.Count;
+            _weaponControll.Add(ObjectInctance(_weapons[_weaponsLength], vec));
         }
     }
 
@@ -52,14 +58,15 @@ public class GameManager : MonoBehaviour
             {
                 foreach(var v in _player._weaponName)
                 {
+                    Vector3 vec = new Vector3(Random.Range(_Wp[0].position.x, _Wp[1].position.x), 1, Random.Range(_Wp[0].position.z, _Wp[1].position.z));
                     switch (v)
                     {
                         case Weapons.AR:
-                            _weaponControll.Add(ObjectInctance( _weapons.Find(item=>item.name=="AR"), _weponlis[Random.Range(0, 4)].position));//武器を探して出現させる
+                            _weaponControll.Add(ObjectInctance( _weapons.Find(item=>item.name=="AR"), vec));//武器を探して出現させる
                             //_weaponControll.Add(ObjectInctance( _weapons.Where(item => item.name == "AR"), _weponlis[Random.Range(0, 4)].position));//
                             break;
                         case Weapons.SR:
-                            _weaponControll.Add(ObjectInctance(_weapons.Find(item => item.name == "SR"), _weponlis[Random.Range(0, 4)].position));//武器を探して出現させる
+                            _weaponControll.Add(ObjectInctance(_weapons.Find(item => item.name == "SR"), vec));//武器を探して出現させる
                             break;
                         default:
                             Debug.Log("異なる値が挿入されています");

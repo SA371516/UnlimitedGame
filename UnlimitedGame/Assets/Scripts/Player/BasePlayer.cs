@@ -18,7 +18,6 @@ public class BasePlayer : MonoBehaviour
     }
     protected RaycastHit hit;
     protected Rigidbody rig;
-    [SerializeField]
     float speed;
     [SerializeField]
     GameObject _Mycamera;
@@ -36,6 +35,7 @@ public class BasePlayer : MonoBehaviour
 
     protected virtual void Start()
     {
+        speed = 5f;
         _iManager = GameObject.Find("Manager").GetComponent<UIManager>();
         _Camera = _Mycamera.GetComponent<Camera>();
         rig = GetComponent<Rigidbody>();
@@ -48,6 +48,14 @@ public class BasePlayer : MonoBehaviour
         //移動
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                speed *= 2;
+            }
+        }
+        else speed = 5f;
         rig.velocity = v * transform.forward * speed + h * transform.right * speed;
         //攻撃
         if (_haveWeapon != null)
@@ -93,5 +101,10 @@ public class BasePlayer : MonoBehaviour
                 break;
         }
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
     }
 }

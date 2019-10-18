@@ -9,8 +9,6 @@ public class Zonbi : BaseEnemy
 {
     NavMeshAgent _nav;
     Transform _target;
-    float _Speed;
-    int _moveFlag;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,23 +35,7 @@ public class Zonbi : BaseEnemy
                 break;
         }
         _nav.speed = _Speed;
-        _nav.destination = _target.position - new Vector3(1, 0, 1);
+        _nav.destination = transform.position + (_target.position - transform.position);
         base.Update();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.name == "Hitbox")
-        {
-            _Speed = 0f;
-            _moveFlag = 2;
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.name == "Hitbox")
-        {
-            _moveFlag = 0;
-        }
     }
 }

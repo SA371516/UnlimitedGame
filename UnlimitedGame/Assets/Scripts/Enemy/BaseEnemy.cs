@@ -11,6 +11,9 @@ public class BaseEnemy : MonoBehaviour
         get { return _HP; }
         set { _HP = value; }
     }
+    protected float _Speed;
+    protected int _moveFlag;
+
     protected BaseEnemy()
     {
         _HP = 5;
@@ -22,4 +25,23 @@ public class BaseEnemy : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "HitBox")
+        {
+            var v = other.gameObject.transform.parent.GetComponent<BasePlayer>();
+            v.GetSetHP--;
+            _Speed = 0f;
+            _moveFlag = 2;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.name == "HitBox")
+        {
+            _moveFlag = 0;
+        }
+    }
+
 }
