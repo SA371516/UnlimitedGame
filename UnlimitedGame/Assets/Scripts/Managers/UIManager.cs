@@ -14,15 +14,19 @@ public class UIManager : MonoBehaviour
     public BaseWeapon _weapon;
     BasePlayer _playerInfo;
     GameManager _manager;
+
+    public bool _stop;
     private void Start()
     {
         _playerInfo = GameObject.FindWithTag("Player").GetComponent<BasePlayer>();
         _manager = GameObject.Find("Manager").GetComponent<GameManager>();
         _hp.maxValue = _playerInfo.GetSetHP;
+        _stop = false;
     }
 
     void Update()
     {
+        if (_stop) return;
         float _t = Mathf.Floor(Time.time);
         string str = string.Format("{00}", _t.ToString());
         _gameTime.text = str;

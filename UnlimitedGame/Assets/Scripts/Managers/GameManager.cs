@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     float _time;
     float _nextime;
     float _gameTime;
+    UIManager _uiManager;
     BasePlayer _player;
     CameraMove _camera;
     bool _stop;
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
         //=========================
         _player = GameObject.Find("Player").GetComponent<BasePlayer>();
         _camera = _player.transform.GetChild(0).GetComponent<CameraMove>();
+        _uiManager = GetComponent<UIManager>();
         _time = 0;
         _nextime = 2f;
         _gameTime = 10f;
@@ -66,7 +68,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (!_stop)//ゲームを止める
+            if (!_stop)//操作中はゲームを止める
             {
                 _menu.SetActive(true);
                 Cursor.visible = true;
@@ -87,8 +89,6 @@ public class GameManager : MonoBehaviour
         }
         if (_stop) return;
 
-        _time += Time.deltaTime;
-
         if (Time.time > _gameTime)
         {
             Debug.Log("レベルアップ");
@@ -96,6 +96,7 @@ public class GameManager : MonoBehaviour
             _enemyHPChange += 2;
         }
 
+        _time += Time.deltaTime;
         if (_time > _nextime)
         {
             _weaponControll = _weaponControll.Where(j => j != null).ToList(); //Null以外を挿入
@@ -139,5 +140,14 @@ public class GameManager : MonoBehaviour
     public GameObject ObjectInctance(GameObject obj,Vector3 pos)
     {
         return Instantiate(obj, pos, Quaternion.identity);
+    }
+    // プレイヤーのHPが0になった時呼ばれる
+    public void GameOver(Vector3 vec)
+    {
+        _uiManager._stop = true;
+        _player._stop = true;
+        _stop = true;
+        _camera._stop = true;
+        StartCoroutine(_camera.GameOver(vec));
     }
 }

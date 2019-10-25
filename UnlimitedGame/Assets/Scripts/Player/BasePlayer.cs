@@ -50,6 +50,7 @@ public class BasePlayer : MonoBehaviour
         _keyCodes = _confug.StatusInctance<KeyCode[]>();
 
         speed = 5f;
+        _manager = GameObject.Find("Manager").GetComponent<GameManager>();
         _iManager = GameObject.Find("Manager").GetComponent<UIManager>();
         _Camera = transform.GetChild(0).GetComponent<Camera>();
         _cameraScr = transform.GetChild(0).GetComponent<CameraMove>();
@@ -86,10 +87,9 @@ public class BasePlayer : MonoBehaviour
         }
         ItemGet();
 
-        if (_hp >= 0) return;
+        if (_hp > 0) return;
         Debug.Log("GameOver");
-        _cameraScr._gameOver = true;
-        _cameraScr.GameOverMove(transform.position);
+        _manager.GameOver(transform.position);
     }
 
     protected virtual void FixedUpdate()
@@ -98,6 +98,10 @@ public class BasePlayer : MonoBehaviour
         if (_InvincibleTime + 3f < Time.time&&_Invincible)
         {
             _Invincible = false;
+        }
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            GetSetHP = 0;
         }
     }
 
