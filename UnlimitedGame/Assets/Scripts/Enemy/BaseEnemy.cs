@@ -5,7 +5,7 @@ using UnityEngine;
 public class BaseEnemy : MonoBehaviour
 {
     protected Rigidbody rig;
-    private int _HP;
+    protected int _HP;
     public int GetSetHP
     {
         get { return _HP; }
@@ -14,17 +14,21 @@ public class BaseEnemy : MonoBehaviour
     protected int _HPchange;
     protected float _Speed;
     protected int _moveFlag;
+    protected GameManager _manager;
+    protected int _addScore;
+    protected EnemyStatus _status;
 
     protected virtual void Start()
     {
-        _HPchange = GameObject.Find("Manager").GetComponent<GameManager>()._enemyHPChange;
-        _HP = 5 + _HPchange;
+        _manager = GameObject.Find("Manager").GetComponent<GameManager>();
+        _HPchange = _manager._enemyHPChange;
     }
    protected  virtual void  Update()
     {
         if (_HP <= 0)
         {
             Destroy(gameObject);
+            _manager.GetSetScore += _addScore;
         }
     }
 

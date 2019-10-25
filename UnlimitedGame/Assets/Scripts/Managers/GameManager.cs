@@ -28,7 +28,13 @@ public class GameManager : MonoBehaviour
     CameraMove _camera;
     bool _stop;
     public int _enemyHPChange;
-
+    [SerializeField]
+    int _score;
+    public int GetSetScore
+    {
+        get { return _score; }
+        set { _score = value; }
+    }
     
     void Start()      
     {

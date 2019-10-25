@@ -11,7 +11,7 @@ public class BasePlayer : MonoBehaviour
     GameManager _manager;
     Confug _confug;
 
-    int _hp;
+    protected int _hp;
     public int GetSetHP
     {
         get { return _hp; }
@@ -19,13 +19,17 @@ public class BasePlayer : MonoBehaviour
     }
     protected RaycastHit hit;
     protected Rigidbody rig;
-    float speed;
+    protected float speed;
+
     [SerializeField]
     Text _GetLog;
     [SerializeField]
     Vector3 _playerGravity;
     Camera _Camera;
+    CameraMove _cameraScr;
     BaseWeapon _haveWeapon;
+    bool _Invincible;
+    float _InvincibleTime;
 
     [HideInInspector]
     public List<Weapons> _weaponName = new List<Weapons>();//取得したものを入れる
@@ -48,12 +52,13 @@ public class BasePlayer : MonoBehaviour
         speed = 5f;
         _iManager = GameObject.Find("Manager").GetComponent<UIManager>();
         _Camera = transform.GetChild(0).GetComponent<Camera>();
+        _cameraScr = transform.GetChild(0).GetComponent<CameraMove>();
         rig = GetComponent<Rigidbody>();
         _haveWeapon = null;
         _stop = false;
+        _Invincible = false;
     }
 
-    // Update is called once per frame
     protected virtual void Update()
     {
         if (_stop) return;//ゲームを止める
@@ -83,11 +88,17 @@ public class BasePlayer : MonoBehaviour
 
         if (_hp >= 0) return;
         Debug.Log("GameOver");
+        _cameraScr._gameOver = true;
+        _cameraScr.GameOverMove(transform.position);
     }
 
     protected virtual void FixedUpdate()
     {
         rig.AddForce(_playerGravity);
+        if (_InvincibleTime + 3f < Time.time&&_Invincible)
+        {
+            _Invincible = false;
+        }
     }
 
     protected void ItemGet()
@@ -126,10 +137,14 @@ public class BasePlayer : MonoBehaviour
 
     public void DamageMove(Vector3 vec)
     {
-        Vector3 _force = (vec - transform.position)*10;
-        _force.y = -22;
-        GetSetHP--;
-        rig.AddForce(-_force, ForceMode.Impulse);
-        //rig.AddForce(new Vector3(0, 22, 60),ForceMode.Impulse);
+        if (!_Invincible)
+        {
+            Vector3 _force = (vec - transform.position) * 10;
+            _force.y = -22;
+            GetSetHP--;
+            rig.AddForce(-_force, ForceMode.Impulse);
+            _Invincible = true;
+            _InvincibleTime = Time.time;
+        }
     }
 }

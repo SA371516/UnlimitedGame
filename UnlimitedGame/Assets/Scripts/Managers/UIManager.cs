@@ -10,12 +10,14 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     Slider  _hp;
     [SerializeField]
-    Text _gameTime;
+    Text _gameTime,_scoreText;
     public BaseWeapon _weapon;
     BasePlayer _playerInfo;
+    GameManager _manager;
     private void Start()
     {
         _playerInfo = GameObject.FindWithTag("Player").GetComponent<BasePlayer>();
+        _manager = GameObject.Find("Manager").GetComponent<GameManager>();
         _hp.maxValue = _playerInfo.GetSetHP;
     }
 
@@ -24,6 +26,7 @@ public class UIManager : MonoBehaviour
         float _t = Mathf.Floor(Time.time);
         string str = string.Format("{00}", _t.ToString());
         _gameTime.text = str;
+        _scoreText.text ="Score:"+ _manager.GetSetScore.ToString();
         _hp.value = _playerInfo.GetSetHP;
         //武器アイコン処理
         if (_weapon == null) {

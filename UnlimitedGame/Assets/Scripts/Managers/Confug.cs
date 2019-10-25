@@ -10,6 +10,10 @@ public class Confug : MonoBehaviour
     GameObject _changeObj;
     [SerializeField]
     Text[] _buttonText;
+    [SerializeField]
+    Slider _mouseSlider;
+    [SerializeField]
+    Text _sliderValume;
     public static Confug _confug;
     static KeyCode[] _code =new KeyCode[6];//Up,Down,Left,Right,Dushの順番
     bool _select;
@@ -45,10 +49,14 @@ public class Confug : MonoBehaviour
             v.text = _code[count].ToString();
             count++;
         }
+        _mouseSlider.maxValue = 50f;
+        _mouseSlider.value = 1f;
     }
 
     void Update()
     {
+        _mouseMove = _mouseSlider.value;
+        _sliderValume.text = _mouseMove.ToString();
         //操作ボタン変更処理
         if (!_select) return;
         if (Input.anyKeyDown)

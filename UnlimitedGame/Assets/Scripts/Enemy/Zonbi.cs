@@ -12,12 +12,15 @@ public class Zonbi : BaseEnemy
 
     protected override void Start()
     {
-        Debug.Log("出現");
+        _status = Resources.Load("Zonbi") as EnemyStatus;
         base.Start();
         _Speed = 0.1f;
         _moveFlag = 0;
         _nav = GetComponent<NavMeshAgent>();
         _target = GameObject.Find("Player").transform;
+        _addScore = _status.Score;
+        _HP = _status.HP + _HPchange;
+        gameObject.name = _status.Name;
     }
 
     protected override void Update()
