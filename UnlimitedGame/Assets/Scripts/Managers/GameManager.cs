@@ -11,28 +11,35 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField]
     Transform[] _Wp;
-    List<Transform> _lis = new List<Transform>();
-    List<GameObject> _weaponControll = new List<GameObject>();
-    List<GameObject> _nowEnemy = new List<GameObject>();
     [SerializeField]
     GameObject[] _enemys;
     [SerializeField]
     List<GameObject> _weapons = new List<GameObject>();
+    [SerializeField]
+    GameObject _menu;
+
+    List<Transform> _lis = new List<Transform>();
+    List<GameObject> _weaponControll = new List<GameObject>();
+    List<GameObject> _nowEnemy = new List<GameObject>();
     float _time;
     float _nextime;
     float _gameTime;
     BasePlayer _player;
-
+    CameraMove _camera;
+    bool _stop;
     public int _enemyHPChange;
 
     
     void Start()      
     {
+        _stop = false;
+        _menu.SetActive(false);
         //=========マウス処理========
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         //=========================
         _player = GameObject.Find("Player").GetComponent<BasePlayer>();
+        _camera = _player.transform.GetChild(0).GetComponent<CameraMove>();
         _time = 0;
         _nextime = 2f;
         _gameTime = 10f;
@@ -51,6 +58,29 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (!_stop)//ゲームを止める
+            {
+                _menu.SetActive(true);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                _stop = true;
+                _player._stop = true;
+                _camera._stop = true;
+            }
+            else
+            {
+                _menu.SetActive(false);
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                _stop = false;
+                _player._stop = false;
+                _camera._stop = false;
+            }
+        }
+        if (_stop) return;
+
         _time += Time.deltaTime;
 
         if (Time.time > _gameTime)
@@ -96,6 +126,7 @@ public class GameManager : MonoBehaviour
             var obj = ObjectInctance(_enemys[0], _lis[Random.Range(0, 4)].position);
             _nowEnemy.Add(obj);
             obj.AddComponent<Zonbi>();
+            obj.GetComponent<Zonbi>().GetSetHP += 2;
         }
     }
 

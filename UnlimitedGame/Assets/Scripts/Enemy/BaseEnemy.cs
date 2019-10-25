@@ -11,7 +11,7 @@ public class BaseEnemy : MonoBehaviour
         get { return _HP; }
         set { _HP = value; }
     }
-    public int _HPchange;
+    protected int _HPchange;
     protected float _Speed;
     protected int _moveFlag;
 
@@ -33,7 +33,7 @@ public class BaseEnemy : MonoBehaviour
         if (other.gameObject.name == "HitBox")
         {
             var v = other.gameObject.transform.parent.GetComponent<BasePlayer>();
-            v.GetSetHP--;
+            v.DamageMove(transform.position);
             _Speed = 0f;
             _moveFlag = 2;
         }

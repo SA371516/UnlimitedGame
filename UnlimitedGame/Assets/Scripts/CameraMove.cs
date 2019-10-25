@@ -8,7 +8,7 @@ public class CameraMove : MonoBehaviour
     Transform verRot;
     Transform horRot;
     public float _cameraMove;
-
+    public bool _stop;
     // Use this for initialization
     void Start()
     {
@@ -21,6 +21,7 @@ public class CameraMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_stop) return;
         float X_Rotation = Input.GetAxis("Mouse X")*_cameraMove;
         float Y_Rotation = Input.GetAxis("Mouse Y")*_cameraMove;
         verRot.transform.Rotate(0, X_Rotation, 0);

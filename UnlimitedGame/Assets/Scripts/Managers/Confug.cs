@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class Confug : MonoBehaviour
 {
+    [SerializeField]
+    GameObject _changeObj;
+    [SerializeField]
+    Text[] _buttonText;
     public static Confug _confug;
     static KeyCode[] _code =new KeyCode[6];//Up,Down,Left,Right,Dushの順番
     bool _select;
@@ -33,6 +38,13 @@ public class Confug : MonoBehaviour
     void Start()
     {
         _select = false;
+        _changeObj.SetActive(false);
+        int count = 0;
+        foreach(var v in _buttonText)
+        {
+            v.text = _code[count].ToString();
+            count++;
+        }
     }
 
     void Update()
@@ -43,32 +55,54 @@ public class Confug : MonoBehaviour
         {
             foreach (KeyCode keycode in Enum.GetValues(typeof(KeyCode))) 
             {
-                if (Input.GetKeyDown(keycode))//ボタンを変える処理
+                if (Input.GetKeyDown(keycode)&&!Input.GetKeyDown(KeyCode.Mouse0))//ボタンを変える処理
                 {
-                    _code[_changeLength] = keycode;
+                    int count = 0;
+                    bool _similar = false;
+                    foreach (KeyCode code in _code)//かぶったら入れ替える処理
+                    {
+                        if (keycode == code)
+                        {
+                            _similar = true;
+                            _code[count] = _code[_changeLength];
+                            _buttonText[count].text = _code[_changeLength].ToString();
+                            _code[_changeLength] = keycode;
+                            _buttonText[_changeLength].text = keycode.ToString();
+                            break;
+                        }
+                        count++;
+                    }
+                    if (!_similar)//かぶらなかったらそのまま
+                    {
+                        _code[_changeLength] = keycode;
+                        _buttonText[_changeLength].text = keycode.ToString();
+                    }
+                    break;
                 }
             }
-            _select = true;
+            _select = false;
+            _changeObj.SetActive(false);
         }
     }
 
-    public void ButtonClick(int L)
+    public void ButtonClick(int L)//この関数を呼んで変更する
     {
         _select = true;
         _changeLength = L;
+        _changeObj.SetActive(true);
     }
-    
+
     //返す値をそれぞれに変える
-    public T StatusInctance<T>(string str="",int L=9999)
+    public T StatusInctance<T>()
     {
         T returnvalume = default;
         if (typeof(T) == typeof(float))
         {
             returnvalume = (T)(object)_mouseMove;
         }
-        if (typeof(T) == typeof(KeyCode))
+        if (typeof(T) == typeof(KeyCode[]))
         {
-            returnvalume=(T)(object) _code[L];
+            returnvalume=(T)(object) _code;
         }
         return returnvalume;
     }

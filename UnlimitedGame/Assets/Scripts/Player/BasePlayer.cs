@@ -21,19 +21,18 @@ public class BasePlayer : MonoBehaviour
     protected Rigidbody rig;
     float speed;
     [SerializeField]
-    GameObject _Mycamera;
-    [SerializeField]
     Text _GetLog;
+    [SerializeField]
+    Vector3 _playerGravity;
     Camera _Camera;
     BaseWeapon _haveWeapon;
 
-    public List<Weapons> _weaponName = new List<Weapons>();
+    [HideInInspector]
+    public List<Weapons> _weaponName = new List<Weapons>();//取得したものを入れる
+    [HideInInspector]
+    public bool _stop;
 
-    KeyCode Dush;
-    KeyCode Up;
-    KeyCode Down;
-    KeyCode Left;
-    KeyCode Right;
+    KeyCode[] _keyCodes;
 
 
     private void Awake()
@@ -44,36 +43,31 @@ public class BasePlayer : MonoBehaviour
     protected virtual void Start()
     {
         _confug = Confug._confug;
-        Up = _confug.StatusInctance<KeyCode>("",0);
-        Down = _confug.StatusInctance<KeyCode>("",1);
-        Left = _confug.StatusInctance<KeyCode>("",2);
-        Right = _confug.StatusInctance<KeyCode>("",3);
-        Dush = _confug.StatusInctance<KeyCode>("",4);
-
+        _keyCodes = _confug.StatusInctance<KeyCode[]>();
 
         speed = 5f;
         _iManager = GameObject.Find("Manager").GetComponent<UIManager>();
-        _Camera = _Mycamera.GetComponent<Camera>();
+        _Camera = transform.GetChild(0).GetComponent<Camera>();
         rig = GetComponent<Rigidbody>();
         _haveWeapon = null;
+        _stop = false;
     }
 
     // Update is called once per frame
     protected virtual void Update()
     {
-        //移動
-        //float h = Input.GetAxis("Horizontal");
-        //float v = Input.GetAxis("Vertical");
-        float h=0;
+        if (_stop) return;//ゲームを止める
+        _keyCodes = _confug.StatusInctance<KeyCode[]>();
+        float h =0;
         float v=0;
-        if (Input.GetKey(Up)) h = 1f;
-        else if (Input.GetKey(Down)) h = -1f;
-        if (Input.GetKey(Left)) v = 1f;
-        else if (Input.GetKey(Right)) v = -1f;
+        if (Input.GetKey(_keyCodes[0])) v = 1f;
+        else if (Input.GetKey(_keyCodes[1])) v = -1f;
+        if (Input.GetKey(_keyCodes[2])) h = -1f;
+        else if (Input.GetKey(_keyCodes[3])) h = 1f;
 
-        if (Input.GetKey(Dush))
+        if (Input.GetKey(_keyCodes[4]))
         {
-            if (Input.GetKeyDown(Dush))
+            if (Input.GetKeyDown(_keyCodes[4]))
             {
                 speed *= 2;
             }
@@ -90,7 +84,12 @@ public class BasePlayer : MonoBehaviour
         if (_hp >= 0) return;
         Debug.Log("GameOver");
     }
-    
+
+    protected virtual void FixedUpdate()
+    {
+        rig.AddForce(_playerGravity);
+    }
+
     protected void ItemGet()
     {
         Ray ray = _Camera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 10));
@@ -123,11 +122,14 @@ public class BasePlayer : MonoBehaviour
                 }
                 break;
         }
-
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void DamageMove(Vector3 vec)
     {
-        
+        Vector3 _force = (vec - transform.position)*10;
+        _force.y = -22;
+        GetSetHP--;
+        rig.AddForce(-_force, ForceMode.Impulse);
+        //rig.AddForce(new Vector3(0, 22, 60),ForceMode.Impulse);
     }
 }
