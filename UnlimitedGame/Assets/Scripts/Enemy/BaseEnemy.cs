@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class BaseEnemy : MonoBehaviour
 {
+    protected enum MoveStatus
+    {
+        MoveSt = 1,
+        MoveDw = 2,
+        Stop = 0
+    }
+
     protected Rigidbody rig;
     protected int _HP;
     public int GetSetHP
@@ -17,6 +24,8 @@ public class BaseEnemy : MonoBehaviour
     protected GameManager _manager;
     protected int _addScore;
     protected EnemyStatus _status;
+
+    public bool _stop;
 
     protected virtual void Start()
     {

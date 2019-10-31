@@ -15,7 +15,7 @@ public class Zonbi : BaseEnemy
         _status = Resources.Load("Zonbi") as EnemyStatus;
         base.Start();
         _Speed = 0.1f;
-        _moveFlag = 0;
+        _moveFlag = (int)MoveStatus.MoveSt;
         _nav = GetComponent<NavMeshAgent>();
         _target = GameObject.Find("Player").transform;
         _addScore = _status.Score;
@@ -25,18 +25,19 @@ public class Zonbi : BaseEnemy
 
     protected override void Update()
     {
+        if (_stop) _moveFlag = (int)MoveStatus.Stop; 
+        else if (_Speed >= 4) _moveFlag = (int)MoveStatus.MoveDw;
+        else if (_Speed <= 0) _moveFlag = (int)MoveStatus.MoveSt;
         switch (_moveFlag)
         {
             case 0:
-                _Speed += 0.1f;
-                if (_Speed > 4) _moveFlag = 1;
+                _Speed = 0f;
                 break;
             case 1:
-                _Speed -= 0.1f;
-                if (_Speed < 0) _moveFlag = 0;
+                _Speed += 0.1f;
                 break;
             case 2:
-                _Speed = 0f;
+                _Speed -= 0.1f;
                 break;
         }
         _nav.speed = _Speed;

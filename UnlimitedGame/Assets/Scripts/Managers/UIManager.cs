@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     public BaseWeapon _weapon;
     BasePlayer _playerInfo;
     GameManager _manager;
+    float time = 0;
 
     public bool _stop;
     private void Start()
@@ -27,7 +28,8 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         if (_stop) return;
-        float _t = Mathf.Floor(Time.time);
+        time = time+ Time.deltaTime;
+        float _t = Mathf.Floor(time);
         string str = string.Format("{00}", _t.ToString());
         _gameTime.text = str;
         _scoreText.text ="Score:"+ _manager.GetSetScore.ToString();

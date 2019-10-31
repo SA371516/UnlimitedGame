@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     Transform[] _Wp;
     [SerializeField]
-    GameObject[] _enemys;
+    GameObject[] _enemys;//敵の種類
     [SerializeField]
     List<GameObject> _weapons = new List<GameObject>();
     [SerializeField]
@@ -24,6 +24,10 @@ public class GameManager : MonoBehaviour
     float _time;
     float _nextime;
     float _gameTime;
+    public float GetTime
+    {
+        get { return _gameTime; }
+    }
     UIManager _uiManager;
     BasePlayer _player;
     CameraMove _camera;
@@ -76,6 +80,15 @@ public class GameManager : MonoBehaviour
                 _stop = true;
                 _player._stop = true;
                 _camera._stop = true;
+                _uiManager._stop = true;
+                foreach(var v in _nowEnemy)
+                {
+                    BaseEnemy _e = v.GetComponent<BaseEnemy>();
+                    if (_e != null)
+                    {
+                        v.GetComponent<BaseEnemy>()._stop = true;
+                    }
+                }
             }
             else
             {
@@ -85,6 +98,15 @@ public class GameManager : MonoBehaviour
                 _stop = false;
                 _player._stop = false;
                 _camera._stop = false;
+                _uiManager._stop = false;
+                foreach (var v in _nowEnemy)
+                {
+                    BaseEnemy _e = v.GetComponent<BaseEnemy>();
+                    if (_e != null)
+                    {
+                        v.GetComponent<BaseEnemy>()._stop = false;
+                    }
+                }
             }
         }
         if (_stop) return;
@@ -96,6 +118,7 @@ public class GameManager : MonoBehaviour
             _enemyHPChange += 2;
         }
 
+        //オブジェクト生成
         _time += Time.deltaTime;
         if (_time > _nextime)
         {
@@ -122,7 +145,6 @@ public class GameManager : MonoBehaviour
                 }
                 _player._weaponName.Clear();
             }
-
             //敵管理
             _nowEnemy = _nowEnemy.Where(j => j != null).ToList(); //Null以外を挿入
             int _Enemycount = _nowEnemy.Count;
@@ -133,7 +155,6 @@ public class GameManager : MonoBehaviour
             var obj = ObjectInctance(_enemys[0], _lis[Random.Range(0, 4)].position);
             _nowEnemy.Add(obj);
             obj.AddComponent<Zonbi>();
-            obj.GetComponent<Zonbi>().GetSetHP += 2;
         }
     }
 

@@ -66,18 +66,17 @@ public class BasePlayer : MonoBehaviour
         _keyCodes = _confug.StatusInctance<KeyCode[]>();
         float h =0;
         float v=0;
-        if (Input.GetKey(_keyCodes[0])) v = 1f;
-        else if (Input.GetKey(_keyCodes[1])) v = -1f;
-        if (Input.GetKey(_keyCodes[2])) h = -1f;
-        else if (Input.GetKey(_keyCodes[3])) h = 1f;
-
+        if (Input.GetKey(_keyCodes[0])) v = 1f;//上
+        else if (Input.GetKey(_keyCodes[1])) v = -1f;//下
+        if (Input.GetKey(_keyCodes[2])) h = -1f;//左
+        else if (Input.GetKey(_keyCodes[3])) h = 1f;//右
         if (Input.GetKey(_keyCodes[4]))
         {
             if (Input.GetKeyDown(_keyCodes[4]))
             {
                 speed *= 2;
             }
-        }
+        }//ダッシュ
         else speed = 5f;
         rig.velocity = v * transform.forward * speed + h * transform.right * speed;
         //攻撃
@@ -115,8 +114,9 @@ public class BasePlayer : MonoBehaviour
         switch (hit.collider.gameObject.tag)
         {
             case "Weapons":
-                _GetLog.text = "[E]で武器を取る";
-                if (Input.GetKeyDown(KeyCode.E))
+                string str= "[" + _keyCodes[5].ToString() + "]で武器を取る";
+                _GetLog.text = str;
+                if (Input.GetKeyDown(_keyCodes[5]))
                 {
                     switch (hit.collider.gameObject.name)
                     {

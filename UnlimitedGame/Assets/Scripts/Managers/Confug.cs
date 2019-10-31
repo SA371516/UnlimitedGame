@@ -15,7 +15,7 @@ public class Confug : MonoBehaviour
     [SerializeField]
     Text _sliderValume;
     public static Confug _confug;
-    static KeyCode[] _code =new KeyCode[6];//Up,Down,Left,Right,Dushの順番
+    static KeyCode[] _code =new KeyCode[7];//Up,Down,Left,Right,Dush,Getの順番
     bool _select;
     int _changeLength;
     static float _soundValume;
@@ -31,6 +31,7 @@ public class Confug : MonoBehaviour
             _code[2] = KeyCode.A;
             _code[3] = KeyCode.D;
             _code[4] = KeyCode.LeftShift;
+            _code[5] = KeyCode.E;
             _mouseMove = 1f;
             DontDestroyOnLoad(gameObject);
         }
@@ -49,7 +50,7 @@ public class Confug : MonoBehaviour
             v.text = _code[count].ToString();
             count++;
         }
-        _mouseSlider.maxValue = 50f;
+        _mouseSlider.maxValue = 30f;
         _mouseSlider.value = 1f;
     }
 
