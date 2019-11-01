@@ -979,6 +979,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4087964222145154434}
   - component: {fileID: 4087964222145154445}
+  - component: {fileID: 1615972868}
   m_Layer: 0
   m_Name: DontDes
   m_TagString: Untagged
@@ -1013,6 +1014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9b2cb70dc92d9d49bef2713214c8d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _menu: {fileID: 4087964223008182406}
   _changeObj: {fileID: 4087964222225703493}
   _buttonText:
   - {fileID: 4087964223748888745}
@@ -1023,6 +1025,18 @@ MonoBehaviour:
   - {fileID: 8902880107890211890}
   _mouseSlider: {fileID: 349806202}
   _sliderValume: {fileID: 169191914}
+--- !u!114 &1615972868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4087964222145154444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 342b2a29e076a6b4391404a337bfdbc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4087964222225703493
 GameObject:
   m_ObjectHideFlags: 0
@@ -1320,7 +1334,7 @@ GameObject:
   - component: {fileID: 4087964223008182405}
   - component: {fileID: 4087964223008182404}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: Config
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2674,8 +2688,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6081401935513902259}
   m_HandleRect: {fileID: 3591223636853239487}
   m_Direction: 2
-  m_Value: 0.9999995
-  m_Size: 0.7359999
+  m_Value: 1
+  m_Size: 0.736
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2851,7 +2865,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000027971342, y: 0.000039577484}
+  m_AnchoredPosition: {x: -0.000027971342, y: 0.000036268797}
   m_SizeDelta: {x: 0, y: 500}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1288339433762104308
@@ -3014,7 +3028,7 @@ GameObject:
   - component: {fileID: 88594792106163961}
   - component: {fileID: 4115493924963404089}
   m_Layer: 0
-  m_Name: Config
+  m_Name: ConfigText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

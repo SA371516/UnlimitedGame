@@ -26,7 +26,6 @@ public class BasePlayer : MonoBehaviour
     [SerializeField]
     Vector3 _playerGravity;
     Camera _Camera;
-    CameraMove _cameraScr;
     BaseWeapon _haveWeapon;
     bool _Invincible;
     float _InvincibleTime;
@@ -53,7 +52,6 @@ public class BasePlayer : MonoBehaviour
         _manager = GameObject.Find("Manager").GetComponent<GameManager>();
         _iManager = GameObject.Find("Manager").GetComponent<UIManager>();
         _Camera = transform.GetChild(0).GetComponent<Camera>();
-        _cameraScr = transform.GetChild(0).GetComponent<CameraMove>();
         rig = GetComponent<Rigidbody>();
         _haveWeapon = null;
         _stop = false;

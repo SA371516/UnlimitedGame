@@ -7,6 +7,9 @@ using UnityEngine.UI;
 public class Confug : MonoBehaviour
 {
     [SerializeField]
+    GameObject _menu;
+
+    [SerializeField]
     GameObject _changeObj;
     [SerializeField]
     Text[] _buttonText;
@@ -17,6 +20,7 @@ public class Confug : MonoBehaviour
     public static Confug _confug;
     static KeyCode[] _code =new KeyCode[7];//Up,Down,Left,Right,Dush,Getの順番
     bool _select;
+    bool _confunActive;
     int _changeLength;
     static float _soundValume;
     static float _mouseMove;
@@ -37,12 +41,15 @@ public class Confug : MonoBehaviour
         }
         else
         {
-
+            Destroy(gameObject);
         }
     }
+
     void Start()
     {
         _select = false;
+        _confunActive = false;
+        _menu.SetActive(_confunActive);
         _changeObj.SetActive(false);
         int count = 0;
         foreach(var v in _buttonText)
@@ -56,15 +63,27 @@ public class Confug : MonoBehaviour
 
     void Update()
     {
+        _menu.SetActive(_confunActive);
         _mouseMove = _mouseSlider.value;
         _sliderValume.text = _mouseMove.ToString();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!_confunActive)
+            {
+                _confunActive = true;
+            }
+            else if(_confunActive && !_changeObj.activeSelf)//操作ボタンを選択していない状態
+            {
+                _confunActive = false;
+            }
+        }
         //操作ボタン変更処理
         if (!_select) return;
-        if (Input.anyKeyDown)
+        if (Input.anyKeyDown&& !Input.GetKeyDown(KeyCode.Escape))//Escapeキーは固定にするため
         {
-            foreach (KeyCode keycode in Enum.GetValues(typeof(KeyCode))) 
+            foreach (KeyCode keycode in Enum.GetValues(typeof(KeyCode)))
             {
-                if (Input.GetKeyDown(keycode)&&!Input.GetKeyDown(KeyCode.Mouse0))//ボタンを変える処理
+                if (Input.GetKeyDown(keycode) && !Input.GetKeyDown(KeyCode.Mouse0))//ボタンを変える処理
                 {
                     int count = 0;
                     bool _similar = false;
@@ -93,14 +112,12 @@ public class Confug : MonoBehaviour
             _changeObj.SetActive(false);
         }
     }
-
     public void ButtonClick(int L)//この関数を呼んで変更する
     {
         _select = true;
         _changeLength = L;
         _changeObj.SetActive(true);
     }
-
     //返す値をそれぞれに変える
     public T StatusInctance<T>()
     {
@@ -113,7 +130,11 @@ public class Confug : MonoBehaviour
         {
             returnvalume=(T)(object) _code;
         }
+        if (typeof(T) == typeof(bool))
+        {
+            returnvalume = (T)(object)_confunActive;
+        }
         return returnvalume;
-    }
 
+    }
 }

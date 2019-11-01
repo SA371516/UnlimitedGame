@@ -15,15 +15,13 @@ public class GameManager : MonoBehaviour
     GameObject[] _enemys;//敵の種類
     [SerializeField]
     List<GameObject> _weapons = new List<GameObject>();
-    [SerializeField]
-    GameObject _menu;
 
     List<Transform> _lis = new List<Transform>();
     List<GameObject> _weaponControll = new List<GameObject>();
     List<GameObject> _nowEnemy = new List<GameObject>();
-    float _time;
-    float _nextime;
-    float _gameTime;
+    float _time = 0;
+    float _inctanceTime = 2f;
+    float _gameTime = 10f;
     public float GetTime
     {
         get { return _gameTime; }
@@ -44,7 +42,6 @@ public class GameManager : MonoBehaviour
     void Start()      
     {
         _stop = false;
-        _menu.SetActive(false);
         //=========マウス処理========
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -52,9 +49,6 @@ public class GameManager : MonoBehaviour
         _player = GameObject.Find("Player").GetComponent<BasePlayer>();
         _camera = _player.transform.GetChild(0).GetComponent<CameraMove>();
         _uiManager = GetComponent<UIManager>();
-        _time = 0;
-        _nextime = 2f;
-        _gameTime = 10f;
         foreach(Transform v in transform.GetChild(0).transform)
         {
             _lis.Add(v);
@@ -70,48 +64,45 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        _stop = Confug._confug.StatusInctance<bool>();
+        if (_stop)//操作中はゲームを止める
         {
-            if (!_stop)//操作中はゲームを止める
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            _stop = true;
+            _player._stop = true;
+            _camera._stop = true;
+            _uiManager._stop = true;
+            foreach(var v in _nowEnemy)
             {
-                _menu.SetActive(true);
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-                _stop = true;
-                _player._stop = true;
-                _camera._stop = true;
-                _uiManager._stop = true;
-                foreach(var v in _nowEnemy)
+                BaseEnemy _e = v.GetComponent<BaseEnemy>();
+                if (_e != null)
                 {
-                    BaseEnemy _e = v.GetComponent<BaseEnemy>();
-                    if (_e != null)
-                    {
-                        v.GetComponent<BaseEnemy>()._stop = true;
-                    }
+                    v.GetComponent<BaseEnemy>()._stop = true;
                 }
             }
-            else
+        }
+        else
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            _stop = false;
+            _player._stop = false;
+            _camera._stop = false;
+            _uiManager._stop = false;
+            foreach (var v in _nowEnemy)
             {
-                _menu.SetActive(false);
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-                _stop = false;
-                _player._stop = false;
-                _camera._stop = false;
-                _uiManager._stop = false;
-                foreach (var v in _nowEnemy)
+                BaseEnemy _e = v.GetComponent<BaseEnemy>();
+                if (_e != null)
                 {
-                    BaseEnemy _e = v.GetComponent<BaseEnemy>();
-                    if (_e != null)
-                    {
-                        v.GetComponent<BaseEnemy>()._stop = false;
-                    }
+                    v.GetComponent<BaseEnemy>()._stop = false;
                 }
             }
         }
         if (_stop) return;
 
-        if (Time.time > _gameTime)
+        _time += Time.deltaTime;
+        if (_time > _gameTime)
         {
             Debug.Log("レベルアップ");
             _gameTime *= 2;
@@ -119,8 +110,7 @@ public class GameManager : MonoBehaviour
         }
 
         //オブジェクト生成
-        _time += Time.deltaTime;
-        if (_time > _nextime)
+        if (_time > _inctanceTime)
         {
             _weaponControll = _weaponControll.Where(j => j != null).ToList(); //Null以外を挿入
             //武器生成
@@ -169,6 +159,6 @@ public class GameManager : MonoBehaviour
         _player._stop = true;
         _stop = true;
         _camera._stop = true;
-        StartCoroutine(_camera.GameOver(vec));
+        StartCoroutine(_camera.GameOver(vec,3f));
     }
 }
