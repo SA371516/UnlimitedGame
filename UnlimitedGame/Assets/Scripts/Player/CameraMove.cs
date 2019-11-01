@@ -47,7 +47,7 @@ public class CameraMove : MonoBehaviour
         horRot.transform.Rotate(-Y_Rotation, 0, 0);
     }
     
-    public IEnumerator GameOver(Vector3 vec,float _jumpTime)
+    public IEnumerator GameOver(Vector3 vec,float _jumpTime,int S)
     {
         while (_move <= 1f)
         {
@@ -62,6 +62,7 @@ public class CameraMove : MonoBehaviour
             time += Time.deltaTime;
             yield return new WaitForFixedUpdate();
         }
+        SceneLoadManager._loadManager._score = S;
         SceneLoadManager._loadManager.SceneLoadFunction((int)SceneLoadManager.Scenes.Result);
     }
 }

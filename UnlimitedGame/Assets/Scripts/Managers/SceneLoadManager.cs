@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public  class SceneLoadManager : MonoBehaviour
 {
     public static SceneLoadManager _loadManager;
+    public int _score;
     private void Awake()
     {
         if (_loadManager == null)
@@ -25,7 +26,6 @@ public  class SceneLoadManager : MonoBehaviour
         Result = 2,
         Exit = 3,
     }
-
     public void SceneLoadFunction(int i)
     {
         Scenes scenes = (Scenes)i;

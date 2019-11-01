@@ -60,17 +60,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\CameraMove.cs" />
     <Compile Include="Assets\Scripts\Enemy\BaseEnemy.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyStatus.cs" />
     <Compile Include="Assets\Scripts\Enemy\Zonbi.cs" />
     <Compile Include="Assets\Scripts\Human.cs" />
     <Compile Include="Assets\Scripts\Managers\Confug.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\ResultManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SceneLoadManager.cs" />
     <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
     <Compile Include="Assets\Scripts\particleScr.cs" />
     <Compile Include="Assets\Scripts\Player\BasePlayer.cs" />
+    <Compile Include="Assets\Scripts\Player\CameraMove.cs" />
     <Compile Include="Assets\Scripts\WeaponsScript\ARWeapon.cs" />
     <Compile Include="Assets\Scripts\WeaponsScript\BaseWeapon.cs" />
     <Compile Include="Assets\Scripts\WeaponsScript\SRWeapon.cs" />

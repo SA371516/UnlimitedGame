@@ -67,34 +67,26 @@ public class GameManager : MonoBehaviour
         _stop = Confug._confug.StatusInctance<bool>();
         if (_stop)//操作中はゲームを止める
         {
-            Cursor.visible = true;
+            Stop(_stop);
             Cursor.lockState = CursorLockMode.None;
-            _stop = true;
-            _player._stop = true;
-            _camera._stop = true;
-            _uiManager._stop = true;
-            foreach(var v in _nowEnemy)
+            foreach (var v in _nowEnemy)
             {
-                BaseEnemy _e = v.GetComponent<BaseEnemy>();
-                if (_e != null)
+                if (v != null)
                 {
+                    BaseEnemy _e = v.GetComponent<BaseEnemy>();
                     v.GetComponent<BaseEnemy>()._stop = true;
                 }
             }
         }
         else
         {
-            Cursor.visible = false;
+            Stop(_stop);
             Cursor.lockState = CursorLockMode.Locked;
-            _stop = false;
-            _player._stop = false;
-            _camera._stop = false;
-            _uiManager._stop = false;
             foreach (var v in _nowEnemy)
             {
-                BaseEnemy _e = v.GetComponent<BaseEnemy>();
-                if (_e != null)
+                if (v != null)
                 {
+                    BaseEnemy _e = v.GetComponent<BaseEnemy>();
                     v.GetComponent<BaseEnemy>()._stop = false;
                 }
             }
@@ -155,10 +147,19 @@ public class GameManager : MonoBehaviour
     // プレイヤーのHPが0になった時呼ばれる
     public void GameOver(Vector3 vec)
     {
-        _uiManager._stop = true;
-        _player._stop = true;
         _stop = true;
-        _camera._stop = true;
-        StartCoroutine(_camera.GameOver(vec,3f));
+        Stop(_stop);
+        Cursor.lockState = CursorLockMode.None;
+        StartCoroutine(_camera.GameOver(vec,3f, _score));
+    }
+
+    void Stop(bool B)
+    {
+        Cursor.visible = B;
+        Cursor.lockState = CursorLockMode.None;
+        _stop = B;
+        _player._stop = B;
+        _camera._stop = B;
+        _uiManager._stop = B;
     }
 }
