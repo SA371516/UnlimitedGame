@@ -20,7 +20,7 @@ public class ARWeapon : BaseWeapon
     {
         if (_bulletNum <= 0) return;
         if (Input.GetMouseButton(0) && _nowTime >= _recustTime) Attack();//次の弾を撃つラグ
-        else _bulletParticle.Pause();
+        else if (Input.GetMouseButtonUp(0)) _bulletParticle.Stop();
         _nowTime += Time.deltaTime;
         _recustSlider.value = _nowTime;
 
@@ -30,7 +30,7 @@ public class ARWeapon : BaseWeapon
         _nowTime = 0f;
         _bulletNum--;
         Ray ray = GetBulletItem(_accuracy);
-        _bulletParticle.Play();
+        if (!_bulletParticle.isPlaying) _bulletParticle.Play();
         //連射銃、射程距離15ｍ
         if (Physics.Raycast(ray, out hit, _distance))
         {

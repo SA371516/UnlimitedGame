@@ -33,6 +33,7 @@ public class BasePlayer : MonoBehaviour
     BaseWeapon _haveWeapon;
     bool _Invincible;
     float _InvincibleTime;
+    GameObject obj;
 
     [HideInInspector]
     public List<Weapons> _weaponName = new List<Weapons>();//取得したものを入れる
@@ -120,20 +121,22 @@ public class BasePlayer : MonoBehaviour
                 _GetLog.text = str;
                 if (Input.GetKeyDown(_keyCodes[5]))
                 {
-                    GameObject v = null;GameObject obj = null;
+                    GameObject v = null;
+                    Destroy(obj);
+                    obj = null;
                     switch (hit.collider.gameObject.name)
                     {
                         case "SR(Clone)":
                             v = _Weapon.Find(item => item.gameObject.name == "P_SR");
-                            obj = _manager.ObjectInctance(v, transform.position,gameObject);//(武器,場所)
-                            _haveWeapon = new SRWeapon(obj.transform.GetChild(0).gameObject);//(particle)
+                            //obj = _manager.ObjectInctance(v, transform.position,gameObject);//(武器,場所)
+                            _haveWeapon = new SRWeapon(transform.GetChild(1).gameObject);//(particle)
                             _iManager._weapon = _haveWeapon;
                             _weaponName.Add(Weapons.SR);
                             break;
                         case "AR":
                             v = _Weapon.Find(item => item.gameObject.name == "P_AR");
-                            obj = _manager.ObjectInctance(v, transform.position, gameObject);
-                            _haveWeapon = new ARWeapon(obj.transform.GetChild(0).gameObject);
+                            //obj = _manager.ObjectInctance(v, transform.position, gameObject);
+                            _haveWeapon = new ARWeapon(transform.GetChild(1).gameObject);
                             _iManager._weapon = _haveWeapon;
                             _weaponName.Add(Weapons.AR);
                             break;

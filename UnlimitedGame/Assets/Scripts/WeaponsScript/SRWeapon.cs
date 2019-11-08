@@ -22,7 +22,6 @@ public class SRWeapon : BaseWeapon
     {
         if (_bulletNum <= 0) return;
         if (_nowTime >= _recustTime && Input.GetMouseButtonDown(0)) Attack();//次の弾を撃つラグ
-        else _bulletParticle.Stop();
         _nowTime += Time.deltaTime;
         _recustSlider.value = _nowTime;
     }

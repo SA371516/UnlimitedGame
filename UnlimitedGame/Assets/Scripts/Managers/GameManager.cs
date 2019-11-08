@@ -140,14 +140,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public GameObject ObjectInctance(GameObject obj,Vector3 pos,GameObject parent=null)
+    public GameObject ObjectInctance(GameObject o,Vector3 pos,GameObject parent=null)
     {
-        GameObject _obj = Instantiate(obj, pos, Quaternion.identity);
-        if (parent != null)
+        GameObject _obj = Instantiate(o, pos, Quaternion.identity);
+        if (parent != null)//このままだと武器以外の対応が出来ない
         {
             _obj.transform.parent = parent.transform;
+            _obj.transform.rotation = Quaternion.identity;
+            Vector3 vec = o.transform.position;
+            //_obj.transform.position += vec;
+            //_obj.transform.rotation = parent.transform.rotation;
+            //_obj.transform.rotation = Quaternion.Euler(0, -90f,0);
         }
-        return obj;
+        return _obj;
     }
     // プレイヤーのHPが0になった時呼ばれる
     public void GameOver(Vector3 vec)
