@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,10 +22,13 @@ public class BasePlayer : MonoBehaviour
     protected Rigidbody rig;
     protected float speed;
 
-    [SerializeField]
+    [SerializeField]//プレイヤーに知らせるため
     Text _GetLog;
     [SerializeField]
     Vector3 _playerGravity;
+    [SerializeField]
+    List<GameObject> _Weapon = new List<GameObject>();
+
     Camera _Camera;
     BaseWeapon _haveWeapon;
     bool _Invincible;
@@ -116,16 +120,20 @@ public class BasePlayer : MonoBehaviour
                 _GetLog.text = str;
                 if (Input.GetKeyDown(_keyCodes[5]))
                 {
+                    GameObject v = null;GameObject obj = null;
                     switch (hit.collider.gameObject.name)
                     {
                         case "SR(Clone)":
-                            _haveWeapon = new SRWeapon();
+                            v = _Weapon.Find(item => item.gameObject.name == "P_SR");
+                            obj = _manager.ObjectInctance(v, transform.position,gameObject);//(武器,場所)
+                            _haveWeapon = new SRWeapon(obj.transform.GetChild(0).gameObject);//(particle)
                             _iManager._weapon = _haveWeapon;
-
                             _weaponName.Add(Weapons.SR);
                             break;
-                        case "AR(Clone)":
-                            _haveWeapon = new ARWeapon();
+                        case "AR":
+                            v = _Weapon.Find(item => item.gameObject.name == "P_AR");
+                            obj = _manager.ObjectInctance(v, transform.position, gameObject);
+                            _haveWeapon = new ARWeapon(obj.transform.GetChild(0).gameObject);
                             _iManager._weapon = _haveWeapon;
                             _weaponName.Add(Weapons.AR);
                             break;
@@ -133,6 +141,9 @@ public class BasePlayer : MonoBehaviour
                     _GetLog.text = "";
                     Destroy(hit.collider.gameObject);
                 }
+                break;
+            default:
+                Debug.Log(hit.collider.gameObject.name);
                 break;
         }
     }

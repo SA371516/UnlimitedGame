@@ -30,15 +30,15 @@ public class GameManager : MonoBehaviour
     BasePlayer _player;
     CameraMove _camera;
     bool _stop;
-    public int _enemyHPChange;
-    [SerializeField]
     int _score;
     public int GetSetScore
     {
         get { return _score; }
         set { _score = value; }
     }
-    
+    [HideInInspector]
+    public int _enemyHPChange;
+
     void Start()      
     {
         _stop = false;
@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
         if (_time > _gameTime)
         {
             Debug.Log("レベルアップ");
-            _gameTime *= 2;
+            _gameTime += 30;
             _enemyHPChange += 2;
         }
 
@@ -140,9 +140,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public GameObject ObjectInctance(GameObject obj,Vector3 pos)
+    public GameObject ObjectInctance(GameObject obj,Vector3 pos,GameObject parent=null)
     {
-        return Instantiate(obj, pos, Quaternion.identity);
+        GameObject _obj = Instantiate(obj, pos, Quaternion.identity);
+        if (parent != null)
+        {
+            _obj.transform.parent = parent.transform;
+        }
+        return obj;
     }
     // プレイヤーのHPが0になった時呼ばれる
     public void GameOver(Vector3 vec)

@@ -8,6 +8,7 @@ public abstract class BaseWeapon
     Camera Mycamera;
     protected GameManager _manager;
     protected GameObject _particle;
+    protected ParticleSystem _bulletParticle;
     protected Ray ray;
     protected RaycastHit hit;
     protected float _distance;
@@ -17,6 +18,7 @@ public abstract class BaseWeapon
     protected int _bulletNum;
     protected int _accuracy;
     protected string _weaponName;
+    protected Vector3 _bulletPos;
 
     public string GetSetWeaponName
     {
@@ -31,17 +33,19 @@ public abstract class BaseWeapon
     
 
     // Start is called before the first frame update
-    protected BaseWeapon()
+    protected BaseWeapon(GameObject p)
     {
         _particle = Resources.Load("Prefabs/Damage") as GameObject;
+        _bulletParticle = p.GetComponent<ParticleSystem>();
         _recustSlider = GameObject.Find("Slider").GetComponent<Slider>();
         _manager = GameObject.Find("Manager").GetComponent<GameManager>();
         Mycamera = GameObject.Find("FirstPersonCamera").GetComponent<Camera>();
     }
-    protected Ray GetRay(int a)
+    protected Ray GetBulletItem(int a)
     {
         Vector2 vec = Random.insideUnitCircle * a;
-       return Mycamera.ScreenPointToRay(new Vector3(Screen.width / 2+vec.x, Screen.height / 2+ vec.y, 10));
+        _bulletPos = new Vector3(Screen.width / 2 + vec.x, Screen.height / 2 + vec.y, 10);
+        return Mycamera.ScreenPointToRay(_bulletPos);
     }
 
     // Update is called once per frame

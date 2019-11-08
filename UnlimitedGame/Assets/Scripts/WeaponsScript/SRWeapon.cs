@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SRWeapon : BaseWeapon
 {
     float _nowTime;
-    public SRWeapon()
+    public SRWeapon(GameObject p):base(p)
     {
         _accuracy = 5;
         _Damage = 5;
@@ -21,7 +21,8 @@ public class SRWeapon : BaseWeapon
     public override void Update()
     {
         if (_bulletNum <= 0) return;
-        if(_nowTime>=_recustTime&&Input.GetMouseButtonDown(0)) Attack();//次の弾を撃つラグ
+        if (_nowTime >= _recustTime && Input.GetMouseButtonDown(0)) Attack();//次の弾を撃つラグ
+        else _bulletParticle.Stop();
         _nowTime += Time.deltaTime;
         _recustSlider.value = _nowTime;
     }
@@ -29,7 +30,8 @@ public class SRWeapon : BaseWeapon
     {
         _nowTime = 0f;
         _bulletNum--;
-        Ray ray = GetRay(_accuracy);
+        Ray ray = GetBulletItem(_accuracy);
+        _bulletParticle.Play();
         //単発銃、射程距離30ｍ
         if(Physics.Raycast(ray, out hit, _distance))
         {

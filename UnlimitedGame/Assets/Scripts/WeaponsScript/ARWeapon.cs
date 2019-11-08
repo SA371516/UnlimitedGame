@@ -5,12 +5,12 @@ using UnityEngine;
 public class ARWeapon : BaseWeapon
 {
     float _nowTime;
-    public ARWeapon()
+    public ARWeapon(GameObject p):base(p)
     {
         _accuracy = 70;
         _weaponName = "AR";
         _bulletNum = 50;
-        _recustTime = 0.25f;
+        _recustTime = 0.05f;
         _nowTime = 0f;
         _distance = 15f;
         _Damage = 1;
@@ -19,7 +19,8 @@ public class ARWeapon : BaseWeapon
     public override void Update()
     {
         if (_bulletNum <= 0) return;
-        if (Input.GetMouseButton(0)&&_nowTime>=_recustTime) Attack();//次の弾を撃つラグ
+        if (Input.GetMouseButton(0) && _nowTime >= _recustTime) Attack();//次の弾を撃つラグ
+        else _bulletParticle.Pause();
         _nowTime += Time.deltaTime;
         _recustSlider.value = _nowTime;
 
@@ -28,7 +29,8 @@ public class ARWeapon : BaseWeapon
     {
         _nowTime = 0f;
         _bulletNum--;
-        Ray ray = GetRay(_accuracy);
+        Ray ray = GetBulletItem(_accuracy);
+        _bulletParticle.Play();
         //連射銃、射程距離15ｍ
         if (Physics.Raycast(ray, out hit, _distance))
         {
