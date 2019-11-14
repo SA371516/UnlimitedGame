@@ -6,8 +6,8 @@ public class BaseEnemy : MonoBehaviour
 {
     protected enum MoveStatus
     {
-        MoveSt = 1,
-        MoveDw = 2,
+        MoveUp = 1,
+        MoveDown = 2,
         Stop = 0
     }
 
@@ -24,6 +24,7 @@ public class BaseEnemy : MonoBehaviour
     protected GameManager _manager;
     protected int _addScore;
     protected EnemyStatus _status;
+    protected Animator _animator;
 
     public bool _stop;
 
@@ -41,21 +42,19 @@ public class BaseEnemy : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name == "HitBox")
         {
             var v = other.gameObject.transform.parent.GetComponent<BasePlayer>();
             v.DamageMove(transform.position);
-            _Speed = 0f;
-            _moveFlag = 2;
         }
     }
-    private void OnTriggerExit(Collider other)
+    protected virtual void OnTriggerExit(Collider other)
     {
         if (other.gameObject.name == "HitBox")
         {
-            _moveFlag = 0;
+            _stop = false;
         }
     }
 
