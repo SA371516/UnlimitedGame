@@ -18,19 +18,25 @@ public class ARWeapon : BaseWeapon
     }
     public override void Update()
     {
-        if (_bulletNum <= 0) return;
+        if (_bulletNum <= 0)
+        {
+            particleScr.StopParticle();
+            return;
+        }
         if (Input.GetMouseButton(0) && _nowTime >= _recustTime) Attack();//次の弾を撃つラグ
-        else if (Input.GetMouseButtonUp(0)) _bulletParticle.Stop();
+        else if (!Input.GetMouseButton(0))
+            particleScr.StopParticle();
         _nowTime += Time.deltaTime;
         _recustSlider.value = _nowTime;
 
     }
-    public override void Attack()
+    protected override void Attack()
     {
         _nowTime = 0f;
         _bulletNum--;
         Ray ray = GetBulletItem(_accuracy);
-        if (!_bulletParticle.isPlaying) _bulletParticle.Play();
+        //if (!_bulletParticle.isPlaying) _bulletParticle.Play();
+        particleScr.PlayParticle();
         //連射銃、射程距離15ｍ
         if (Physics.Raycast(ray, out hit, _distance))
         {

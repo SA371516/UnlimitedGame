@@ -11,21 +11,21 @@ using System.Collections;
 public class WFX_LightFlicker : MonoBehaviour
 {
 	public float time = 0.05f;
-	
+    public bool _ok;
 	private float timer;
 	
 	void Start ()
 	{
+        _ok = false;
 		timer = time;
 		StartCoroutine("Flicker");
 	}
 	
 	IEnumerator Flicker()
 	{
-		while(true)
+		while(_ok)
 		{
 			GetComponent<Light>().enabled = !GetComponent<Light>().enabled;
-			
 			do
 			{
 				timer -= Time.deltaTime;

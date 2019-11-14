@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1337018626938161148}
   - component: {fileID: 8427636106483170071}
   - component: {fileID: 7867959334079715454}
-  - component: {fileID: 6415723807189863940}
+  - component: {fileID: 5134474136244324548}
   m_Layer: 0
   m_Name: Damage
   m_TagString: Untagged
@@ -4699,7 +4699,7 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &6415723807189863940
+--- !u!114 &5134474136244324548
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4708,6 +4708,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1564629476075284220}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbf6fb687e61e484ea7d4dd672fecdd0, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ce1f5da180669649b510454968fefe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

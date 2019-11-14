@@ -20,17 +20,22 @@ public class SRWeapon : BaseWeapon
     }
     public override void Update()
     {
-        if (_bulletNum <= 0) return;
+        if (_bulletNum <= 0) {
+            particleScr.StopParticle();
+            return;
+        }
         if (_nowTime >= _recustTime && Input.GetMouseButtonDown(0)) Attack();//次の弾を撃つラグ
+        else if (!Input.GetMouseButton(0))
+            particleScr.StopParticle();
         _nowTime += Time.deltaTime;
         _recustSlider.value = _nowTime;
     }
-    public override void Attack()
+    protected override void Attack()
     {
         _nowTime = 0f;
         _bulletNum--;
         Ray ray = GetBulletItem(_accuracy);
-        _bulletParticle.Play();
+        particleScr.PlayParticle();
         //単発銃、射程距離30ｍ
         if(Physics.Raycast(ray, out hit, _distance))
         {

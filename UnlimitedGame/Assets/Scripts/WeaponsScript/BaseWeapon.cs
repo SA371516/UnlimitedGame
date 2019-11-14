@@ -9,6 +9,7 @@ public abstract class BaseWeapon
     protected GameManager _manager;
     protected GameObject _particle;
     protected ParticleSystem _bulletParticle;
+    protected particleScr particleScr;
     protected Ray ray;
     protected RaycastHit hit;
     protected float _distance;
@@ -37,6 +38,7 @@ public abstract class BaseWeapon
     {
         _particle = Resources.Load("Prefabs/Damage") as GameObject;
         _bulletParticle = p.GetComponent<ParticleSystem>();
+        particleScr = p.GetComponent<particleScr>();
         _recustSlider = GameObject.Find("Slider").GetComponent<Slider>();
         _manager = GameObject.Find("Manager").GetComponent<GameManager>();
         Mycamera = GameObject.Find("FirstPersonCamera").GetComponent<Camera>();
@@ -51,5 +53,5 @@ public abstract class BaseWeapon
     // Update is called once per frame
     public abstract void Update();
 
-    public abstract void Attack();
+    protected abstract void Attack();
 }

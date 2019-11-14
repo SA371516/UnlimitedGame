@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
                 if (v != null)
                 {
                     BaseEnemy _e = v.GetComponent<BaseEnemy>();
-                    v.GetComponent<BaseEnemy>()._stop = true;
+                    v.GetComponent<BaseEnemy>()._stop = _stop;
                 }
             }
         }

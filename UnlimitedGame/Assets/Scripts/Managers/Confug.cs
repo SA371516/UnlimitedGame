@@ -8,7 +8,6 @@ public class Confug : MonoBehaviour
 {
     [SerializeField]
     GameObject _menu;
-
     [SerializeField]
     GameObject _changeObj;
     [SerializeField]
@@ -17,10 +16,12 @@ public class Confug : MonoBehaviour
     Slider _mouseSlider;
     [SerializeField]
     Text _sliderValume;
+
     public static Confug _confug;
+
     static KeyCode[] _code =new KeyCode[7];//Up,Down,Left,Right,Dush,Getの順番
     bool _select;
-    bool _confunActive;
+    bool _confugActive;
     int _changeLength;
     static float _soundValume;
     static float _mouseMove;
@@ -48,8 +49,8 @@ public class Confug : MonoBehaviour
     void Start()
     {
         _select = false;
-        _confunActive = false;
-        _menu.SetActive(_confunActive);
+        _confugActive = false;
+        _menu.SetActive(_confugActive);
         _changeObj.SetActive(false);
         int count = 0;
         foreach(var v in _buttonText)
@@ -63,18 +64,18 @@ public class Confug : MonoBehaviour
 
     void Update()
     {
-        _menu.SetActive(_confunActive);
+        _menu.SetActive(_confugActive);
         _mouseMove = _mouseSlider.value;
         _sliderValume.text = _mouseMove.ToString();
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (!_confunActive)
+            if (!_confugActive)
             {
-                _confunActive = true;
+                _confugActive = true;
             }
-            else if(_confunActive && !_changeObj.activeSelf)//操作ボタンを選択していない状態
+            else if(_confugActive && !_changeObj.activeSelf)//操作ボタンを選択していない状態
             {
-                _confunActive = false;
+                _confugActive = false;
             }
         }
         //操作ボタン変更処理
@@ -132,7 +133,7 @@ public class Confug : MonoBehaviour
         }
         if (typeof(T) == typeof(bool))
         {
-            returnvalume = (T)(object)_confunActive;
+            returnvalume = (T)(object)_confugActive;
         }
         return returnvalume;
 
