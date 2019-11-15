@@ -28,7 +28,7 @@ public class ResultManager : MonoBehaviour
     void Start()
     {
         _resultScore = SceneLoadManager._loadManager._score;
-        _resultScore = 150000;
+        //_resultScore = 150000;
         Color c = new Color(1, 0, 0, 0);
         _enterText.color = c;
     }
