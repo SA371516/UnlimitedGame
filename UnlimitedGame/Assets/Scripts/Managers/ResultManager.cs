@@ -29,8 +29,7 @@ public class ResultManager : MonoBehaviour
     {
         _resultScore = SceneLoadManager._loadManager._score;
         _resultScore = 150000;
-        Color c = new Color(0, 0, 0, 0);
-        Debug.Log(_enterText.color);
+        Color c = new Color(1, 0, 0, 0);
         _enterText.color = c;
     }
 
@@ -38,6 +37,7 @@ public class ResultManager : MonoBehaviour
     void Update()
     {
         _scoreText.text = "Score:" + _resultScore.ToString();
+        //1========スコアに応じて表示するものを変更する======
         if (_resultScore >= 0 && _resultScore <= 1000)
         {
             _wordBackImg.sprite = _wordBack[0];
@@ -53,25 +53,15 @@ public class ResultManager : MonoBehaviour
             _wordBackImg.sprite = _wordBack[2];
             _wordText.text = _wordStr[2];
         }
-        StartCoroutine(SceneJump());
-    }
-
-    IEnumerator SceneJump()
-    {
-        while (_time < 5f)
+        //==============================================
+        if (5.0f < Time.time)
         {
-            _time += Time.deltaTime;
-            yield return new WaitForFixedUpdate();
+            TextColorChange();
         }
-        while (!Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
-            TextColorChange();//ここでテキストのフェードイン、アウトをしている
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                break;
-            }
+            SceneLoadManager._loadManager.SceneLoadFunction((int)SceneLoadManager.Scenes.Title);
         }
-        SceneLoadManager._loadManager.SceneLoadFunction((int)SceneLoadManager.Scenes.Result);
     }
     void TextColorChange()//ここでテキストのフェードイン、アウトをしている
     {

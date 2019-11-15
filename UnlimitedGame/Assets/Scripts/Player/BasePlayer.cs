@@ -102,7 +102,6 @@ public class BasePlayer : MonoBehaviour
         {
             _Invincible = false;
         }
-        _uiManager.DamageFunction(_Invincible);
         if (Input.GetKeyDown(KeyCode.Return))
         {
             GetSetHP = 0;
@@ -153,14 +152,15 @@ public class BasePlayer : MonoBehaviour
         }
     }
 
-    public void DamageMove(Vector3 vec)
+    public void DamageMove(Vector3 vec,int ATK)
     {
         if (_stop) return;//デバッグ用
         if (!_Invincible)//無敵
         {
             transform.position = transform.position + (transform.position - vec);
-            GetSetHP--;
+            GetSetHP -= ATK;
             _Invincible = true;
+            _uiManager.DamageFunction();
             _InvincibleTime = Time.time;
         }
     }

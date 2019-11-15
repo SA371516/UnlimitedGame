@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     List<GameObject> _weaponControll = new List<GameObject>();
     List<GameObject> _nowEnemy = new List<GameObject>();
     float _time = 0;
+    float _leveltime;
     float _inctanceTime = 2f;
     float _gameTime = 10f;
     public float GetTime
@@ -36,8 +37,7 @@ public class GameManager : MonoBehaviour
         get { return _score; }
         set { _score = value; }
     }
-    [HideInInspector]
-    public int _enemyHPChange;
+    public int _enemyStatusChange;
 
     void Start()      
     {
@@ -93,14 +93,13 @@ public class GameManager : MonoBehaviour
         }
         if (_stop) return;
 
-        _time += Time.deltaTime;
-        if (_time > _gameTime)
+        _leveltime += Time.deltaTime;
+        if (_leveltime > _gameTime)
         {
-            Debug.Log("レベルアップ");
             _gameTime += 30;
-            _enemyHPChange += 2;
+            _enemyStatusChange += 2;
         }
-
+        _time += Time.deltaTime;
         //オブジェクト生成
         if (_time > _inctanceTime)
         {

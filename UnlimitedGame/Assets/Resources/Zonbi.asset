@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763739cacd8dad140af601724b0ecff5, type: 3}
   m_Name: Zonbi
   m_EditorClassIdentifier: 
+  Name: Zonbi
   HP: 5
   Score: 20
-  Name: Zonbi
+  ATK: 1

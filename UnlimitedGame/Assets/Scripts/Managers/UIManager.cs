@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     Text _gameTime,_scoreText;
     [SerializeField]
-    GameObject Damage;
+    Image _damage;
     BasePlayer _playerInfo;
     GameManager _manager;
     float time = 0;
@@ -28,7 +28,11 @@ public class UIManager : MonoBehaviour
         _hp.maxValue = _playerInfo.GetSetHP;
         _levelSlider.maxValue = _manager.GetTime;
         _stop = false;
-        Damage.SetActive(false);
+
+        Color _color = new Color();
+        _color = _damage.color;
+        _color.a = 0;
+        _damage.color = _color;
     }
 
     void Update()
@@ -73,8 +77,28 @@ public class UIManager : MonoBehaviour
         }
     }
 
-     public void DamageFunction(bool active)
+     public void DamageFunction()
     {
-        Damage.SetActive(active);
+        Color _color = new Color();
+        _color = _damage.color;
+        _color.a = 0.5f;
+        _damage.color = _color;
+        StartCoroutine(Ttransparency());
+    }
+    IEnumerator Ttransparency()
+    {
+        float f = 0;
+        float t = 1;
+        float add = (1.0f / 3.0f) * Time.deltaTime;
+        while (t>=0)
+        {
+            f = Mathf.Lerp(0, 0.5f, t);
+            Color _color = new Color();
+            _color = _damage.color;
+            _color.a = f;
+            _damage.color = _color;
+            t -= add;//無敵時間
+            yield return new WaitForFixedUpdate();
+        }
     }
 }

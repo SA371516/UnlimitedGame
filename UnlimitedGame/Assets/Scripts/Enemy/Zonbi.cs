@@ -19,9 +19,6 @@ public class Zonbi : BaseEnemy
         StartCoroutine(AnimatorController(AnimTrigger.Walk));
         _nav = GetComponent<NavMeshAgent>();
         _target = GameObject.Find("Player").transform;
-        _addScore = _status.Score;
-        _HP = _status.HP + _HPchange;
-        gameObject.name = _status.Name;
     }
 
     protected override void Update()
