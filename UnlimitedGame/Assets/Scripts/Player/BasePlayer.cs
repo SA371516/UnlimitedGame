@@ -8,9 +8,10 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Rigidbody))]
 public class BasePlayer : MonoBehaviour
 {
-    UIManager _iManager;
+    UIManager _uiManager;
     GameManager _manager;
     Confug _confug;
+    KeyCode[] _keyCodes;
 
     protected int _hp;
     public int GetSetHP
@@ -40,7 +41,6 @@ public class BasePlayer : MonoBehaviour
     [HideInInspector]
     public bool _stop;
 
-    KeyCode[] _keyCodes;
 
 
     private void Awake()
@@ -50,12 +50,12 @@ public class BasePlayer : MonoBehaviour
 
     protected virtual void Start()
     {
+        if (_stop) return;//デバッグも兼ねている
         _confug = Confug._confug;
         _keyCodes = _confug.StatusInctance<KeyCode[]>();
-
         speed = 5f;
         _manager = GameObject.Find("Manager").GetComponent<GameManager>();
-        _iManager = GameObject.Find("Manager").GetComponent<UIManager>();
+        _uiManager = GameObject.Find("Manager").GetComponent<UIManager>();
         _Camera = transform.GetChild(0).GetComponent<Camera>();
         rig = GetComponent<Rigidbody>();
         _haveWeapon = null;
@@ -96,11 +96,13 @@ public class BasePlayer : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
+        if (_stop) return;
         rig.AddForce(_playerGravity);
-        if (_InvincibleTime + 3f < Time.time&&_Invincible)
+        if (_InvincibleTime + 3f < Time.time)//無敵時間
         {
             _Invincible = false;
         }
+        _uiManager.DamageFunction(_Invincible);
         if (Input.GetKeyDown(KeyCode.Return))
         {
             GetSetHP = 0;
@@ -130,14 +132,14 @@ public class BasePlayer : MonoBehaviour
                             v = _Weapon.Find(item => item.gameObject.name == "P_SR");
                             //obj = _manager.ObjectInctance(v, transform.position,gameObject);//(武器,場所)
                             _haveWeapon = new SRWeapon(transform.GetChild(1).gameObject);//(particle)
-                            _iManager._weapon = _haveWeapon;
+                            _uiManager._weapon = _haveWeapon;
                             _weaponName.Add(Weapons.SR);
                             break;
                         case "AR":
                             v = _Weapon.Find(item => item.gameObject.name == "P_AR");
                             //obj = _manager.ObjectInctance(v, transform.position, gameObject);
                             _haveWeapon = new ARWeapon(transform.GetChild(1).gameObject);
-                            _iManager._weapon = _haveWeapon;
+                            _uiManager._weapon = _haveWeapon;
                             _weaponName.Add(Weapons.AR);
                             break;
                     }
@@ -153,12 +155,11 @@ public class BasePlayer : MonoBehaviour
 
     public void DamageMove(Vector3 vec)
     {
-        if (!_Invincible)
+        if (_stop) return;//デバッグ用
+        if (!_Invincible)//無敵
         {
-            Vector3 _force = (vec - transform.position) * 10;
-            _force.y = -22;
+            transform.position = transform.position + (transform.position - vec);
             GetSetHP--;
-            rig.AddForce(-_force, ForceMode.Impulse);
             _Invincible = true;
             _InvincibleTime = Time.time;
         }

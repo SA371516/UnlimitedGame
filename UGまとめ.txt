@@ -1,7 +1,5 @@
 UG
 ・カメラに上を向く上限をつける
 ・3Dオブジェクト挿入
-・アニメーション調節
-・ノックバック処理調節
 
 https://unity.moon-bear.com/zombie-slayer/stage1-fog/
