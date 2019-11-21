@@ -9,7 +9,7 @@ public abstract class BaseWeapon
     protected GameManager _manager;
     protected GameObject _particle;
     protected ParticleSystem _bulletParticle;
-    protected particleScr particleScr;
+    protected ParticleScr particleScr;
     protected Ray ray;
     protected RaycastHit hit;
     protected float _distance;
@@ -38,7 +38,7 @@ public abstract class BaseWeapon
     {
         _particle = Resources.Load("Prefabs/Damage") as GameObject;
         _bulletParticle = p.GetComponent<ParticleSystem>();
-        particleScr = p.GetComponent<particleScr>();
+        particleScr = p.GetComponent<ParticleScr>();
         _recustSlider = GameObject.Find("Slider").GetComponent<Slider>();
         _manager = GameObject.Find("Manager").GetComponent<GameManager>();
         Mycamera = GameObject.Find("FirstPersonCamera").GetComponent<Camera>();

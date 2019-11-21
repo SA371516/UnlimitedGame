@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     void Start()      
     {
         _stop = false;
+        _score = 0;
         //=========マウス処理========
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;

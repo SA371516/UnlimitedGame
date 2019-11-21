@@ -8,14 +8,15 @@ public class CameraMove : MonoBehaviour
     Transform verRot;
     Transform horRot;
     Vector3 _gole;
-    float _limit;//ゲームオーバー時
+    float _XAngle;
+    float _Yangle;
     float _move;//ゲームオーバー時
     public float _cameraMove;
     public bool _stop;
     void Start()
     {
         _confug = Confug._confug;
-        verRot = transform.parent;
+        verRot = transform.parent.GetComponent<Transform>();
         horRot = GetComponent<Transform>();
         _cameraMove = _confug.StatusInctance<float>();
         _gole = transform.position + new Vector3(0, 10, 5);
@@ -27,24 +28,22 @@ public class CameraMove : MonoBehaviour
     {
         if (_stop) return;
         _cameraMove = (int)_confug.StatusInctance<float>();
-        float X_Rotation = Input.GetAxis("Mouse X")*_cameraMove;
-        verRot.transform.Rotate(0, X_Rotation, 0);
 
-        float Y_Rotation = Input.GetAxis("Mouse Y")*_cameraMove;
-        _limit += Y_Rotation;
-        ////角度制限
-        if (_limit <= -75)
-        {
-            _limit = -75;
-            return;
-        }
-        if (_limit >= 75)
-        {
-            _limit = 75;
-            return;
-        }
-        verRot.transform.Rotate(0, X_Rotation, 0);
-        horRot.transform.Rotate(-Y_Rotation, 0, 0);
+        //横の回転
+        float Y_Rotation = Input.GetAxis("Mouse X") * _cameraMove;
+        _Yangle += Y_Rotation;
+        var Q = Quaternion.Euler(0, _Yangle, 0);
+        verRot.transform.rotation = Q;
+
+        //縦の角度制限
+        float X_Rotation = Input.GetAxis("Mouse Y") * _cameraMove;
+        _XAngle += X_Rotation;
+        var x = Mathf.Clamp(_XAngle, -75f, 75f);
+        var q = Quaternion.Euler(-x, 0, 0);
+        horRot.localRotation = q;
+
+        if (_XAngle > 360) _XAngle -= 360;
+        else if (_XAngle < -360) _XAngle += 360;
     }
     
     public IEnumerator GameOver(Vector3 vec,float _jumpTime,int S)

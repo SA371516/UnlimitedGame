@@ -60,7 +60,7 @@ public class ResultManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            SceneLoadManager._loadManager.SceneLoadFunction((int)SceneLoadManager.Scenes.Title);
+            SceneLoadManager._loadManager.SceneLoadFunction((int)SceneLoadManager.Scenes.Title,true);
         }
     }
     void TextColorChange()//ここでテキストのフェードイン、アウトをしている

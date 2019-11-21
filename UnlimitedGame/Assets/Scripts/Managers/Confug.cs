@@ -65,7 +65,7 @@ public class Confug : MonoBehaviour
     void Update()
     {
         _menu.SetActive(_confugActive);
-        _mouseMove = _mouseSlider.value;
+        _mouseMove = (int)_mouseSlider.value;
         _sliderValume.text = _mouseMove.ToString();
         if (Input.GetKeyDown(KeyCode.Escape))
         {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletLight : particleScr
+public class BulletLight : ParticleScr
 {
     WFX_LightFlicker _light;
     float _partrcleTime;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class particleScr : MonoBehaviour
+public abstract class ParticleScr : MonoBehaviour
 {
     protected ParticleSystem particleSystem;
     // Start is called before the first frame update
@@ -11,10 +11,6 @@ public class particleScr : MonoBehaviour
         particleSystem = GetComponent<ParticleSystem>();
     }
 
-    public virtual void PlayParticle()
-    {
-    }
-    public virtual void StopParticle()
-    {
-    }
+    public abstract void PlayParticle();
+    public abstract void StopParticle();
 }

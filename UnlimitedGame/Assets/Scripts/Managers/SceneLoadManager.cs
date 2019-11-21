@@ -26,7 +26,7 @@ public  class SceneLoadManager : MonoBehaviour
         Result = 2,
         Exit = 3,
     }
-    public void SceneLoadFunction(int i)
+    public void SceneLoadFunction(int i,bool re=false)
     {
         Scenes scenes = (Scenes)i;
         SceneManager.LoadScene(scenes.ToString());
