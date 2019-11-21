@@ -80,6 +80,7 @@
     <Compile Include="Assets\Scripts\DamageParticle.cs" />
     <Compile Include="Assets\Scripts\Enemy\BaseEnemy.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyStatus.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Tank.cs" />
     <Compile Include="Assets\Scripts\Enemy\Zonbi.cs" />
     <Compile Include="Assets\Scripts\Human.cs" />
     <Compile Include="Assets\Scripts\Managers\Confug.cs" />

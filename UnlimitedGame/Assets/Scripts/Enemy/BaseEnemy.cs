@@ -11,7 +11,7 @@ public class BaseEnemy : MonoBehaviour
         Stop = 0,
         MoveUp = 1,
         MoveDown = 2,
-        Attack = 3,
+        Attack = 3
     }
     protected enum AnimTrigger
     {
@@ -88,8 +88,7 @@ public class BaseEnemy : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        //攻撃アニメーションの真ん中でノックバックさせるため
-        float _animTime = clipInfo[0].clip.length / 2;
+        float _animTime = clipInfo[0].clip.length / 2;        //攻撃アニメーションの真ん中でノックバックさせるため
         float _time = Time.time;
         while (_time + _animTime >= Time.time && P != null)
         {
