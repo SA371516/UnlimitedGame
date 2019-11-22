@@ -4,45 +4,60 @@ using UnityEngine;
 
 public class Tank : BaseEnemy
 {
+    GameObject BulletPos;
+    GameObject _Explosion;
     Transform _target;
     GameObject _head;
     float _attackTime;
-    // Start is called before the first frame update
     protected override void Start()
     {
+        _status = Resources.Load("Tank") as EnemyStatus;
         base.Start();
         _target = GameObject.Find("Player").transform;
         _head = transform.GetChild(0).gameObject;
+        BulletPos = Resources.Load("Prefabs/BulletErea") as GameObject;
+        _Explosion = Resources.Load("Prefabs/Explosion") as GameObject;
     }
 
-    // Update is called once per frame
     protected override void Update()
-    { 
-        _head.transform.LookAt(_target);//砲塔をプレイヤーに向かせる
+    {
+        if (_stop) return;
+        _head.transform.LookAt(_target);
+        _head.transform.Rotate(new Vector3(0, -180, 0));                                                    //砲塔をプレイヤーに向かせる
 
         _attackTime += Time.deltaTime;
-        if (_attackTime > 30f)
+        if (_attackTime > 10f)
         {
             _attackTime = 0f;
-            Shotting();
+            StartCoroutine(Shotting());
         }
 
-        base.Update();//死亡処理
+        base.Update();                                                                                                        //死亡処理
     }
 
-    void Shotting()
-    { 
-        //プレイヤーの半径5メートル以内にランダムで着弾
+    IEnumerator Shotting()
+    {                                                                                                                                   //プレイヤーの半径5メートル以内にランダムで着弾
         float _xPosition = Random.Range(_target.position.x - 5f, _target.position.x + 5f);
         float _zPosition = Random.Range(_target.position.z - 5f, _target.position.z + 5f);
-
-        //着弾まで待つ
-
-        if (_target.position.x == _xPosition && _target.position.z == _zPosition)
+        Vector3 vec = new Vector3(_xPosition, 0, _zPosition);
+        yield return new WaitForFixedUpdate();
+        float time = 0f;
+        GameObject obj = _manager.ObjectInctance(BulletPos, vec,gameObject);          //着弾範囲を表示
+        while (time < 6f)                                                                                                      //着弾まで待つ
         {
-            
+            time += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
         }
+        Destroy(obj);
+        _manager.ObjectInctance(_Explosion,vec);                                                           //爆発エフェクト
 
-
+        int dis = (int)Vector3.Distance(_target.position, vec);                                             //距離を測る
+        if (dis <= 5f&&dis>=0)
+        {
+            int _giveATK = ATK - (ATK / 5 * dis);                                                                    //距離に応じてダメージを変えるため
+            BasePlayer player = _target.gameObject.GetComponent<BasePlayer>();
+            player.DamageMove(vec, _giveATK);
+        }
+        yield return new WaitForFixedUpdate();
     }
 }

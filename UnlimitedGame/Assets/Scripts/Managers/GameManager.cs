@@ -9,11 +9,11 @@ public  enum Weapons
 }
 public class GameManager : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField,Header("武器のリス位置")]
     Transform[] _Wp;
-    [SerializeField]
-    GameObject[] _enemys;//敵の種類
-    [SerializeField]
+    [SerializeField, Header("敵オブジェクト")]
+    List<GameObject> _enemys = new List<GameObject>();
+    [SerializeField,Header("武器オブジェクト")]
     List<GameObject> _weapons = new List<GameObject>();
 
     List<Transform> _lis = new List<Transform>();
@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour
                     v.GetComponent<BaseEnemy>()._stop = _stop;
                 }
             }
+            return;
         }
         else
         {
@@ -92,7 +93,6 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        if (_stop) return;
 
         _leveltime += Time.deltaTime;
         if (_leveltime > _gameTime)
@@ -101,11 +101,10 @@ public class GameManager : MonoBehaviour
             _enemyStatusChange += 2;
         }
         _time += Time.deltaTime;
-        //オブジェクト生成
+                                                                                                                        //オブジェクト生成
         if (_time > _inctanceTime)
         {
-            _weaponControll = _weaponControll.Where(j => j != null).ToList(); //Null以外を挿入
-            //武器生成
+            _weaponControll = _weaponControll.Where(j => j != null).ToList();    //Null以外を挿入
             if(_player._weaponName.Count>0)
             {
                 foreach(var v in _player._weaponName)
@@ -126,17 +125,45 @@ public class GameManager : MonoBehaviour
                     }
                 }
                 _player._weaponName.Clear();
-            }
-            //敵管理
-            _nowEnemy = _nowEnemy.Where(j => j != null).ToList(); //Null以外を挿入
+            }                                                 //敵管理
+            _nowEnemy = _nowEnemy.Where(j => j != null).ToList();                  //Null以外を挿入
+
             int _Enemycount = _nowEnemy.Count;
             if (_Enemycount > 10) return;
 
-            //敵生成
-            _time = 0f;
-            var obj = ObjectInctance(_enemys[0], _lis[Random.Range(0, 4)].position);
-            _nowEnemy.Add(obj);
-            obj.AddComponent<Zonbi>();
+            int _id = Random.Range(0,_enemys.Count);
+
+            if (_nowEnemy.Find(Item=>Item.name=="Tank"))                                                         //戦車は一度に一体しか出現しない
+            {
+                int _tankid = _enemys.IndexOf(_enemys.Find(item => item.name == "Tank"));
+                if (_id != _tankid)
+                {
+                    GameObject obj = ObjectInctance(_enemys[_id], _lis[Random.Range(0, 4)].position);                        //敵生成
+                    _time = 0f;
+                    _nowEnemy.Add(obj);
+                    switch (_id)
+                    {
+                        case 0:
+                            obj.AddComponent<Zonbi>();
+                            break;
+                    }
+                }
+            }
+            else　                                                                                   //普通に出現処理をする
+            {
+                GameObject obj = ObjectInctance(_enemys[_id], _lis[Random.Range(0, 4)].position);                        //敵生成
+                _time = 0f;
+                _nowEnemy.Add(obj);
+                switch (_id)
+                {
+                    case 0:
+                        obj.AddComponent<Zonbi>();
+                        break;
+                    case 1:
+                        obj.AddComponent<Tank>();
+                        break;
+                }
+            }
         }
     }
 
@@ -147,7 +174,7 @@ public class GameManager : MonoBehaviour
         {
             _obj.transform.parent = parent.transform;
             _obj.transform.rotation = Quaternion.identity;
-            Vector3 vec = o.transform.position;
+            //Vector3 vec = o.transform.position;
             //_obj.transform.position += vec;
             //_obj.transform.rotation = parent.transform.rotation;
             //_obj.transform.rotation = Quaternion.Euler(0, -90f,0);

@@ -14,3 +14,10 @@ https://unity.moon-bear.com/zombie-slayer/stage1-fog/
 ・サーバーにアクセスしてデータを保存できるように
 ・プレイできるキャラを増やす
 
+サーバーへデータを保存する際に役立つサイト
+http://edom18.hateblo.jp/entry/2018/01/05/135020
+役立つ用語
+・GetInstance
+・GetRootGameObject
+
+		

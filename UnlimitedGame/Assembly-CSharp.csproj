@@ -76,8 +76,9 @@
     <Compile Include="Assets\Effect\JMO Assets\WarFX\Scripts\WFX_BulletHoleDecal.cs" />
     <Compile Include="Assets\Effect\JMO Assets\WarFX\Scripts\WFX_LightFlicker.cs" />
     <Compile Include="Assets\Effect\JMO Assets\WarFX\Spawn System\CFX_SpawnSystem.cs" />
-    <Compile Include="Assets\Scripts\BulletLight.cs" />
-    <Compile Include="Assets\Scripts\DamageParticle.cs" />
+    <Compile Include="Assets\Scripts\EffectScript\BulletLight.cs" />
+    <Compile Include="Assets\Scripts\EffectScript\OnceParticle.cs" />
+    <Compile Include="Assets\Scripts\EffectScript\particleScr.cs" />
     <Compile Include="Assets\Scripts\Enemy\BaseEnemy.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyStatus.cs" />
     <Compile Include="Assets\Scripts\Enemy\Tank.cs" />
@@ -89,7 +90,6 @@
     <Compile Include="Assets\Scripts\Managers\SceneLoadManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TitleManager.cs" />
     <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
-    <Compile Include="Assets\Scripts\ParticleScr.cs" />
     <Compile Include="Assets\Scripts\Player\BasePlayer.cs" />
     <Compile Include="Assets\Scripts\Player\CameraMove.cs" />
     <Compile Include="Assets\Scripts\WeaponsScript\ARWeapon.cs" />

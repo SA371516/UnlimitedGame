@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Tank
   m_EditorClassIdentifier: 
   Name: Tank
-  HP: 100
+  HP: 50
   Score: 500
-  ATK: 50
+  ATK: 10

@@ -573,6 +573,7 @@ MonoBehaviour:
   - {fileID: 1029198019}
   _enemys:
   - {fileID: 5492290305140409214, guid: f62d0a32e38b1c54cb8e908818fb1f2b, type: 3}
+  - {fileID: 545592663964276019, guid: 327d9101c26db964c8102f2eea550bab, type: 3}
   _weapons:
   - {fileID: 4814306228918628714, guid: 357bfd63064678d47859c34a3de16872, type: 3}
   - {fileID: 450695123232171210, guid: a782a5d59cc3fad4a85ec502bda5b091, type: 3}

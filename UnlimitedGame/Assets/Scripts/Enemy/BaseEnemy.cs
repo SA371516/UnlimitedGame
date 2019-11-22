@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BaseEnemy : MonoBehaviour
 {
-    int ATK = 0;
-
     protected enum MoveStatus
     {
         Stop = 0,
@@ -25,6 +23,7 @@ public class BaseEnemy : MonoBehaviour
         get { return _HP; }
         set { _HP = value; }
     }
+    protected int ATK = 0;
     protected float _Speed;
     protected int _moveFlag;
     protected GameManager _manager;
@@ -33,17 +32,27 @@ public class BaseEnemy : MonoBehaviour
     protected Animator _animator;
 
     public bool _stop;
+    public bool _debug;
 
     protected virtual void Start()
     {
-        _manager = GameObject.Find("Manager").GetComponent<GameManager>();
-        int _addHP = _manager._enemyStatusChange;
-        int _addATK = _manager._enemyStatusChange;
-        GetSetHP += _addHP + _status.HP;
-        ATK = _status.ATK + _addATK;
-        _addScore = _status.Score;
-        gameObject.name = _status.Name;
-        Debug.Log(_HP);
+        if (_debug)
+        {
+            GetSetHP += _status.HP;
+            ATK = _status.ATK;
+            _addScore = _status.Score;
+            gameObject.name = _status.Name;
+        }
+        else
+        {
+            _manager = GameObject.Find("Manager").GetComponent<GameManager>();
+            int _addHP = _manager._enemyStatusChange;
+            int _addATK = _manager._enemyStatusChange;
+            GetSetHP += _addHP + _status.HP;
+            ATK = _status.ATK + _addATK;
+            _addScore = _status.Score;
+            gameObject.name = _status.Name;
+        }
     }
     protected virtual void Update()
     {
