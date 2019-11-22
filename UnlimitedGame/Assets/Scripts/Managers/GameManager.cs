@@ -9,6 +9,11 @@ public  enum Weapons
 }
 public class GameManager : MonoBehaviour
 {
+    public struct AddEnemyStatus
+    {
+        public int AddHP;
+        public int AddATK;
+    }
     [SerializeField,Header("武器のリス位置")]
     Transform[] _Wp;
     [SerializeField, Header("敵オブジェクト")]
@@ -16,28 +21,22 @@ public class GameManager : MonoBehaviour
     [SerializeField,Header("武器オブジェクト")]
     List<GameObject> _weapons = new List<GameObject>();
 
-    List<Transform> _lis = new List<Transform>();
-    List<GameObject> _weaponControll = new List<GameObject>();
-    List<GameObject> _nowEnemy = new List<GameObject>();
+    List<Transform> _lis = new List<Transform>();                               //敵のリス位置
+    List<GameObject> _weaponControll = new List<GameObject>();  //武器の出現状況
+    List<GameObject> _nowEnemy = new List<GameObject>();          //敵の出現状況
     float _time = 0;
-    float _leveltime;
-    float _inctanceTime = 2f;
-    float _gameTime = 10f;
-    public float GetTime
-    {
-        get { return _gameTime; }
-    }
+    float _leveltime;                                                                                   //レベルの管理
+    float _inctanceTime = 2f;                                                                   //リスタイム
+    float _gameTime = 10f;                                                                      //次のレベルまでの
+    public float GetTime  {    get { return _gameTime; }   }
+    bool _stop;
+    int _score;
+    public int GetSetScore  {  get { return _score; } set { _score = value; }  }
     UIManager _uiManager;
     BasePlayer _player;
     CameraMove _camera;
-    bool _stop;
-    int _score;
-    public int GetSetScore
-    {
-        get { return _score; }
-        set { _score = value; }
-    }
-    public int _enemyStatusChange;
+
+    public AddEnemyStatus status = new AddEnemyStatus();
 
     void Start()      
     {
@@ -50,23 +49,27 @@ public class GameManager : MonoBehaviour
         _player = GameObject.Find("Player").GetComponent<BasePlayer>();
         _camera = _player.transform.GetChild(0).GetComponent<CameraMove>();
         _uiManager = GetComponent<UIManager>();
-        foreach(Transform v in transform.GetChild(0).transform)
+        foreach(Transform v in transform.GetChild(0).transform)                                 //敵のリス位置初期化
         {
             _lis.Add(v);
         }
-        for(int i=0;i<_weapons.Count*2;++i)
+        for(int i=0;i<_weapons.Count*2;++i)                                                                 //武器の出現（二つずつ）
         {
-            Vector3 vec = new Vector3(Random.Range(_Wp[0].position.x, _Wp[1].position.x), 1, Random.Range(_Wp[0].position.z, _Wp[1].position.z));
-            int _weaponsLength = i % _weapons.Count;
-            _weaponControll.Add(ObjectInctance(_weapons[_weaponsLength], vec));
+            Vector3 vec =
+                new Vector3(
+                    Random.Range(_Wp[0].position.x, _Wp[1].position.x),
+                    1,
+                    Random.Range(_Wp[0].position.z, _Wp[1].position.z)
+                        );
+            int _weaponsID = i % _weapons.Count;                                                    //二つ出すため
+            _weaponControll.Add(ObjectInctance(_weapons[_weaponsID], vec));
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         _stop = Confug._confug.StatusInctance<bool>();
-        if (_stop)//操作中はゲームを止める
+        if (_stop)                                                                                                  //操作中はゲームを止める
         {
             Stop(_stop);
             Cursor.lockState = CursorLockMode.None;
@@ -95,11 +98,13 @@ public class GameManager : MonoBehaviour
         }
 
         _leveltime += Time.deltaTime;
-        if (_leveltime > _gameTime)
+        if (_leveltime > _gameTime)                                                                //レベル処理
         {
             _gameTime += 30;
-            _enemyStatusChange += 2;
+            status.AddHP += 2;
+            status.AddATK += 1;
         }
+
         _time += Time.deltaTime;
                                                                                                                         //オブジェクト生成
         if (_time > _inctanceTime)
@@ -132,8 +137,8 @@ public class GameManager : MonoBehaviour
             if (_Enemycount > 10) return;
 
             int _id = Random.Range(0,_enemys.Count);
-
-            if (_nowEnemy.Find(Item=>Item.name=="Tank"))                                                         //戦車は一度に一体しか出現しない
+            //=============戦車は一度に一体しか出現しない================//
+            if (_nowEnemy.Find(Item=>Item.name=="Tank"))
             {
                 int _tankid = _enemys.IndexOf(_enemys.Find(item => item.name == "Tank"));
                 if (_id != _tankid)
@@ -149,7 +154,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
-            else　                                                                                   //普通に出現処理をする
+            else//======普通に出現処理をする========//
             {
                 GameObject obj = ObjectInctance(_enemys[_id], _lis[Random.Range(0, 4)].position);                        //敵生成
                 _time = 0f;
@@ -166,7 +171,16 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
+    void Stop(bool B)
+    {
+        Cursor.visible = B;
+        Cursor.lockState = CursorLockMode.None;
+        _stop = B;
+        _player._stop = B;
+        _camera._stop = B;
+        _uiManager._stop = B;
+    }
+    //================オブジェクト生成関数(マネージャがすべてのインスタンスを行うため)=================
     public GameObject ObjectInctance(GameObject o,Vector3 pos,GameObject parent=null)
     {
         GameObject _obj = Instantiate(o, pos, Quaternion.identity);
@@ -188,15 +202,5 @@ public class GameManager : MonoBehaviour
         Stop(_stop);
         Cursor.lockState = CursorLockMode.None;
         StartCoroutine(_camera.GameOver(vec,3f, _score));
-    }
-
-    void Stop(bool B)
-    {
-        Cursor.visible = B;
-        Cursor.lockState = CursorLockMode.None;
-        _stop = B;
-        _player._stop = B;
-        _camera._stop = B;
-        _uiManager._stop = B;
     }
 }

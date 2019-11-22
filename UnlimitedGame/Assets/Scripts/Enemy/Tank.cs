@@ -4,16 +4,14 @@ using UnityEngine;
 
 public class Tank : BaseEnemy
 {
-    GameObject BulletPos;
-    GameObject _Explosion;
-    Transform _target;
-    GameObject _head;
+    GameObject BulletPos;   //爆発エリア
+    GameObject _Explosion;  //爆発パーティクル
+    GameObject _head;       //砲塔
     float _attackTime;
     protected override void Start()
     {
         _status = Resources.Load("Tank") as EnemyStatus;
         base.Start();
-        _target = GameObject.Find("Player").transform;
         _head = transform.GetChild(0).gameObject;
         BulletPos = Resources.Load("Prefabs/BulletErea") as GameObject;
         _Explosion = Resources.Load("Prefabs/Explosion") as GameObject;
@@ -59,5 +57,11 @@ public class Tank : BaseEnemy
             player.DamageMove(vec, _giveATK);
         }
         yield return new WaitForFixedUpdate();
+    }
+
+    protected override void DeadFunction()
+    {
+        _manager.ObjectInctance(_Explosion, gameObject.transform.position);                //爆発エフェクト
+        base.DeadFunction();
     }
 }

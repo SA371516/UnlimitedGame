@@ -58,6 +58,7 @@ public class CameraMove : MonoBehaviour
         float time = 0f;
         while (time <= _jumpTime)
         {
+            transform.LookAt(vec);
             time += Time.deltaTime;
             yield return new WaitForFixedUpdate();
         }

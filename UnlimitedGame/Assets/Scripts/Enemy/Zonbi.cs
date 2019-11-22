@@ -8,7 +8,6 @@ using UnityEngine.AI;
 public class Zonbi : BaseEnemy
 {
     NavMeshAgent _nav;
-    Transform _target;
     protected override void Start()
     {
         _status = Resources.Load("Zonbi") as EnemyStatus;
@@ -18,7 +17,6 @@ public class Zonbi : BaseEnemy
         _moveFlag = (int)MoveStatus.MoveUp;
         StartCoroutine(AnimatorController(AnimTrigger.Walk));
         _nav = GetComponent<NavMeshAgent>();
-        _target = GameObject.Find("Player").transform;
     }
 
     protected override void Update()
@@ -69,5 +67,11 @@ public class Zonbi : BaseEnemy
     protected override void OnTriggerExit(Collider other)
     {
         base.OnTriggerExit(other);
+    }
+
+    protected override void DeadFunction()
+    {
+        StartCoroutine(AnimatorController(AnimTrigger.Dead));
+        base.DeadFunction();
     }
 }

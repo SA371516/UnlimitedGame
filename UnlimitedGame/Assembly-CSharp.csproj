@@ -76,6 +76,7 @@
     <Compile Include="Assets\Effect\JMO Assets\WarFX\Scripts\WFX_BulletHoleDecal.cs" />
     <Compile Include="Assets\Effect\JMO Assets\WarFX\Scripts\WFX_LightFlicker.cs" />
     <Compile Include="Assets\Effect\JMO Assets\WarFX\Spawn System\CFX_SpawnSystem.cs" />
+    <Compile Include="Assets\Scripts\DesErea.cs" />
     <Compile Include="Assets\Scripts\EffectScript\BulletLight.cs" />
     <Compile Include="Assets\Scripts\EffectScript\OnceParticle.cs" />
     <Compile Include="Assets\Scripts\EffectScript\particleScr.cs" />

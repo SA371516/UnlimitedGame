@@ -13,7 +13,7 @@ public class BaseEnemy : MonoBehaviour
     }
     protected enum AnimTrigger
     {
-        Walk, Attack, Stop
+        Walk, Attack, Stop,Dead
     }
 
     protected Rigidbody rig;
@@ -30,6 +30,8 @@ public class BaseEnemy : MonoBehaviour
     protected int _addScore;
     protected EnemyStatus _status;
     protected Animator _animator;
+    protected Transform _target;
+
 
     public bool _stop;
     public bool _debug;
@@ -38,6 +40,7 @@ public class BaseEnemy : MonoBehaviour
     {
         if (_debug)
         {
+            _target = GameObject.Find("Player").transform;
             GetSetHP += _status.HP;
             ATK = _status.ATK;
             _addScore = _status.Score;
@@ -45,9 +48,10 @@ public class BaseEnemy : MonoBehaviour
         }
         else
         {
+            _target = GameObject.Find("Player").transform;
             _manager = GameObject.Find("Manager").GetComponent<GameManager>();
-            int _addHP = _manager._enemyStatusChange;
-            int _addATK = _manager._enemyStatusChange;
+            int _addHP = _manager.status.AddHP;
+            int _addATK = _manager.status.AddHP;
             GetSetHP += _addHP + _status.HP;
             ATK = _status.ATK + _addATK;
             _addScore = _status.Score;
@@ -56,16 +60,13 @@ public class BaseEnemy : MonoBehaviour
     }
     protected virtual void Update()
     {
-        if (_HP <= 0)
-        {
-            Destroy(gameObject);
-            _manager.GetSetScore += _addScore;
-        }
+        if (_HP >= 0) return;
+        DeadFunction();
     }
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name == "HitBox")
+        if (other.gameObject.name == "HitBox"&&gameObject.name!="Tank")
         {
             var v = other.gameObject.transform.parent.GetComponent<BasePlayer>();
             _moveFlag = (int)MoveStatus.Attack;
@@ -74,7 +75,7 @@ public class BaseEnemy : MonoBehaviour
     }
     protected virtual void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.name == "HitBox")
+        if (other.gameObject.name == "HitBox"&& gameObject.name != "Tank")
         {
             _stop = false;
             _moveFlag = (int)MoveStatus.MoveUp;
@@ -104,5 +105,11 @@ public class BaseEnemy : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
         if (P != null) P.DamageMove(transform.position,ATK);
+    }
+
+    protected virtual void DeadFunction()
+    {
+        Destroy(gameObject);
+        _manager.GetSetScore += _addScore;
     }
 }
