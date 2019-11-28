@@ -15,7 +15,7 @@ public  class SceneLoadManager : MonoBehaviour
         {
             _loadManager = this;
             DontDestroyOnLoad(gameObject);
-            LoadDate(out saveScript);
+            //LoadDate();
         }
         else
         {
@@ -52,9 +52,9 @@ public  class SceneLoadManager : MonoBehaviour
         writer.Close();
     }
 
-    void LoadDate(out SaveScript s)
+    public void LoadDate(SaveScript saves)
     {
-        s = Resources.Load("Save") as SaveScript;
+        saveScript = saves;
 
         string dataStr = "";
         StreamReader reader;
@@ -66,8 +66,8 @@ public  class SceneLoadManager : MonoBehaviour
         SaveScript script = new SaveScript();
         script = JsonUtility.FromJson<SaveScript>(dataStr);
 
-        s.Point = script.Point;
-        s.SRLevel = script.SRLevel;
-        s.ARLevel = script.ARLevel;
+        saveScript.Point = script.Point;
+        saveScript.SRLevel = script.SRLevel;
+        saveScript.ARLevel = script.ARLevel;
     }
 }

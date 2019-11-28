@@ -4,11 +4,11 @@ using UnityEngine;
 
 public abstract class ParticleScr : MonoBehaviour
 {
-    protected ParticleSystem particleSystem;
+    protected ParticleSystem _particleSystem;
     // Start is called before the first frame update
     protected virtual void Start()
     {
-        particleSystem = GetComponent<ParticleSystem>();
+        _particleSystem = GetComponent<ParticleSystem>();
     }
 
     public abstract void PlayParticle();

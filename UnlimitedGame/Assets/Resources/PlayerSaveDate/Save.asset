@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 331961e98841fcf4f9fecf09bd19c6f6, type: 3}
   m_Name: Save
   m_EditorClassIdentifier: 
+  UserName: SA
+  PassWord: syunta
   Point: 0
   SRLevel: 0
   ARLevel: 0

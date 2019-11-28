@@ -10,12 +10,12 @@ public class OnceParticle : ParticleScr
     {
         base.Start();
         PlayParticle();
-        Destroy(gameObject, particleSystem.duration);
+        Destroy(gameObject, _particleSystem.duration);
     }
 
     public override void PlayParticle()
     {
-        particleSystem.Play();
+        _particleSystem.Play();
     }
 
     public override void StopParticle()

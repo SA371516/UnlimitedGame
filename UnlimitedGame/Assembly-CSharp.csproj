@@ -87,6 +87,7 @@
     <Compile Include="Assets\Scripts\Human.cs" />
     <Compile Include="Assets\Scripts\Managers\Confug.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\PassManager.cs" />
     <Compile Include="Assets\Scripts\Managers\ResultManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SceneLoadManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TitleManager.cs" />
