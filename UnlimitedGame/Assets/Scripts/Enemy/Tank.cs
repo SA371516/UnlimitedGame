@@ -34,14 +34,14 @@ public class Tank : BaseEnemy
     }
 
     IEnumerator Shotting()
-    {                                                                                                                                   //プレイヤーの半径5メートル以内にランダムで着弾
+    {                                                                                              //プレイヤーの半径5メートル以内にランダムで着弾
         float _xPosition = Random.Range(_target.position.x - 5f, _target.position.x + 5f);
         float _zPosition = Random.Range(_target.position.z - 5f, _target.position.z + 5f);
         Vector3 vec = new Vector3(_xPosition, 0, _zPosition);
         yield return new WaitForFixedUpdate();
         float time = 0f;
         GameObject obj = _manager.ObjectInctance(BulletPos, vec,gameObject);          //着弾範囲を表示
-        while (time < 6f)                                                                                                      //着弾まで待つ
+        while (time < Random.Range(4f,6f))                                           //着弾まで待つ//時間があれば、ランダムを片方多くする
         {
             time += Time.deltaTime;
             yield return new WaitForFixedUpdate();
@@ -59,7 +59,7 @@ public class Tank : BaseEnemy
         yield return new WaitForFixedUpdate();
     }
 
-    protected override void DeadFunction()
+    protected override void DeadFunction()//死亡処理    
     {
         _manager.ObjectInctance(_Explosion, gameObject.transform.position);                //爆発エフェクト
         base.DeadFunction();

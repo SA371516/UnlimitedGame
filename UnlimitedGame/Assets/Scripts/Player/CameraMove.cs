@@ -19,7 +19,7 @@ public class CameraMove : MonoBehaviour
         verRot = transform.parent.GetComponent<Transform>();
         horRot = GetComponent<Transform>();
         _cameraMove = _confug.StatusInctance<float>();
-        _gole = transform.position + new Vector3(0, 10, 5);
+        _gole = transform.position + new Vector3(0, 10, 10);
         _move = 0f;
     }
 
@@ -46,8 +46,16 @@ public class CameraMove : MonoBehaviour
         else if (_XAngle < -360) _XAngle += 360;
     }
     
-    public IEnumerator GameOver(Vector3 vec,float _jumpTime,int S)
+    //カメラを一定時間見下ろした形にするため//何度もこの関数に来させる//プレイヤーの位置にカメラを向けるため
+    public IEnumerator GameOver(Vector3 vec,float _jumpTime,int S,bool once)
     {
+        _stop = true;
+        if (once)//一度しか来ないように
+        {
+            Debug.Log("スコア追加");
+            SceneLoadManager._loadManager.saveScript.Point += S;
+            SceneLoadManager._loadManager._getPoint = S;
+        }
         while (_move <= 1f)
         {
             transform.LookAt(vec);
@@ -62,7 +70,6 @@ public class CameraMove : MonoBehaviour
             time += Time.deltaTime;
             yield return new WaitForFixedUpdate();
         }
-        SceneLoadManager._loadManager._score = S;
         SceneLoadManager._loadManager.SceneLoadFunction((int)SceneLoadManager.Scenes.Result);
     }
 }

@@ -11,6 +11,8 @@ public class ResultManager : MonoBehaviour
     Sprite[] _wordBack;
     [SerializeField]
     Image _wordBackImg;
+    int Score;
+
     string[] _wordStr = new string[]
     {
         "もう少し頑張りましょう",
@@ -23,11 +25,13 @@ public class ResultManager : MonoBehaviour
     float _changeTransparency = 1f;
     float _changeTime;
     float _interval = 1f;
+    float _textDisTime;
 
     // Start is called before the first frame update
     void Start()
     {
-        _resultScore = SceneLoadManager._loadManager._score;
+        _textDisTime = Time.time;
+        _resultScore = SceneLoadManager._loadManager._getPoint;
         //_resultScore = 150000;
         Color c = new Color(1, 0, 0, 0);
         _enterText.color = c;
@@ -37,7 +41,7 @@ public class ResultManager : MonoBehaviour
     void Update()
     {
         _scoreText.text = "Score:" + _resultScore.ToString();
-        //1========スコアに応じて表示するものを変更する======
+        //========スコアに応じて表示するものを変更する======
         if (_resultScore >= 0 && _resultScore <= 1000)
         {
             _wordBackImg.sprite = _wordBack[0];
@@ -54,13 +58,13 @@ public class ResultManager : MonoBehaviour
             _wordText.text = _wordStr[2];
         }
         //==============================================
-        if (5.0f < Time.time)
+        if (Time.time > _textDisTime + 5.0f)//5秒間待つ
         {
             TextColorChange();
-        }
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            SceneLoadManager._loadManager.SceneLoadFunction((int)SceneLoadManager.Scenes.Title,true);
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SceneLoadManager._loadManager.SceneLoadFunction((int)SceneLoadManager.Scenes.Title);
+            }
         }
     }
     void TextColorChange()//ここでテキストのフェードイン、アウトをしている

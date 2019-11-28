@@ -88,7 +88,7 @@ public class BaseEnemy : MonoBehaviour
         AnimatorClipInfo[] clipInfo = _animator.GetCurrentAnimatorClipInfo(0);
         // 再生中のクリップ名
         string clipName = "名前：" + clipInfo[0].clip.name;
-        Debug.Log(clipName);
+        //Debug.Log(clipName);
         //====================
 
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);

@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
         //武器アイコン処理
         if (_weapon == null)
         {
-            _weaponName.text = "NotWeapon";
+            _weaponName.text = "NoWeapon";
             _bulletNum.text = "0";
             return;
         }

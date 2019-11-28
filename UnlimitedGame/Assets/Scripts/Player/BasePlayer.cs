@@ -22,6 +22,7 @@ public class BasePlayer : MonoBehaviour
     protected RaycastHit hit;
     protected Rigidbody rig;
     protected float speed;
+    protected bool _once;
 
     [SerializeField]//プレイヤーに知らせるため
     Text _GetLog;
@@ -61,11 +62,18 @@ public class BasePlayer : MonoBehaviour
         _haveWeapon = null;
         _stop = false;
         _Invincible = false;
+        _once = true;
     }
 
     protected virtual void Update()
     {
         if (_stop) return;//ゲームを止める
+        else if (_hp<=0) {
+            _manager.GameOver(transform.position, _once);
+            if (_once)
+                _once = false;
+            return;
+        }
         _keyCodes = _confug.StatusInctance<KeyCode[]>();
         float h =0;
         float v=0;
@@ -88,10 +96,6 @@ public class BasePlayer : MonoBehaviour
             _haveWeapon.Update();
         }
         ItemGet();
-
-        if (_hp > 0) return;
-        Debug.Log("GameOver");
-        _manager.GameOver(transform.position);
     }
 
     protected virtual void FixedUpdate()

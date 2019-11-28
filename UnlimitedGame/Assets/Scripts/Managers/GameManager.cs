@@ -196,11 +196,11 @@ public class GameManager : MonoBehaviour
         return _obj;
     }
     // プレイヤーのHPが0になった時呼ばれる
-    public void GameOver(Vector3 vec)
+    public void GameOver(Vector3 vec,bool once)
     {
         _stop = true;
         Stop(_stop);
         Cursor.lockState = CursorLockMode.None;
-        StartCoroutine(_camera.GameOver(vec,3f, _score));
+        StartCoroutine(_camera.GameOver(vec,3f, _score,once));
     }
 }
