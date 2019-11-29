@@ -7,20 +7,26 @@ using System.IO;
 public  class SceneLoadManager : MonoBehaviour
 {
     public static SceneLoadManager _loadManager;
-    public SaveScript saveScript;
+    public PlayerStatus saveScript;
+    public int _playerDateID;
     public int _getPoint;
     private void Awake()
     {
         if (_loadManager == null)
         {
             _loadManager = this;
-            DontDestroyOnLoad(gameObject);
             //LoadDate();
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        LoadDate();
     }
     public enum Scenes
     {
@@ -34,40 +40,94 @@ public  class SceneLoadManager : MonoBehaviour
         Scenes scenes = (Scenes)i;
         if (scenes == Scenes.Exit)
         {
-            SaveDate(saveScript);
+            if(!SaveDate(saveScript))
+            {
+                Debug.Log("セーブ失敗");
+                return;
+            }
             Application.Quit();
         }
         else 
             SceneManager.LoadScene(scenes.ToString());
     }
 
-    void SaveDate(SaveScript s)
+    public bool SaveDate(PlayerStatus s)
     {
-        StreamWriter writer;
-
         string jsonstr = JsonUtility.ToJson(s);
-        writer = new StreamWriter(Application.dataPath+ "/savedata.json", false);
-        writer.Write(jsonstr);
-        writer.Flush();
-        writer.Close();
+        bool _chack = true;
+        try
+        {
+            using (StreamWriter streamWriter = new StreamWriter(/*Application.dataPath*/Application.persistentDataPath + "/savedata.json"))
+            {
+                streamWriter.Write(jsonstr);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+        }
+        catch (System.Exception e)
+        {
+            _chack = false;
+        }
+        return _chack;
+    }
+    //データがないとき
+    void CreateData()
+    {
+        PlayerStatus s = new PlayerStatus();
+        string jsonstr = JsonUtility.ToJson(s);
+        try
+        {
+            using (StreamWriter streamWriter = new StreamWriter(/*Application.dataPath*/Application.persistentDataPath + "/savedata.json"))
+            {
+                streamWriter.Write(jsonstr);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.Log(e);
+        }
     }
 
-    public void LoadDate(SaveScript saves)
+    public void LoadDate()
     {
-        saveScript = saves;
+        FileInfo fileInfo = new FileInfo(/*Application.dataPath*/Application.persistentDataPath + "/savedata.json");
+        if (!fileInfo.Exists)
+        {
+            Debug.Log("ファイルが存在しておりません");
+            CreateData();
+        }
 
         string dataStr = "";
-        StreamReader reader;
+        PlayerStatus script = new PlayerStatus();
+        try
+        {
+            using (StreamReader streamReader = new StreamReader(/*Application.dataPath*/Application.persistentDataPath + "/savedata.json"))
+            {
+                dataStr = streamReader.ReadToEnd();
+                streamReader.Close();
+                script = JsonUtility.FromJson<PlayerStatus>(dataStr);
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.Log("ERROR:" + e.ToString());
+            return;
+        }
 
-        reader = new StreamReader(Application.dataPath + "/savedata.json");
-        dataStr = reader.ReadToEnd();
-        reader.Close();
-
-        SaveScript script = new SaveScript();
-        script = JsonUtility.FromJson<SaveScript>(dataStr);
-
-        saveScript.Point = script.Point;
-        saveScript.SRLevel = script.SRLevel;
-        saveScript.ARLevel = script.ARLevel;
+        saveScript = script;//ここでデータを挿入
     }
 }
+
+public class PlayerStatus
+{
+    public List<PlayerStatus> status = new List<PlayerStatus>();//保存用
+
+    public string UserName;
+    public string PassWord;
+    public int Point;
+    public int SRLevel;
+    public int ARLevel;
+}
+

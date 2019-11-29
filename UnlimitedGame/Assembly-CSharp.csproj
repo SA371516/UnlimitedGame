@@ -105,6 +105,7 @@
     <None Include="Assets\Effect\JMO Assets\WarFX\Shaders\WFX_S AlphaBlend NoSoftParticles.shader" />
     <None Include="Assets\Effect\JMO Assets\WarFX\_Effects\MuzzleFlashes\!MuzzleFlash Differences.txt" />
     <None Include="Assets\Effect\JMO Assets\WarFX\Shaders\WFX_S Smoke Scroll.shader" />
+    <None Include="Assets\savedata.txt" />
     <None Include="Assets\Effect\JMO Assets\WarFX\Shaders\WFX_S Add Scroll.shader" />
     <None Include="Assets\Effect\JMO Assets\WarFX\!WarFX Readme.txt" />
     <None Include="Assets\Effect\JMO Assets\WarFX\Shaders\WFX_S Particle Add A8.shader" />
