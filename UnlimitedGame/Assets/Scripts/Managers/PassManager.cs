@@ -17,14 +17,12 @@ public class PassManager : MonoBehaviour
 
     bool[] _inputchack = new bool[5]; //入力チェック
 
-    static Encoding sjisEnc = Encoding.Default;// Encoding.GetEncoding("Shift_JIS");//全角、半角チェック
-
     void Start()
     {
         _createPanel.SetActive(false);
         _passPanel.SetActive(true);
     }
-
+    //===========ログインボタン入力時============
     public void AlreadyUser()
     {
         bool _chack = false;
@@ -57,7 +55,7 @@ public class PassManager : MonoBehaviour
         }
 
     }
-
+    //=========ボタン入力時に====================
     public void CreateUser()
     {
         if (!_inputchack[2] || !_inputchack[3]||!_inputchack[4])
@@ -79,6 +77,7 @@ public class PassManager : MonoBehaviour
         SceneLoadManager._loadManager.saveData.status.Add(instance);
         SceneLoadManager._loadManager.SceneLoadFunction((int)SceneLoadManager.Scenes.Title);
     }
+    //=============削除ボタン====================
     public void DeleteWord()
     {
         if (_passPanel.activeSelf)
@@ -93,6 +92,7 @@ public class PassManager : MonoBehaviour
             _chackPassField.text = "";
         }
     }
+    //=======ログインと新規作成を切り替える======
     public void PanelChange()
     {
         if (_passPanel.activeSelf)
@@ -106,8 +106,7 @@ public class PassManager : MonoBehaviour
             _createPanel.SetActive(false);
         }
     }
-
-    //Fieldに書かれたときに呼ばれる
+    //=======Fieldに書かれたときに呼ばれる=======
     public void FieldChack(int i)
     {
         switch (i)
@@ -129,30 +128,31 @@ public class PassManager : MonoBehaviour
                 break;
         }
     }
+    //=======入力文字を判定させる処理============
     void InputChack(string str,int i)
     {
-        if (!IsStringByte(str))
+        if (!IsStringByte(str)||str=="")
         {
+            if (str == "")
+            {
+                _message.text = "";
+            }
             _message.text = "半角文字を入力してください";
             _inputchack[i] = false;
         }
         else
-            _message.text = "";
-        //入力判定
-        if (str == "")
         {
-            _inputchack[i] = false;
-        }
-        else
+            _message.text = "";
             _inputchack[i] = true;
+        }
 
     }
-
-    //半角のみで構成されているか
+    //==============バイト判定===================
     bool IsStringByte(string str)
     {
-        int c = str.Length;
-        int num = sjisEnc.GetByteCount(str);
+        int c = str.Length;                                     //文字数
+        Encoding sjisEnc = Encoding.GetEncoding("Shift_JIS");
+        int num = sjisEnc.GetByteCount(str);                    //バイト数
 
         int byte2 = num - c;
         return (c == 0);

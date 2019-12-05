@@ -156,10 +156,7 @@ public  class SceneLoadManager : MonoBehaviour
             Debug.Log("セーブ失敗");
         }
     }
-
-
 }
-
 //保存する情報
 [System.Serializable]   //<--メモリに書き込むことが出来る
 public class PlayerStatus
