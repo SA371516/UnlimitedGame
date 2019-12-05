@@ -17,7 +17,7 @@ public class PassManager : MonoBehaviour
 
     bool[] _inputchack = new bool[5]; //入力チェック
 
-    static Encoding sjisEnc = Encoding.GetEncoding("Shift_JIS");//全角、半角チェック
+    static Encoding sjisEnc = Encoding.Default;// Encoding.GetEncoding("Shift_JIS");//全角、半角チェック
 
     void Start()
     {
@@ -34,14 +34,14 @@ public class PassManager : MonoBehaviour
             return;
         }
         int id = 0;
-        foreach(var v in SceneLoadManager._loadManager.saveScript.status)
+        foreach(var v in SceneLoadManager._loadManager.saveData.status)
         {
             if (_userNameField.text == v.UserName)
             {
                 _chack = true;
                 if (_passField.text == v.PassWord)//一致したら
                 {
-                    SceneLoadManager._loadManager._playerDateID = id;
+                    SceneLoadManager._loadManager._playerStatus = v;
                     SceneLoadManager._loadManager.SceneLoadFunction((int)SceneLoadManager.Scenes.Title);
                 }
             }
@@ -75,15 +75,8 @@ public class PassManager : MonoBehaviour
         instance.UserName = _createUserField.text;
         instance.PassWord = _createPassField.text;
 
-        //var directory = "Assets"+"/"+"Resources" + "/" + "PlayerSaveDate";           //オブジェクトの場所
-        //var path = directory + "/" + "Save" + saves.Length + ".asset";  //ファイル名
-        //var uniquePath = AssetDatabase.GenerateUniqueAssetPath(path);   //unityに必要なパスに変更する//「AssetDatabase」は拡張エディタなので別のを探す
-
-        //AssetDatabase.CreateAsset(instance, uniquePath);//作成
-        //AssetDatabase.SaveAssets();
-
-        SceneLoadManager._loadManager.saveScript.status.Add(instance);
-        SceneLoadManager._loadManager._playerDateID = SceneLoadManager._loadManager.saveScript.status.Count - 1;
+        SceneLoadManager._loadManager._playerStatus = instance;
+        SceneLoadManager._loadManager.saveData.status.Add(instance);
         SceneLoadManager._loadManager.SceneLoadFunction((int)SceneLoadManager.Scenes.Title);
     }
     public void DeleteWord()
@@ -138,13 +131,13 @@ public class PassManager : MonoBehaviour
     }
     void InputChack(string str,int i)
     {
-        int num = sjisEnc.GetByteCount(str);
-        if (num == str.Length * 2 && str != "")//日本語は確定時に来る
+        if (!IsStringByte(str))
         {
             _message.text = "半角文字を入力してください";
-            return;
+            _inputchack[i] = false;
         }
-        _message.text = "";
+        else
+            _message.text = "";
         //入力判定
         if (str == "")
         {
@@ -153,5 +146,15 @@ public class PassManager : MonoBehaviour
         else
             _inputchack[i] = true;
 
+    }
+
+    //半角のみで構成されているか
+    bool IsStringByte(string str)
+    {
+        int c = str.Length;
+        int num = sjisEnc.GetByteCount(str);
+
+        int byte2 = num - c;
+        return (c == 0);
     }
 }

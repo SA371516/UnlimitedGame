@@ -32,6 +32,8 @@ public class ResultManager : MonoBehaviour
     {
         _textDisTime = Time.time;
         _resultScore = SceneLoadManager._loadManager._getPoint;
+        SceneLoadManager._loadManager._playerStatus.Point += _resultScore;
+        SceneLoadManager._loadManager.DataUpdate();
         //_resultScore = 150000;
         Color c = new Color(1, 0, 0, 0);
         _enterText.color = c;
@@ -58,7 +60,7 @@ public class ResultManager : MonoBehaviour
             _wordText.text = _wordStr[2];
         }
         //==============================================
-        if (Time.time > _textDisTime + 5.0f)//5秒間待つ
+        if (Time.time > _textDisTime + 3.0f)//5秒間待つ
         {
             TextColorChange();
             if (Input.GetKeyDown(KeyCode.Return))

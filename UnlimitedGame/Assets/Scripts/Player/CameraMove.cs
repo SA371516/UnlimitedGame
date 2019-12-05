@@ -53,7 +53,7 @@ public class CameraMove : MonoBehaviour
         if (once)//一度しか来ないように
         {
             Debug.Log("スコア追加");
-            SceneLoadManager._loadManager.saveScript.Point += S;
+            SceneLoadManager._loadManager._playerStatus.Point += S;
             SceneLoadManager._loadManager._getPoint = S;
         }
         while (_move <= 1f)

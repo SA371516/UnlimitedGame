@@ -13,6 +13,9 @@ https://unity.moon-bear.com/zombie-slayer/stage1-fog/
 
 サーバーへデータを保存する際に役立つサイト
 http://edom18.hateblo.jp/entry/2018/01/05/135020
+文字制限などに使えるサイト
+https://qiita.com/baba_s/items/c8d25456c0ee4ef52f94
+https://teratail.com/questions/4157
 役立つ用語
 ・GetInstance
 ・GetRootGameObject

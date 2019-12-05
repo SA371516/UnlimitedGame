@@ -6,16 +6,25 @@ using System.IO;
 
 public  class SceneLoadManager : MonoBehaviour
 {
+    public enum Scenes
+    {
+        Game=0,
+        Title=1,
+        Result = 2,
+        Exit = 3,
+    }
     public static SceneLoadManager _loadManager;
-    public PlayerStatus saveScript;
-    public int _playerDateID;
+    public SaveData saveData;               //Jsonに書かれているものをすべて入れる
+    public PlayerStatus _playerStatus;      //ゲームに必要な情報のみ保存する
     public int _getPoint;
+
+    string savePath;                        //エディタとアプリケーションで分けるため
+    const string saveFileName = "savedata.json";
     private void Awake()
     {
         if (_loadManager == null)
         {
             _loadManager = this;
-            //LoadDate();
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -26,21 +35,21 @@ public  class SceneLoadManager : MonoBehaviour
 
     private void Start()
     {
+        //エディタ状態だと
+#if UNITY_EDITOR
+        savePath = "";
+#else
+        savePath = Application.persistentDataPath + "/";
+#endif
         LoadDate();
     }
-    public enum Scenes
-    {
-        Game=0,
-        Title=1,
-        Result = 2,
-        Exit = 3,
-    }
+    //===================シーン移動===================
     public void SceneLoadFunction(int i)
     {
         Scenes scenes = (Scenes)i;
         if (scenes == Scenes.Exit)
         {
-            if(!SaveDate(saveScript))
+            if (!SaveDate(saveData))
             {
                 Debug.Log("セーブ失敗");
                 return;
@@ -50,14 +59,15 @@ public  class SceneLoadManager : MonoBehaviour
         else 
             SceneManager.LoadScene(scenes.ToString());
     }
-
-    public bool SaveDate(PlayerStatus s)
+    //===================保存関数===================
+    bool SaveDate(SaveData s)
     {
         string jsonstr = JsonUtility.ToJson(s);
+        Debug.Log("SEVE;" + jsonstr);
         bool _chack = true;
         try
         {
-            using (StreamWriter streamWriter = new StreamWriter(/*Application.dataPath*/Application.persistentDataPath + "/savedata.json"))
+            using (StreamWriter streamWriter = new StreamWriter(savePath + saveFileName))
             {
                 streamWriter.Write(jsonstr);
                 streamWriter.Flush();
@@ -66,18 +76,48 @@ public  class SceneLoadManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
+            Debug.Log(e);
             _chack = false;
         }
         return _chack;
     }
-    //データがないとき
+    //==============読み込み関数====================
+    void LoadDate()
+    {
+        FileInfo fileInfo = new FileInfo(savePath + saveFileName);
+        if (!fileInfo.Exists)
+        {
+            Debug.Log("ファイルが存在しておりません");
+            CreateData();
+        }
+
+        string dataStr = "";
+        SaveData script = new SaveData();
+        try
+        {
+            using (StreamReader streamReader = new StreamReader(savePath + saveFileName))
+            {
+                dataStr = streamReader.ReadToEnd();
+                streamReader.Close();
+                script = JsonUtility.FromJson<SaveData>(dataStr);
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.Log("ERROR:" + e.ToString());
+            return;
+        }
+
+        saveData = script;//ここでデータを挿入
+    }
+    //===============データがないとき================
     void CreateData()
     {
         PlayerStatus s = new PlayerStatus();
         string jsonstr = JsonUtility.ToJson(s);
         try
         {
-            using (StreamWriter streamWriter = new StreamWriter(/*Application.dataPath*/Application.persistentDataPath + "/savedata.json"))
+            using (StreamWriter streamWriter = new StreamWriter(savePath + saveFileName))
             {
                 streamWriter.Write(jsonstr);
                 streamWriter.Flush();
@@ -89,45 +129,50 @@ public  class SceneLoadManager : MonoBehaviour
             Debug.Log(e);
         }
     }
-
-    public void LoadDate()
+    //==============データを更新するため===============
+    public void DataUpdate()
     {
-        FileInfo fileInfo = new FileInfo(/*Application.dataPath*/Application.persistentDataPath + "/savedata.json");
-        if (!fileInfo.Exists)
+        int i = 0;
+        foreach(var v in saveData.status)
         {
-            Debug.Log("ファイルが存在しておりません");
-            CreateData();
-        }
-
-        string dataStr = "";
-        PlayerStatus script = new PlayerStatus();
-        try
-        {
-            using (StreamReader streamReader = new StreamReader(/*Application.dataPath*/Application.persistentDataPath + "/savedata.json"))
+            if (v.UserName == _playerStatus.UserName)
             {
-                dataStr = streamReader.ReadToEnd();
-                streamReader.Close();
-                script = JsonUtility.FromJson<PlayerStatus>(dataStr);
+                saveData.status[i] = _playerStatus;
             }
-        }
-        catch (System.Exception e)
-        {
-            Debug.Log("ERROR:" + e.ToString());
-            return;
+            i++;
         }
 
-        saveScript = script;//ここでデータを挿入
+        //データを保存する
+        if (!SaveDate(saveData))
+        {
+            Debug.Log("セーブ失敗");
+        }
     }
+    //=============ゲーム終了時に呼ばれる=============
+    private void OnApplicationQuit()
+    {
+        if (!SaveDate(saveData))
+        {
+            Debug.Log("セーブ失敗");
+        }
+    }
+
+
 }
 
+//保存する情報
+[System.Serializable]   //<--メモリに書き込むことが出来る
 public class PlayerStatus
 {
-    public List<PlayerStatus> status = new List<PlayerStatus>();//保存用
-
     public string UserName;
     public string PassWord;
     public int Point;
     public int SRLevel;
     public int ARLevel;
+}
+//実際に保存するクラス
+public class SaveData
+{
+    public List<PlayerStatus> status = new List<PlayerStatus>();//ユーザー情報の保存用
 }
 
