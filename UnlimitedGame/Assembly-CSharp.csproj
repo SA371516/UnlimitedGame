@@ -88,8 +88,10 @@
     <Compile Include="Assets\Scripts\Managers\Confug.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Managers\PassManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\PlayerData.cs" />
     <Compile Include="Assets\Scripts\Managers\ResultManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SceneLoadManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\TeamingManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TitleManager.cs" />
     <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
     <Compile Include="Assets\Scripts\Player\BasePlayer.cs" />
@@ -105,7 +107,6 @@
     <None Include="Assets\Effect\JMO Assets\WarFX\Shaders\WFX_S AlphaBlend NoSoftParticles.shader" />
     <None Include="Assets\Effect\JMO Assets\WarFX\_Effects\MuzzleFlashes\!MuzzleFlash Differences.txt" />
     <None Include="Assets\Effect\JMO Assets\WarFX\Shaders\WFX_S Smoke Scroll.shader" />
-    <None Include="Assets\savedata.txt" />
     <None Include="Assets\Effect\JMO Assets\WarFX\Shaders\WFX_S Add Scroll.shader" />
     <None Include="Assets\Effect\JMO Assets\WarFX\!WarFX Readme.txt" />
     <None Include="Assets\Effect\JMO Assets\WarFX\Shaders\WFX_S Particle Add A8.shader" />
@@ -350,6 +351,9 @@
     <Reference Include="UnityEngine.XRModule">
       <HintPath>D:/Unity2019_2_01/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
     </Reference>
+    <Reference Include="i18n.cjk">
+      <HintPath>C:/Users/student/Desktop/Unlimited/UnlimitedGame/Assets/i18n.cjk.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>C:/Users/student/Desktop/Unlimited/UnlimitedGame/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
@@ -358,9 +362,6 @@
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>C:/Users/student/Desktop/Unlimited/UnlimitedGame/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
-    </Reference>
-    <Reference Include="i18n.cjk">
-      <HintPath>C:/Users/student/Desktop/Unlimited/UnlimitedGame/Assets/i18n.cjk.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>D:/Unity2019_2_01/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

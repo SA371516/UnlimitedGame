@@ -1,4 +1,6 @@
 ﻿using System.Text;
+using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -32,14 +34,14 @@ public class PassManager : MonoBehaviour
             return;
         }
         int id = 0;
-        foreach(var v in SceneLoadManager._loadManager.saveData.status)
+        foreach(var v in PlayerData._Data.saveData.status)
         {
             if (_userNameField.text == v.UserName)
             {
                 _chack = true;
                 if (_passField.text == v.PassWord)//一致したら
                 {
-                    SceneLoadManager._loadManager._playerStatus = v;
+                    PlayerData._Data._playerStatus = v;
                     SceneLoadManager._loadManager.SceneLoadFunction((int)SceneLoadManager.Scenes.Title);
                 }
             }
@@ -73,8 +75,23 @@ public class PassManager : MonoBehaviour
         instance.UserName = _createUserField.text;
         instance.PassWord = _createPassField.text;
 
-        SceneLoadManager._loadManager._playerStatus = instance;
-        SceneLoadManager._loadManager.saveData.status.Add(instance);
+        for (int i = 0; i < Enum.GetValues(typeof(Weapons)).Length; ++i)        //武器の数回す
+        {
+            var e = (Weapons)Enum.ToObject(typeof(Weapons), i);     //現在の要素を取得
+            var str = Enum.GetName(typeof(Weapons), e);             //現在の要素の名前を取得
+            var c = new WeaponStatus();
+            c.WeaponName = str;                                     //武器を登録
+            if (c.WeaponName == "SR")
+            {
+                c.OpenWeapon = true;
+            }
+            else
+                c.OpenWeapon = false;
+            instance.weaponStatuses.Add(c);
+        }
+
+        PlayerData._Data._playerStatus = instance;
+        PlayerData._Data.saveData.status.Add(instance);
         SceneLoadManager._loadManager.SceneLoadFunction((int)SceneLoadManager.Scenes.Title);
     }
     //=============削除ボタン====================
@@ -155,6 +172,6 @@ public class PassManager : MonoBehaviour
         int num = sjisEnc.GetByteCount(str);                    //バイト数
 
         int byte2 = num - c;
-        return (c == 0);
+        return (byte2 == 0);
     }
 }

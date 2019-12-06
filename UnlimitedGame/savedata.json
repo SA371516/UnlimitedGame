@@ -1,1 +1,1 @@
-{"status":[{"UserName":"cc","PassWord":"cc","Point":0,"SRLevel":0,"ARLevel":0}]}
+{"status":[{"UserName":"cc","PassWord":"cc","Point":0,"weaponStatuses":[]},{"UserName":"aa","PassWord":"aa","Point":0,"weaponStatuses":[{"BulletName":"SR","BulletNum":0,"WeaponATK":0,"WeaponAccuracy":0,"OpenWeapon":true},{"BulletName":"AR","BulletNum":0,"WeaponATK":0,"WeaponAccuracy":0,"OpenWeapon":false}]}]}

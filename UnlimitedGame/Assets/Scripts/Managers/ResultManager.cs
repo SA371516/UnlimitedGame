@@ -31,9 +31,9 @@ public class ResultManager : MonoBehaviour
     void Start()
     {
         _textDisTime = Time.time;
-        _resultScore = SceneLoadManager._loadManager._getPoint;
-        SceneLoadManager._loadManager._playerStatus.Point += _resultScore;
-        SceneLoadManager._loadManager.DataUpdate();
+        _resultScore = PlayerData._Data._getPoint;
+        PlayerData._Data._playerStatus.Point += _resultScore;
+        PlayerData._Data.DataUpdate();
         //_resultScore = 150000;
         Color c = new Color(1, 0, 0, 0);
         _enterText.color = c;

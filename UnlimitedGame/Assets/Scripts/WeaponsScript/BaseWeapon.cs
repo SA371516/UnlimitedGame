@@ -6,20 +6,20 @@ using UnityEngine.UI;
 public abstract class BaseWeapon 
 {
     Camera Mycamera;
-    protected GameManager _manager;
-    protected GameObject _particle;
-    protected ParticleSystem _bulletParticle;
-    protected ParticleScr particleScr;
     protected Ray ray;
-    protected RaycastHit hit;
-    protected float _distance;
-    protected float _recustTime;
+    protected RaycastHit hit;       
+    protected GameManager _manager;
+    protected GameObject _particle; //血しぶき
+    protected ParticleScr particleScr;
+    protected float _distance;      //射程距離
+    protected float _recustTime;    //次弾発射
     protected Slider _recustSlider;
-    protected int _Damage;
-    protected int _bulletNum;
-    protected int _accuracy;
+    protected int _Damage;          //攻撃力
+    protected int _bulletNum;       //弾数
+    protected int _accuracy;        //精度
     protected string _weaponName;
     protected Vector3 _bulletPos;
+    protected WeaponStatus _status;
 
     public string GetSetWeaponName
     {
@@ -37,7 +37,6 @@ public abstract class BaseWeapon
     protected BaseWeapon(GameObject p)
     {
         _particle = Resources.Load("Prefabs/Damage") as GameObject;
-        _bulletParticle = p.GetComponent<ParticleSystem>();
         particleScr = p.GetComponent<ParticleScr>();
         _recustSlider = GameObject.Find("Slider").GetComponent<Slider>();
         _manager = GameObject.Find("Manager").GetComponent<GameManager>();

@@ -8,12 +8,15 @@ public class TitleManager : MonoBehaviour
     [SerializeField]
     Text UserNameDis;
 
-    string name;
+    string _name;
 
     private void Start()
     {
-        name = SceneLoadManager._loadManager._playerStatus.UserName;
-        UserNameDis.text = name + "さん、お疲れ様です！！";
+        if (PlayerData._Data._playerStatus != null)
+        {
+            _name = PlayerData._Data._playerStatus.UserName;
+            UserNameDis.text = _name + "さん、お疲れ様です！！";
+        }
     }
     public void OnClick(int i)
     {

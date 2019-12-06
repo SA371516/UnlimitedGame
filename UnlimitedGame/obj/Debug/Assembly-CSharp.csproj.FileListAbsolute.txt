@@ -838,3 +838,4 @@ C:\Users\student\Desktop\UG\UnlimitedGame\Temp\bin\Debug\UnityEngine.VFXModule.x
 C:\Users\student\Desktop\UG\UnlimitedGame\Temp\bin\Debug\UnityEngine.VRModule.xml
 C:\Users\student\Desktop\UG\UnlimitedGame\Temp\bin\Debug\UnityEngine.VehiclesModule.xml
 C:\Users\student\Desktop\UG\UnlimitedGame\Temp\bin\Debug\UnityEngine.WindModule.xml
+C:\Users\student\Desktop\Unlimited\UnlimitedGame\Temp\bin\Debug\i18n.cjk.dll
