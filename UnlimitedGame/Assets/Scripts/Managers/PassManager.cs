@@ -71,25 +71,7 @@ public class PassManager : MonoBehaviour
             return;
         }
 
-        var instance = new PlayerStatus();
-        instance.UserName = _createUserField.text;
-        instance.PassWord = _createPassField.text;
-
-        for (int i = 0; i < Enum.GetValues(typeof(Weapons)).Length; ++i)        //武器の数回す
-        {
-            var e = (Weapons)Enum.ToObject(typeof(Weapons), i);     //現在の要素を取得
-            var str = Enum.GetName(typeof(Weapons), e);             //現在の要素の名前を取得
-            var c = new WeaponStatus();
-            c.WeaponName = str;                                     //武器を登録
-            if (c.WeaponName == "SR")
-            {
-                c.OpenWeapon = true;
-            }
-            else
-                c.OpenWeapon = false;
-            instance.weaponStatuses.Add(c);
-        }
-
+        var instance = PlayerData._Data.CreateUserData(_createUserField.text, _createPassField.text);
         PlayerData._Data._playerStatus = instance;
         PlayerData._Data.saveData.status.Add(instance);
         SceneLoadManager._loadManager.SceneLoadFunction((int)SceneLoadManager.Scenes.Title);

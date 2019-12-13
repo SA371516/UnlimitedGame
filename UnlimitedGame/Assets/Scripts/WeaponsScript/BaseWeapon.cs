@@ -14,9 +14,9 @@ public abstract class BaseWeapon
     protected float _distance;      //射程距離
     protected float _recustTime;    //次弾発射
     protected Slider _recustSlider;
-    protected int _Damage;          //攻撃力
+    protected float _Damage;          //攻撃力
     protected int _bulletNum;       //弾数
-    protected int _accuracy;        //精度
+    protected float _accuracy;        //精度
     protected string _weaponName;
     protected Vector3 _bulletPos;
     protected WeaponStatus _status;
@@ -42,7 +42,7 @@ public abstract class BaseWeapon
         _manager = GameObject.Find("Manager").GetComponent<GameManager>();
         Mycamera = GameObject.Find("FirstPersonCamera").GetComponent<Camera>();
     }
-    protected Ray GetBulletItem(int a)
+    protected Ray GetBulletItem(float a)
     {
         Vector2 vec = Random.insideUnitCircle * a;
         _bulletPos = new Vector3(Screen.width / 2 + vec.x, Screen.height / 2 + vec.y, 10);

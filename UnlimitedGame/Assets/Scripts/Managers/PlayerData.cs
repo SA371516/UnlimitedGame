@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -10,6 +11,7 @@ public class PlayerData : MonoBehaviour
     public SaveData saveData;               //Jsonに書かれているものをすべて入れる
     public PlayerStatus _playerStatus;      //ゲームに必要な情報のみ保存する
     public int _getPoint;
+    public bool _debug;
 
     string savePath;                        //エディタとアプリケーションで分けるため
     const string saveFileName = "savedata.json";
@@ -38,6 +40,28 @@ public class PlayerData : MonoBehaviour
         LoadDate();
     }
 
+    //========ユーザーを作成する関数================
+    //デバッグにも使用するためここに書く
+    public PlayerStatus CreateUserData(string n=null,string p=null)
+    {
+        var instance = new PlayerStatus();
+        instance.UserName = n;
+        instance.PassWord = p;
+
+        foreach (var v in Enum.GetValues(typeof(Weapons)))        //武器の数回す
+        {
+            var s = new WeaponStatus();
+            s.WeaponName = v.ToString();             //現在の要素の名前を取得//武器を登録
+            if (s.WeaponName == "SR")
+            {
+                s.OpenWeapon = true;
+            }
+            else
+                s.OpenWeapon = false;
+            instance.weaponStatuses.Add(s);
+        }
+        return instance;
+    }
     //===================保存関数===================
     bool SaveDate(SaveData s)
     {
@@ -120,7 +144,6 @@ public class PlayerData : MonoBehaviour
             }
             i++;
         }
-
         //データを保存する
         if (!SaveDate(saveData))
         {
@@ -130,15 +153,18 @@ public class PlayerData : MonoBehaviour
     //=============ゲーム終了時に呼ばれる=============
     private void OnApplicationQuit()
     {
-        if (!SaveDate(saveData))
+        if (!_debug)
         {
-            Debug.Log("セーブ失敗");
+            if (!SaveDate(saveData))
+            {
+                Debug.Log("セーブ失敗");
+            }
         }
     }
 }
 
 //保存する情報
-[System.Serializable]   //<--メモリに書き込むことが出来る
+[Serializable]   //<--メモリに書き込むことが出来る
 public class PlayerStatus
 {
     public string UserName;
@@ -146,16 +172,16 @@ public class PlayerStatus
     public int Point;
     public List<WeaponStatus> weaponStatuses = new List<WeaponStatus>();
 }
-[System.Serializable]   //<--メモリに書き込むことが出来る
+[Serializable]   //<--メモリに書き込むことが出来る
 public class WeaponStatus
 {
     public string WeaponName;
-    public int BulletNum;
-    public int WeaponATK;
-    public int WeaponAccuracy;
+    public int BulletNum = 0;
+    public float WeaponATK = 1;
+    public float WeaponAccuracy = 1;
+    public int ExceedingLevel = 1;      //現在のレベル
     public int Levelcount;          //レベル10ごとに限界突破しなくてはならない
-    public bool Exceeding_limit;    
-    public bool OpenWeapon;
+    public bool OpenWeapon;         //武器が解放されているか
 }
 //実際に保存するクラス
 public class SaveData

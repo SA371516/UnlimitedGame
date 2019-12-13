@@ -17,8 +17,8 @@ public class BaseEnemy : MonoBehaviour
     }
 
     protected Rigidbody rig;
-    protected int _HP;
-    public int GetSetHP
+    protected float _HP;
+    public float GetSetHP
     {
         get { return _HP; }
         set { _HP = value; }

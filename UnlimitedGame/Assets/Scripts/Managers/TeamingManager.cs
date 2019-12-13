@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,7 +8,7 @@ using UnityEngine.UI;
 public class TeamingManager : MonoBehaviour
 {
     [SerializeField]
-    Text _weaponName,_myPoint;
+    Text _weaponName, _myPoint, _weaponLevel;
     [SerializeField]
     Text[] _addValume;
     [SerializeField]
@@ -16,25 +17,31 @@ public class TeamingManager : MonoBehaviour
     EventSystem eventSystem;
 
     List<WeaponStatus> weaponStatuses = new List<WeaponStatus>();   //すべての武器のステータスが入っている
-    int id;
+    int id;                                                         //反映させるときに必要//findは代入時のみ可能なため
     WeaponStatus _changeStatus;                                     //変えるステータスを入れる
     int _Point;
     int _LevelCount;
     bool _Exceeding_limited;
+    //=========表示させるための変数============
     int _addBulletNum;
-    int _addATK;
-    int _addAccuracy;
+    float _addATK;
+    float _addAccuracy;
     int _addLimit;
+
 
     void Start()
     {
+        if (PlayerData._Data._debug)
+        {
+            var v = PlayerData._Data.CreateUserData();
+            PlayerData._Data._playerStatus = v;
+        }
         _Point = PlayerData._Data._playerStatus.Point;
         weaponStatuses = PlayerData._Data._playerStatus.weaponStatuses;
         //===========最初はSR画面を表示させる==============
         _changeStatus = weaponStatuses.Find(Item => Item.WeaponName == "SR");
         id = weaponStatuses.FindIndex(Item => Item == _changeStatus);
         _LevelCount=_changeStatus.Levelcount;
-        _Exceeding_limited = _changeStatus.Exceeding_limit;
         //===========加える変数を初期化====================
         ValumeReset();
         //=================================================
@@ -44,6 +51,7 @@ public class TeamingManager : MonoBehaviour
     {
         //=================表示の部分==================
         _myPoint.text ="自分のポイント:"+ _Point.ToString();
+        _weaponLevel.text = "武器のレベル:" + _LevelCount.ToString();
         _addValume[0].text = _addBulletNum.ToString();
         _addValume[1].text = _addATK.ToString();
         _addValume[2].text = _addAccuracy.ToString();
@@ -53,18 +61,16 @@ public class TeamingManager : MonoBehaviour
     //================加える変数のリセット=============
     void ValumeReset()
     {
-        _Point = 0;
-        _addBulletNum = 0;
-        _addATK = 0;
-        _addAccuracy = 0;
-        _addLimit = 0;
+        _Point = PlayerData._Data._playerStatus.Point;
+        _addBulletNum = _changeStatus.BulletNum;
+        _addATK = _changeStatus.WeaponATK;
+        _addAccuracy = _changeStatus.WeaponAccuracy;
+        _addLimit = _changeStatus.ExceedingLevel;
     }
-
     #region ボタン入力時の処理
     //============OKボタンを入力時=====================
     public void ReflectValume()
     {
-        _changeStatus.Exceeding_limit = _Exceeding_limited;
         _changeStatus.Levelcount = _LevelCount;
         weaponStatuses[id] = _changeStatus;
         PlayerData._Data._playerStatus.Point = _Point;
@@ -95,60 +101,61 @@ public class TeamingManager : MonoBehaviour
         var v = eventSystem.currentSelectedGameObject.gameObject;       //クリックされたものを取得
         switch (i)
         {
-            case 0:
-                if (_LevelCount % 10 == 0 && _Exceeding_limited) return;
+            case 0://弾は10発ずつ増えていく
+                if (_LevelCount == _addLimit * 10) return;  //レベル10ごとに達した時
                 if (v.name == "Add")
                 {
-                    float f=_addBulletNum * 1.5f;
-                    _addBulletNum = (int)f;
-                    _changeStatus.BulletNum += _addBulletNum;
+                    _addBulletNum += 10;
+                    _changeStatus.BulletNum = _addBulletNum;
                     _LevelCount++;
                 }
-                else if (v.name == "Reduce" && _addBulletNum <= 0)
+                else if (v.name == "Reduce" && _addBulletNum > 0)
                 {
-                    _changeStatus.BulletNum -= _addBulletNum;
-                    float f = _addBulletNum / 1.5f;
-                    _addBulletNum = (int)f;
+                    _addBulletNum -= 10;
+                    _changeStatus.BulletNum = _addBulletNum;
                     _LevelCount--;
                 }
                 break;
-            case 1:
-                if (_LevelCount % 10 == 0 && _Exceeding_limited) return;
+            case 1://攻撃力が1.2倍になっていく
+                if (_LevelCount == _addLimit * 10) return;//レベル10ごとに達した時
                 if (v.name == "Add")
                 {
-
+                    _addATK =  _addATK * 1.2f;//何も強化していないと「0」なため
+                    _changeStatus.WeaponATK += _addATK;
+                    _LevelCount++;
                 }
-                else if (v.name == "Reduce" && _addATK <= 0)
+                else if (v.name == "Reduce" && _addATK > 1)
                 {
-
+                    _changeStatus.WeaponATK -= _addATK;
+                    _addATK= _addATK / 1.2f;
+                    _LevelCount--;
                 }
                 break;
-            case 2:
-                if (_LevelCount % 10 == 0 && _Exceeding_limited) return;
+            case 2://精度は1.5倍にする
+                if (_LevelCount == _addLimit * 10) return;//レベル10ごとに達した時
                 if (v.name == "Add")
                 {
-
+                    _addAccuracy = _addAccuracy * 1.5f;
+                    _changeStatus.WeaponAccuracy += _addAccuracy;
+                    _LevelCount++;
                 }
-                else if (v.name == "Reduce" && _addAccuracy <= 0)
+                else if (v.name == "Reduce" && _addAccuracy > 1)
                 {
-
+                    _changeStatus.WeaponAccuracy -= _addAccuracy;
+                    _addAccuracy =  _addAccuracy / 1.5f;
+                    _LevelCount--;
                 }
                 break;
-            case 3:
-                if (v.name == "Add")
+            case 3://上限解放の部分は特殊なので注意！！//一度したら戻せない
+                if (v.name == "Add"&& _LevelCount == _addLimit * 10)
                 {
-
-                }
-                else if (v.name == "Reduce" && _addLimit <= 0)
-                {
-
+                    _addLimit++;
+                    _changeStatus.ExceedingLevel += _addLimit;
+                    _LevelCount++;
                 }
                 break;
         }
-        if (_LevelCount%10==0)//10レベルごとに達した時
-        {
-            _Exceeding_limited = true;
-        }
+        if (_LevelCount == _addLimit * 10) ;
     }
     //=================================================
     #endregion
