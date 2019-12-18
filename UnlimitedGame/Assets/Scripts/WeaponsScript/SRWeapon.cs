@@ -8,14 +8,18 @@ public class SRWeapon : BaseWeapon
     float _nowTime;
     public SRWeapon(GameObject p):base(p)
     {
-        _accuracy = 5;
-        _Damage = 5;
-        _weaponName = "SR";
-        _bulletNum = 10;
+        //================武器の初期化==================
         _recustTime = 2f;
         _nowTime = 5f;
         _distance = 40f;
         _recustSlider.maxValue = _recustTime;
+        //===============武器のステータス反映===========
+        _status = PlayerData._Data._playerStatus.weaponStatuses.Find(Item => Item.WeaponName == "AR");
+        _accuracy = _status.WeaponAccuracy;
+        _Damage = _status.WeaponATK;
+        _weaponName = _status.WeaponName;
+        _bulletNum = _status.BulletNum;
+        //==============================================
 
     }
     public override void Update()

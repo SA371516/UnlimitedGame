@@ -197,7 +197,7 @@ MonoBehaviour:
   - {fileID: 1728130811}
   - {fileID: 1047891244}
   - {fileID: 938206498}
-  _nextValume:
+  nextValume:
   - {fileID: 383188555}
   - {fileID: 1267063988}
   - {fileID: 1460732439}
@@ -2389,7 +2389,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000022940956}
+  m_AnchoredPosition: {x: 0, y: 0.000025166}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &972059436

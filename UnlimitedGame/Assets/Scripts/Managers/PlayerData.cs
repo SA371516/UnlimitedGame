@@ -41,7 +41,7 @@ public class PlayerData : MonoBehaviour
     }
 
     //========ユーザーを作成する関数================
-    //デバッグにも使用するためここに書く
+    //デバッグにも使用するためここに書き、publicにする
     public PlayerStatus CreateUserData(string n=null,string p=null)
     {
         var instance = new PlayerStatus();
@@ -51,7 +51,22 @@ public class PlayerData : MonoBehaviour
         foreach (var v in Enum.GetValues(typeof(Weapons)))        //武器の数回す
         {
             var s = new WeaponStatus();
-            s.WeaponName = v.ToString();             //現在の要素の名前を取得//武器を登録
+            //=====================武器の初期化=====================
+            s.WeaponName = v.ToString();
+            switch (v)
+            {
+                case Weapons.SR:
+                    s.WeaponAccuracy = 5f;
+                    s.WeaponATK = 5;
+                    s.BulletNum = 10;
+                    break;
+                case Weapons.AR:
+                    s.BulletNum = 50;
+                    s.WeaponATK = 1f;
+                    s.WeaponAccuracy = 70f;
+                    break;
+            }
+            //==================選択画面時に必要=====================
             if (s.WeaponName == "SR")
             {
                 s.OpenWeapon = true;
@@ -116,8 +131,10 @@ public class PlayerData : MonoBehaviour
     //===============データがないとき================
     void CreateData()
     {
+        SaveData data = new SaveData();
         PlayerStatus s = new PlayerStatus();
-        string jsonstr = JsonUtility.ToJson(s);
+        data.status.Add(s);
+        string jsonstr = JsonUtility.ToJson(data);
         try
         {
             using (StreamWriter streamWriter = new StreamWriter(savePath + saveFileName))

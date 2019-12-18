@@ -9,20 +9,16 @@ public class ARWeapon : BaseWeapon
     public ARWeapon(GameObject p):base(p)
     {
         //=========基本ステータス=========
-        _accuracy = 70;
-        _weaponName = "AR";
-        _bulletNum = 50;
         _recustTime = 0.05f;
         _nowTime = 0f;
         _distance = 15f;
-        _Damage = 1;
         _recustSlider.maxValue = _recustTime;
-        //====レベルに応じて変更する======
+        //====武器ステータスを反映======
         _status = PlayerData._Data._playerStatus.weaponStatuses.Find(Item => Item.WeaponName == "AR");
         _accuracy += _status.WeaponAccuracy;
         _Damage += _status.WeaponATK;
         _bulletNum += _status.BulletNum;
-        
+        //=================================
     }
     public override void Update()
     {
