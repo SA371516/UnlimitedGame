@@ -14,7 +14,7 @@ public class SRWeapon : BaseWeapon
         _distance = 40f;
         _recustSlider.maxValue = _recustTime;
         //===============武器のステータス反映===========
-        _status = PlayerData._Data._playerStatus.weaponStatuses.Find(Item => Item.WeaponName == "AR");
+        _status = PlayerData._Data._playerStatus.weaponStatuses.Find(Item => Item.WeaponName == "SR");
         _accuracy = _status.WeaponAccuracy;
         _Damage = _status.WeaponATK;
         _weaponName = _status.WeaponName;

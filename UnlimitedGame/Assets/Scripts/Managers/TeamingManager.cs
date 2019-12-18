@@ -49,6 +49,7 @@ public class TeamingManager : MonoBehaviour
     {
         string str;
         //=================表示の部分==================
+        _weaponName.text = _changeStatus.WeaponName;
         _myPoint.text ="自分のポイント:"+ _Point.ToString();
         _weaponLevel.text = "武器のレベル:" + _LevelCount.ToString();
         _addValume[0].text = _addBulletNum.ToString();
@@ -178,5 +179,9 @@ public class TeamingManager : MonoBehaviour
         if (_LevelCount == _addLimit * 10) ;
     }
     //=================================================
+    public void SceneMove(int i)
+    {
+        SceneLoadManager._loadManager.SceneLoadFunction(i);
+    }
     #endregion
 }

@@ -123,18 +123,34 @@ public class Confug : MonoBehaviour
     public T StatusInctance<T>()
     {
         T returnvalume = default;
-        if (typeof(T) == typeof(float))
+        //新しく//型を判定してくれない
+        switch (returnvalume)
         {
-            returnvalume = (T)(object)_mouseMove;
+            case float f:
+                returnvalume = (T)(object)_mouseMove;
+                break;
+            case KeyCode[] code:
+                returnvalume = (T)(object)_code;
+                break;
+            case bool b:
+                returnvalume = (T)(object)_confugActive;
+                break;
+            default:
+                break;
         }
-        if (typeof(T) == typeof(KeyCode[]))
-        {
-            returnvalume=(T)(object) _code;
-        }
-        if (typeof(T) == typeof(bool))
-        {
-            returnvalume = (T)(object)_confugActive;
-        }
+        //以前
+        //if (typeof(T) == typeof(float))
+        //{
+        //    returnvalume = (T)(object)_mouseMove;
+        //}
+        //if (typeof(T) == typeof(KeyCode[]))
+        //{
+        //    returnvalume = (T)(object)_code;
+        //}
+        //if (typeof(T) == typeof(bool))
+        //{
+        //    returnvalume = (T)(object)_confugActive;
+        //}
         return returnvalume;
 
     }

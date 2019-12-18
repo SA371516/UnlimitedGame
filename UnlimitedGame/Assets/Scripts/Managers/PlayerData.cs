@@ -9,7 +9,7 @@ public class PlayerData : MonoBehaviour
     public static PlayerData _Data;
 
     public SaveData saveData;               //Jsonに書かれているものをすべて入れる
-    public PlayerStatus _playerStatus;      //ゲームに必要な情報のみ保存する
+    public PlayerStatus _playerStatus;      //遊んでいるプレイヤーの情報のみ保存する
     public int _getPoint;
     public bool _debug;
 
@@ -28,10 +28,9 @@ public class PlayerData : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    // Start is called before the first frame update
     void Start()
     {
-        //エディタ状態だと//保存場所を指定している
+        //↓エディタ状態だと//保存場所を指定している
 #if UNITY_EDITOR
         savePath = "";
 #else
@@ -150,8 +149,16 @@ public class PlayerData : MonoBehaviour
         }
     }
     //==============データを更新するため===============
-    public void DataUpdate()
+    public void DataUpdate<T>(T item)
     {
+        //===================渡された値を反映==============
+        switch (item)
+        {
+            case int j://ポイントの変動
+                _playerStatus.Point = j;
+                break;
+        }
+        //====================データ更新==================
         int i = 0;
         foreach (var v in saveData.status)
         {
@@ -161,7 +168,7 @@ public class PlayerData : MonoBehaviour
             }
             i++;
         }
-        //データを保存する
+        //===================データを保存する===============
         if (!SaveDate(saveData))
         {
             Debug.Log("セーブ失敗");
