@@ -3,13 +3,16 @@ UG
 ・SE挿入
 ・フィールドの天気のエフェクト実装
 https://unity.moon-bear.com/zombie-slayer/stage1-fog/
-・編成画面を実装（武器の攻撃力、命中度、射程距離）
+・編成画面を実装（武器の攻撃力、命中度、射程距離,上限解放
+
 
 もし可能なら
 ・武器を増やす
 ・ローグライク要素orRPG要素
 ・サーバーにアクセスしてデータを保存できるように
 ・プレイできるキャラを増やす
+・操作キャラのステータスも変更できるようにする
+・マネージャーをすべて継承させる
 
 サーバーへデータを保存する際に役立つサイト
 http://edom18.hateblo.jp/entry/2018/01/05/135020
@@ -19,5 +22,6 @@ https://teratail.com/questions/4157
 役立つ用語
 ・GetInstance
 ・GetRootGameObject
+・Destroy(GetComponent())
 
 		

@@ -16,7 +16,7 @@ public class TeamingManager : MonoBehaviour
 
     List<WeaponStatus> weaponStatuses = new List<WeaponStatus>();   //すべての武器のステータスが入っている
     int id;                                                         //反映させるときに必要//findは代入時のみ可能なため
-    WeaponStatus _changeStatus;                                     //変えるステータスを入れる
+    WeaponStatus _changeStatus,_oldStatus;                                     //変えるステータスを入れる//変更する前のステータス保存
     int _Point;
     int _LevelCount;
     int[] _next = new int[4];
@@ -35,14 +35,16 @@ public class TeamingManager : MonoBehaviour
             var v = PlayerData._Data.CreateUserData();
             PlayerData._Data._playerStatus = v;
         }
-        weaponStatuses = PlayerData._Data._playerStatus.weaponStatuses;
+        this.weaponStatuses = PlayerData._Data._playerStatus.weaponStatuses;
         //===========最初はSR画面を表示させる==============
         _changeStatus = weaponStatuses.Find(Item => Item.WeaponName == "SR");
+        _oldStatus = _changeStatus;
         id = weaponStatuses.FindIndex(Item => Item == _changeStatus);
         _LevelCount=_changeStatus.Levelcount;
         //===========加える変数を初期化====================
         ValumeReset();
         //=================================================
+        _Point = 10000;
     }
 
     void Update()
@@ -51,7 +53,7 @@ public class TeamingManager : MonoBehaviour
         //=================表示の部分==================
         _weaponName.text = _changeStatus.WeaponName;
         _myPoint.text ="自分のポイント:"+ _Point.ToString();
-        _weaponLevel.text = "武器のレベル:" + _LevelCount.ToString();
+        _weaponLevel.text = "武器のレベル:" + _addLimit.ToString();
         _addValume[0].text = _addBulletNum.ToString();
         str = String.Format("{0:#.##}", _addATK);
         _addValume[1].text = str;
@@ -65,16 +67,17 @@ public class TeamingManager : MonoBehaviour
         nextValume[3].text = "Next:" + _next[3];
         //=============================================
     }
+    #region ボタン入力時の処理
     //================加える変数のリセット=============
-    void ValumeReset()
+    public void ValumeReset()
     {
         _Point = PlayerData._Data._playerStatus.Point;
+        _changeStatus = weaponStatuses.Find(item => item.WeaponName == _changeStatus.WeaponName);
         _addBulletNum = _changeStatus.BulletNum;
         _addATK = _changeStatus.WeaponATK;
         _addAccuracy = _changeStatus.WeaponAccuracy;
         _addLimit = _changeStatus.ExceedingLevel;
     }
-    #region ボタン入力時の処理
     //============OKボタンを入力時=====================
     public void ReflectValume()
     {
@@ -82,6 +85,7 @@ public class TeamingManager : MonoBehaviour
         weaponStatuses[id] = _changeStatus;
         PlayerData._Data._playerStatus.Point = _Point;
         PlayerData._Data._playerStatus.weaponStatuses = this.weaponStatuses;
+        _oldStatus = weaponStatuses.Find(Item => Item.WeaponName == _changeStatus.WeaponName);
     }
     //===========変更する武器を変える時================
     public void WeaponChangeButton(int i)
@@ -91,11 +95,13 @@ public class TeamingManager : MonoBehaviour
             case (int)Weapons.SR:
                 _weaponName.text = "SR";
                 _changeStatus = weaponStatuses.Find(Item => Item.WeaponName == "SR");
+                _oldStatus= weaponStatuses.Find(Item => Item.WeaponName == _changeStatus.WeaponName);
                 id = weaponStatuses.FindIndex(Item => Item == _changeStatus);
                 break;
             case (int)Weapons.AR:
                 _weaponName.text = "AR";
                 _changeStatus = weaponStatuses.Find(Item => Item.WeaponName == "AR");
+                _oldStatus = weaponStatuses.Find(Item => Item.WeaponName == _changeStatus.WeaponName);
                 id = weaponStatuses.FindIndex(Item => Item == _changeStatus);
                 break;
         }
@@ -118,7 +124,7 @@ public class TeamingManager : MonoBehaviour
                     _next[0] = _changeStatus.BulletNum / 10 * 5;
                     _LevelCount++;
                 }
-                else if (v.name == "Reduce" && _addBulletNum > 0)
+                else if (v.name == "Reduce" && _addBulletNum >= _oldStatus.BulletNum)
                 {
                     _addBulletNum -= 10;
                     _changeStatus.BulletNum = _addBulletNum;
@@ -137,7 +143,7 @@ public class TeamingManager : MonoBehaviour
                     _next[1] = (int)(_changeStatus.WeaponATK / 1.2) * 5;
                     _LevelCount++;
                 }
-                else if (v.name == "Reduce" && _addATK > 1)
+                else if (v.name == "Reduce" && _addATK > _oldStatus.WeaponATK)
                 {
                     _changeStatus.WeaponATK -= _addATK;
                     _addATK = _addATK / 1.2f;
@@ -156,7 +162,7 @@ public class TeamingManager : MonoBehaviour
                     _next[2] = (int)(_changeStatus.WeaponAccuracy / 1.5) * 5;
                     _LevelCount++;
                 }
-                else if (v.name == "Reduce" && _addAccuracy > 1)
+                else if (v.name == "Reduce" && _addAccuracy > _oldStatus.WeaponAccuracy)
                 {
                     _changeStatus.WeaponAccuracy -= _addAccuracy;
                     _addAccuracy = _addAccuracy / 1.5f;
@@ -176,7 +182,6 @@ public class TeamingManager : MonoBehaviour
                 }
                 break;
         }
-        if (_LevelCount == _addLimit * 10) ;
     }
     //=================================================
     public void SceneMove(int i)

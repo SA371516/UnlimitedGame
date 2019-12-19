@@ -65,10 +65,9 @@ public class GameManager : MonoBehaviour
             _weaponControll.Add(ObjectInctance(_weapons[_weaponsID], vec));
         }
     }
-
     void Update()
     {
-        _stop = Confug._confug.StatusInctance<bool>();
+        _stop = Confug._confug.GetConfugStatus<bool>(_stop);
         if (_stop)                                                                                                  //操作中はゲームを止める
         {
             Stop(_stop);

@@ -30,6 +30,7 @@ public class PlayerData : MonoBehaviour
     }
     void Start()
     {
+        
         //↓エディタ状態だと//保存場所を指定している
 #if UNITY_EDITOR
         savePath = "";
@@ -124,6 +125,12 @@ public class PlayerData : MonoBehaviour
             Debug.Log("ERROR:" + e.ToString());
             return;
         }
+        if (script == null)//ファイルが存在するのにデータがなくなるバグのため
+        {
+            CreateData();
+            LoadDate();
+            return;
+        }
 
         saveData = script;//ここでデータを挿入
     }
@@ -155,18 +162,18 @@ public class PlayerData : MonoBehaviour
         switch (item)
         {
             case int j://ポイントの変動
-                _playerStatus.Point = j;
+                _playerStatus.Point += j;
                 break;
+                
         }
         //====================データ更新==================
-        int i = 0;
-        foreach (var v in saveData.status)
+        for (int i = 0;i<saveData.status.Count;++i)
         {
-            if (v.UserName == _playerStatus.UserName)
+            if (saveData.status[i].UserName == _playerStatus.UserName)
             {
                 saveData.status[i] = _playerStatus;
+                break;
             }
-            i++;
         }
         //===================データを保存する===============
         if (!SaveDate(saveData))

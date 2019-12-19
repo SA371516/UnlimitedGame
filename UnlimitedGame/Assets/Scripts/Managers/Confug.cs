@@ -120,9 +120,9 @@ public class Confug : MonoBehaviour
         _changeObj.SetActive(true);
     }
     //返す値をそれぞれに変える
-    public T StatusInctance<T>()
+    public T GetConfugStatus<T>(T i)
     {
-        T returnvalume = default;
+        T returnvalume = i;   
         //新しく//型を判定してくれない
         switch (returnvalume)
         {
@@ -132,25 +132,16 @@ public class Confug : MonoBehaviour
             case KeyCode[] code:
                 returnvalume = (T)(object)_code;
                 break;
+            case string[] str:
+                Debug.Log("配列判定した！！");
+                break;
             case bool b:
                 returnvalume = (T)(object)_confugActive;
                 break;
             default:
+                Debug.Log("配列判定しなかった");
                 break;
         }
-        //以前
-        //if (typeof(T) == typeof(float))
-        //{
-        //    returnvalume = (T)(object)_mouseMove;
-        //}
-        //if (typeof(T) == typeof(KeyCode[]))
-        //{
-        //    returnvalume = (T)(object)_code;
-        //}
-        //if (typeof(T) == typeof(bool))
-        //{
-        //    returnvalume = (T)(object)_confugActive;
-        //}
         return returnvalume;
 
     }

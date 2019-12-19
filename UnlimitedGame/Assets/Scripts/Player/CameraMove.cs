@@ -18,7 +18,7 @@ public class CameraMove : MonoBehaviour
         _confug = Confug._confug;
         verRot = transform.parent.GetComponent<Transform>();
         horRot = GetComponent<Transform>();
-        _cameraMove = _confug.StatusInctance<float>();
+        _cameraMove = _confug.GetConfugStatus<float>(_cameraMove);
         _gole = transform.position + new Vector3(0, 10, 10);
         _move = 0f;
     }
@@ -27,7 +27,7 @@ public class CameraMove : MonoBehaviour
     void Update()
     {
         if (_stop) return;
-        _cameraMove = (int)_confug.StatusInctance<float>();
+        _cameraMove = (int)_confug.GetConfugStatus<float>(_cameraMove);
 
         //横の回転
         float Y_Rotation = Input.GetAxis("Mouse X") * _cameraMove;

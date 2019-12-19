@@ -53,7 +53,7 @@ public class BasePlayer : MonoBehaviour
     {
         if (_stop) return;//デバッグも兼ねている
         _confug = Confug._confug;
-        _keyCodes = _confug.StatusInctance<KeyCode[]>();
+        _keyCodes = _confug.GetConfugStatus<KeyCode[]>(new KeyCode[4]);
         speed = 5f;
         _manager = GameObject.Find("Manager").GetComponent<GameManager>();
         _uiManager = GameObject.Find("Manager").GetComponent<UIManager>();
@@ -74,7 +74,7 @@ public class BasePlayer : MonoBehaviour
                 _once = false;
             return;
         }
-        _keyCodes = _confug.StatusInctance<KeyCode[]>();
+        _keyCodes = _confug.GetConfugStatus<KeyCode[]>(new KeyCode[4]);
         float h =0;
         float v=0;
         if (Input.GetKey(_keyCodes[0])) v = 1f;//上

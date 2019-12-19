@@ -32,7 +32,6 @@ public class ResultManager : MonoBehaviour
     {
         _textDisTime = Time.time;
         _resultScore = PlayerData._Data._getPoint;
-        _resultScore += PlayerData._Data._playerStatus.Point;
         PlayerData._Data.DataUpdate<int>(_resultScore);
         //_resultScore = 150000;
         Color c = new Color(1, 0, 0, 0);
