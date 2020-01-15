@@ -48,7 +48,7 @@ public class PlayerData : MonoBehaviour
         instance.UserName = n;
         instance.PassWord = p;
 
-        foreach (var v in Enum.GetValues(typeof(Weapons)))        //武器の数回す
+        foreach (var v in Enum.GetValues(typeof(Weapons)))        //存在する武器の数、回す
         {
             var s = new WeaponStatus();
             //=====================武器の初期化=====================
@@ -207,12 +207,36 @@ public class PlayerStatus
 public class WeaponStatus
 {
     public string WeaponName;
-    public int BulletNum = 0;
-    public float WeaponATK = 1;
-    public float WeaponAccuracy = 1;
-    public int ExceedingLevel = 1;      //現在のレベル
+    public int BulletNum;
+    public float WeaponATK;
+    public float WeaponAccuracy;
+    public int ExceedingLevel;      //現在のレベル
     public int Levelcount;          //レベル10ごとに限界突破しなくてはならない
     public bool OpenWeapon;         //武器が解放されているか
+    //コンストラクタ
+    public WeaponStatus(WeaponStatus copy=null)
+    {
+        if (copy != null)
+        {
+            WeaponName = copy.WeaponName;
+            BulletNum = copy.BulletNum;
+            WeaponATK = copy.WeaponATK;
+            WeaponAccuracy = copy.WeaponAccuracy;
+            ExceedingLevel = copy.ExceedingLevel;
+            Levelcount = copy.Levelcount;
+            OpenWeapon = copy.OpenWeapon;
+        }
+        else
+        {
+            WeaponName = "";
+            BulletNum = 0;
+            WeaponATK = 1;
+            WeaponAccuracy = 1;
+            ExceedingLevel = 1;
+            Levelcount = 1;
+            OpenWeapon = false;
+        }
+    }
 }
 //実際に保存するクラス
 public class SaveData

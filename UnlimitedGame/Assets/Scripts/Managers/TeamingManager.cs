@@ -14,8 +14,9 @@ public class TeamingManager : MonoBehaviour
     [SerializeField]
     EventSystem eventSystem;
 
+    //==========一時的な保存変数===============
     List<WeaponStatus> weaponStatuses = new List<WeaponStatus>();   //すべての武器のステータスが入っている
-    int id;                                                         //反映させるときに必要//findは代入時のみ可能なため
+    int id;                                                                                                     //反映させるときに必要//findは代入時のみ可能なため
     WeaponStatus _changeStatus,_oldStatus;                                     //変えるステータスを入れる//変更する前のステータス保存
     int _Point;
     int _LevelCount;
@@ -37,10 +38,9 @@ public class TeamingManager : MonoBehaviour
         }
         this.weaponStatuses = PlayerData._Data._playerStatus.weaponStatuses;
         //===========最初はSR画面を表示させる==============
-        _changeStatus = weaponStatuses.Find(Item => Item.WeaponName == "SR");
-        _oldStatus = _changeStatus;
-        id = weaponStatuses.FindIndex(Item => Item == _changeStatus);
-        _LevelCount=_changeStatus.Levelcount;
+        _changeStatus = new WeaponStatus(weaponStatuses.Find(Item => Item.WeaponName == "SR"));
+        _oldStatus = new WeaponStatus(_changeStatus);
+        id = weaponStatuses.FindIndex(Item => Item.WeaponName == _changeStatus.WeaponName);
         //===========加える変数を初期化====================
         ValumeReset();
         //=================================================
@@ -53,7 +53,7 @@ public class TeamingManager : MonoBehaviour
         //=================表示の部分==================
         _weaponName.text = _changeStatus.WeaponName;
         _myPoint.text ="自分のポイント:"+ _Point.ToString();
-        _weaponLevel.text = "武器のレベル:" + _addLimit.ToString();
+        _weaponLevel.text = "武器のレベル:" + _LevelCount.ToString();
         _addValume[0].text = _addBulletNum.ToString();
         str = String.Format("{0:#.##}", _addATK);
         _addValume[1].text = str;
@@ -72,20 +72,27 @@ public class TeamingManager : MonoBehaviour
     public void ValumeReset()
     {
         _Point = PlayerData._Data._playerStatus.Point;
-        _changeStatus = weaponStatuses.Find(item => item.WeaponName == _changeStatus.WeaponName);
+        //武器のリセット
+        _changeStatus = new WeaponStatus(weaponStatuses.Find(item => item.WeaponName == _changeStatus.WeaponName));
         _addBulletNum = _changeStatus.BulletNum;
         _addATK = _changeStatus.WeaponATK;
         _addAccuracy = _changeStatus.WeaponAccuracy;
+        _LevelCount = _changeStatus.Levelcount;
         _addLimit = _changeStatus.ExceedingLevel;
+        //必要なポイントのリセット
+        _next[0] = _changeStatus.BulletNum / 10 * 5;
+        _next[1] = (int)(_changeStatus.WeaponATK / 1.2) * 5;
+        _next[2] = (int)(_changeStatus.WeaponAccuracy / 1.5) * 5;
+        _next[3] = _changeStatus.ExceedingLevel * 3000;
     }
     //============OKボタンを入力時=====================
     public void ReflectValume()
     {
         _changeStatus.Levelcount = _LevelCount;
-        weaponStatuses[id] = _changeStatus;
+        weaponStatuses[id] = new WeaponStatus(_changeStatus);
         PlayerData._Data._playerStatus.Point = _Point;
         PlayerData._Data._playerStatus.weaponStatuses = this.weaponStatuses;
-        _oldStatus = weaponStatuses.Find(Item => Item.WeaponName == _changeStatus.WeaponName);
+        _oldStatus = new WeaponStatus(_changeStatus);
     }
     //===========変更する武器を変える時================
     public void WeaponChangeButton(int i)
@@ -94,15 +101,15 @@ public class TeamingManager : MonoBehaviour
         {
             case (int)Weapons.SR:
                 _weaponName.text = "SR";
-                _changeStatus = weaponStatuses.Find(Item => Item.WeaponName == "SR");
-                _oldStatus= weaponStatuses.Find(Item => Item.WeaponName == _changeStatus.WeaponName);
-                id = weaponStatuses.FindIndex(Item => Item == _changeStatus);
+                _changeStatus = new WeaponStatus(weaponStatuses.Find(Item => Item.WeaponName == "SR"));
+                _oldStatus= new WeaponStatus(_changeStatus);
+                id = weaponStatuses.FindIndex(Item => Item.WeaponName == _changeStatus.WeaponName);
                 break;
             case (int)Weapons.AR:
                 _weaponName.text = "AR";
-                _changeStatus = weaponStatuses.Find(Item => Item.WeaponName == "AR");
-                _oldStatus = weaponStatuses.Find(Item => Item.WeaponName == _changeStatus.WeaponName);
-                id = weaponStatuses.FindIndex(Item => Item == _changeStatus);
+                _changeStatus = new WeaponStatus(weaponStatuses.Find(Item => Item.WeaponName == "AR"));
+                _oldStatus = new WeaponStatus(_changeStatus);
+                id = weaponStatuses.FindIndex(Item => Item.WeaponName == _changeStatus.WeaponName);
                 break;
         }
         ValumeReset();
@@ -115,16 +122,7 @@ public class TeamingManager : MonoBehaviour
         switch (i)
         {
             case 0://弾は10発ずつ増えていく
-                if (_LevelCount == _addLimit * 10) return;  //レベル10ごとに達した時
-                if (v.name == "Add" && _Point > _next[0])
-                {
-                    _Point -= _next[0];
-                    _addBulletNum += 10;
-                    _changeStatus.BulletNum = _addBulletNum;
-                    _next[0] = _changeStatus.BulletNum / 10 * 5;
-                    _LevelCount++;
-                }
-                else if (v.name == "Reduce" && _addBulletNum >= _oldStatus.BulletNum)
+                if (v.name == "Reduce" && _addBulletNum > _oldStatus.BulletNum)
                 {
                     _addBulletNum -= 10;
                     _changeStatus.BulletNum = _addBulletNum;
@@ -132,43 +130,52 @@ public class TeamingManager : MonoBehaviour
                     _Point += _next[0];
                     _LevelCount--;
                 }
-                break;
-            case 1://攻撃力が1.2倍になっていく
-                if (_LevelCount == _addLimit * 10) return;//レベル10ごとに達した時
-                if (v.name == "Add" && _Point > _next[1])
+                else if (_LevelCount == _addLimit * 10) return;  //レベル10ごとに達した時
+                else if (v.name == "Add" && _Point > _next[0])
                 {
-                    _Point -= _next[1];
-                    _addATK = _addATK * 1.2f;//何も強化していないと「0」なため
-                    _changeStatus.WeaponATK += _addATK;
-                    _next[1] = (int)(_changeStatus.WeaponATK / 1.2) * 5;
+                    _Point -= _next[0];
+                    _addBulletNum += 10;
+                    _changeStatus.BulletNum = _addBulletNum;
+                    _next[0] = _changeStatus.BulletNum / 10 * 5;
                     _LevelCount++;
                 }
-                else if (v.name == "Reduce" && _addATK > _oldStatus.WeaponATK)
+                break;
+            case 1://攻撃力が1.2倍になっていく
+                if (v.name == "Reduce" && _addATK > _oldStatus.WeaponATK)
                 {
-                    _changeStatus.WeaponATK -= _addATK;
                     _addATK = _addATK / 1.2f;
+                    _changeStatus.WeaponATK = _addATK;
                     _next[1] = (int)(_changeStatus.WeaponATK / 1.2) * 5;
                     _Point += _next[1];
                     _LevelCount--;
                 }
+                else if (_LevelCount == _addLimit * 10) return;//レベル10ごとに達した時
+                else if (v.name == "Add" && _Point > _next[1])
+                {
+                    _Point -= _next[1];
+                    _addATK = _addATK * 1.2f;           //何も強化していないと「0」なため
+                    _changeStatus.WeaponATK = _addATK;
+                    _next[1] = (int)(_changeStatus.WeaponATK / 1.2) * 5;
+                    _LevelCount++;
+                }
                 break;
             case 2://精度は1.5倍にする
-                if (_LevelCount == _addLimit * 10) return;//レベル10ごとに達した時
-                if (v.name == "Add" && _Point > _next[2])
+                if (v.name == "Reduce" && _addAccuracy > _oldStatus.WeaponAccuracy)
+                {
+                    _addAccuracy = _addAccuracy / 1.5f;
+                    _changeStatus.WeaponAccuracy = _addAccuracy;
+                    _next[2] = (int)(_changeStatus.WeaponAccuracy / 1.5) * 5;
+                    _Point += _next[2];
+                    _LevelCount--;
+                }
+                else if (_LevelCount == _addLimit * 10) return;//レベル10ごとに達した時
+                else if (v.name == "Add" && _Point > _next[2])
                 {
                     _Point -= _next[2];
                     _addAccuracy = _addAccuracy * 1.5f;
-                    _changeStatus.WeaponAccuracy += _addAccuracy;
+                    _changeStatus.WeaponAccuracy = _addAccuracy;
                     _next[2] = (int)(_changeStatus.WeaponAccuracy / 1.5) * 5;
                     _LevelCount++;
-                }
-                else if (v.name == "Reduce" && _addAccuracy > _oldStatus.WeaponAccuracy)
-                {
-                    _changeStatus.WeaponAccuracy -= _addAccuracy;
-                    _addAccuracy = _addAccuracy / 1.5f;
-                    _next[2] = (int)(_changeStatus.WeaponATK / 1.2) * 5;
-                    _Point += _next[2];
-                    _LevelCount--;
                 }
                 break;
             case 3://上限解放の部分は特殊なので注意！！//一度したら戻せない
