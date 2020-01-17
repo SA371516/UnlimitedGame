@@ -13,6 +13,8 @@ public class TeamingManager : MonoBehaviour
     Text[] _addValume, nextValume;
     [SerializeField]
     EventSystem eventSystem;
+    [SerializeField]
+    GameObject[] _upDateImg = new GameObject[4];
 
     //==========一時的な保存変数===============
     List<WeaponStatus> weaponStatuses = new List<WeaponStatus>();   //すべての武器のステータスが入っている
@@ -27,6 +29,7 @@ public class TeamingManager : MonoBehaviour
     float _addATK;
     float _addAccuracy;
     int _addLimit;
+    bool[] _upDateChack = new bool[4];
 
 
     void Start()
@@ -44,7 +47,7 @@ public class TeamingManager : MonoBehaviour
         //===========加える変数を初期化====================
         ValumeReset();
         //=================================================
-        //_Point = 10000;
+        _Point = 10000;
     }
 
     void Update()
@@ -84,6 +87,12 @@ public class TeamingManager : MonoBehaviour
         _next[1] = (int)(_changeStatus.WeaponATK / 1.2) * 5;
         _next[2] = (int)(_changeStatus.WeaponAccuracy / 1.5) * 5;
         _next[3] = _changeStatus.ExceedingLevel * 3000;
+        //Update画像のリセット
+        for(int i=0;i<_upDateImg.Length;++i)
+        {
+            _upDateImg[i].SetActive(false);
+            _upDateChack[i] = false;
+        }
     }
     //============OKボタンを入力時=====================
     public void ReflectValume()
@@ -93,6 +102,12 @@ public class TeamingManager : MonoBehaviour
         PlayerData._Data._playerStatus.Point = _Point;
         PlayerData._Data._playerStatus.weaponStatuses = this.weaponStatuses;
         _oldStatus = new WeaponStatus(_changeStatus);
+        //Update画像のリセット
+        for (int i = 0; i < _upDateImg.Length; ++i)
+        {
+            _upDateImg[i].SetActive(false);
+            _upDateChack[i] = false;
+        }
     }
     //===========変更する武器を変える時================
     public void WeaponChangeButton(int i)
@@ -128,6 +143,11 @@ public class TeamingManager : MonoBehaviour
                     _changeStatus.BulletNum = _addBulletNum;
                     _next[0] = _changeStatus.BulletNum / 10 * 5;
                     _Point += _next[0];
+                    if (_addBulletNum == _oldStatus.BulletNum)
+                    {
+                        _upDateImg[0].SetActive(false);
+                        _upDateChack[0] = false;
+                    }
                     _LevelCount--;
                 }
                 else if (_LevelCount == _addLimit * 10) return;  //レベル10ごとに達した時
@@ -137,6 +157,8 @@ public class TeamingManager : MonoBehaviour
                     _addBulletNum += 10;
                     _changeStatus.BulletNum = _addBulletNum;
                     _next[0] = _changeStatus.BulletNum / 10 * 5;
+                    _upDateChack[0] = true;
+                    _upDateImg[0].SetActive(true);
                     _LevelCount++;
                 }
                 break;
@@ -147,6 +169,11 @@ public class TeamingManager : MonoBehaviour
                     _changeStatus.WeaponATK = _addATK;
                     _next[1] = (int)(_changeStatus.WeaponATK / 1.2) * 5;
                     _Point += _next[1];
+                    if (_addATK == _oldStatus.WeaponATK)
+                    {
+                        _upDateImg[1].SetActive(false);
+                        _upDateChack[1] = false;
+                    }
                     _LevelCount--;
                 }
                 else if (_LevelCount == _addLimit * 10) return;//レベル10ごとに達した時
@@ -156,6 +183,8 @@ public class TeamingManager : MonoBehaviour
                     _addATK = _addATK * 1.2f;           //何も強化していないと「0」なため
                     _changeStatus.WeaponATK = _addATK;
                     _next[1] = (int)(_changeStatus.WeaponATK / 1.2) * 5;
+                    _upDateChack[1] = true;
+                    _upDateImg[1].SetActive(true);
                     _LevelCount++;
                 }
                 break;
@@ -166,6 +195,11 @@ public class TeamingManager : MonoBehaviour
                     _changeStatus.WeaponAccuracy = _addAccuracy;
                     _next[2] = (int)(_changeStatus.WeaponAccuracy / 1.5) * 5;
                     _Point += _next[2];
+                    if (_addAccuracy == _oldStatus.WeaponAccuracy)
+                    {
+                        _upDateImg[2].SetActive(false);
+                        _upDateChack[2] = false;
+                    }
                     _LevelCount--;
                 }
                 else if (_LevelCount == _addLimit * 10) return;//レベル10ごとに達した時
@@ -175,6 +209,8 @@ public class TeamingManager : MonoBehaviour
                     _addAccuracy = _addAccuracy * 1.5f;
                     _changeStatus.WeaponAccuracy = _addAccuracy;
                     _next[2] = (int)(_changeStatus.WeaponAccuracy / 1.5) * 5;
+                    _upDateChack[2] = true;
+                    _upDateImg[2].SetActive(true); 
                     _LevelCount++;
                 }
                 break;
@@ -185,6 +221,8 @@ public class TeamingManager : MonoBehaviour
                     _addLimit++;
                     _changeStatus.ExceedingLevel += _addLimit;
                     _next[3] = _changeStatus.ExceedingLevel * 3000;
+                    _upDateChack[3] = true;
+                    _upDateImg[3].SetActive(true);
                     _LevelCount++;
                 }
                 break;
