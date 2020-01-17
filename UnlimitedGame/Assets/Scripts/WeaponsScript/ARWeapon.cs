@@ -15,6 +15,7 @@ public class ARWeapon : BaseWeapon
         _recustSlider.maxValue = _recustTime;
         //====武器ステータスを反映======
         _status = PlayerData._Data._playerStatus.weaponStatuses.Find(Item => Item.WeaponName == "AR");
+        _weaponName = _status.WeaponName;
         _accuracy += _status.WeaponAccuracy;
         _Damage += _status.WeaponATK;
         _bulletNum += _status.BulletNum;

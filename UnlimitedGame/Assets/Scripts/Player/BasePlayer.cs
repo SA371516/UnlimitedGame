@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,7 +23,7 @@ public class BasePlayer : MonoBehaviour
     protected bool _once;
 
     [SerializeField]//プレイヤーに知らせるため
-    Text _GetLog;
+    GameObject _getLog;
     [SerializeField]
     Vector3 _playerGravity;
     [SerializeField]
@@ -36,6 +34,9 @@ public class BasePlayer : MonoBehaviour
     bool _Invincible;
     float _InvincibleTime;
     GameObject obj;
+    Text _keyText;
+    Text _keyText2;
+    GameObject _keyImg;
 
     [HideInInspector]
     public List<Weapons> _weaponName = new List<Weapons>();//取得したものを入れる
@@ -58,6 +59,9 @@ public class BasePlayer : MonoBehaviour
         _manager = GameObject.Find("Manager").GetComponent<GameManager>();
         _uiManager = GameObject.Find("Manager").GetComponent<UIManager>();
         _Camera = transform.GetChild(0).GetComponent<Camera>();
+        _keyImg = _getLog.transform.GetChild(0).gameObject;
+        _keyText = _getLog.transform.GetChild(1).GetComponent<Text>();
+        _keyText2 = _getLog.transform.GetChild(2).GetComponent<Text>();
         rig = GetComponent<Rigidbody>();
         _haveWeapon = null;
         _stop = false;
@@ -116,14 +120,19 @@ public class BasePlayer : MonoBehaviour
     {
         Ray ray = _Camera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 10));
         if (!Physics.Raycast(ray, out hit, 2f)) {
-            _GetLog.text = "";
+            _keyText.text = "";
+            _keyText2.text = "";
+            _keyImg.SetActive(false);
             return;
         }
         switch (hit.collider.gameObject.tag)
         {
             case "Weapons":
-                string str= "[" + _keyCodes[5].ToString() + "]で武器を取る";
-                _GetLog.text = str;
+                string str = _keyCodes[5].ToString();
+                string str2="で武器を取る";
+                _keyImg.SetActive(true);
+                _keyText.text = str;
+                _keyText2.text = str2;
                 if (Input.GetKeyDown(_keyCodes[5]))
                 {
                     GameObject v = null;
@@ -138,15 +147,16 @@ public class BasePlayer : MonoBehaviour
                             _uiManager._weapon = _haveWeapon;
                             _weaponName.Add(Weapons.SR);
                             break;
-                        case "AR":
+                        case "AR(Clone)":
                             v = _Weapon.Find(item => item.gameObject.name == "P_AR");
                             //obj = _manager.ObjectInctance(v, transform.position, gameObject);
-                            _haveWeapon = new ARWeapon(transform.GetChild(1).gameObject);
+                            _haveWeapon = new ARWeapon(transform.GetChild(1).gameObject);//(particle)
                             _uiManager._weapon = _haveWeapon;
                             _weaponName.Add(Weapons.AR);
                             break;
                     }
-                    _GetLog.text = "";
+                    _keyText.text = "";
+                    _keyText2.text = "";
                     Destroy(hit.collider.gameObject);
                 }
                 break;

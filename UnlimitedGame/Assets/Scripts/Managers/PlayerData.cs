@@ -66,6 +66,9 @@ public class PlayerData : MonoBehaviour
                     s.WeaponAccuracy = 70f;
                     break;
             }
+            s.ExceedingLevel = 1;
+            s.Levelcount = 1;
+            s.OpenWeapon = false;
             //==================選択画面時に必要=====================
             if (s.WeaponName == "SR")
             {
@@ -225,16 +228,6 @@ public class WeaponStatus
             ExceedingLevel = copy.ExceedingLevel;
             Levelcount = copy.Levelcount;
             OpenWeapon = copy.OpenWeapon;
-        }
-        else
-        {
-            WeaponName = "";
-            BulletNum = 0;
-            WeaponATK = 1;
-            WeaponAccuracy = 1;
-            ExceedingLevel = 1;
-            Levelcount = 1;
-            OpenWeapon = false;
         }
     }
 }

@@ -44,7 +44,7 @@ public class TeamingManager : MonoBehaviour
         //===========加える変数を初期化====================
         ValumeReset();
         //=================================================
-        _Point = 10000;
+        //_Point = 10000;
     }
 
     void Update()
