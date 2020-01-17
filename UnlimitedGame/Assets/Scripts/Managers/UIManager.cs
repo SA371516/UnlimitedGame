@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +13,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     Text _gameTime,_scoreText;
     [SerializeField]
-    Image _damage;
+    Image _damage,_gunImg;
+    [SerializeField]
+    List<Sprite> _gunSprites = new List<Sprite>();
     BasePlayer _playerInfo;
     GameManager _manager;
     float time = 0;
@@ -60,6 +63,16 @@ public class UIManager : MonoBehaviour
             _weaponName.text = "NoWeapon";
             _bulletNum.text = "0";
             return;
+        }
+        switch (_weapon.GetSetWeaponName)
+        {
+            case "SR":
+                _gunImg.sprite = _gunSprites.Find(item => item.name == "SRGun");
+
+                break;
+            case "AR":
+                _gunImg.sprite = _gunSprites.Find(item => item.name == "ARGun");
+                break;
         }
         _weaponName.text = _weapon.GetSetWeaponName;
         _bulletNum.text = _weapon.GetSetBulletNum.ToString();
