@@ -36,7 +36,7 @@ public class TeamingManager : MonoBehaviour
     {
         if (PlayerData._Data._debug)
         {
-            var v = PlayerData._Data.CreateUserData();
+            var v = PlayerData._Data.CreateUserData("Debug","FF");
             PlayerData._Data._playerStatus = v;
         }
         this.weaponStatuses = PlayerData._Data._playerStatus.weaponStatuses;

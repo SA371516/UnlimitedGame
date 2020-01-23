@@ -48,7 +48,7 @@ public class PlayerData : MonoBehaviour
 
     //========ユーザーを作成する関数================
     //デバッグにも使用するためここに書き、publicにする
-    public PlayerStatus CreateUserData(string n=null,string p=null)
+    public PlayerStatus CreateUserData(string n,string p)
     {
         var instance = new PlayerStatus();
         instance.UserName = n;
@@ -96,12 +96,6 @@ public class PlayerData : MonoBehaviour
         EncryptAesBase64(jsonstr, out iv, out base64);
         try
         {
-            //using (StreamWriter streamWriter = new StreamWriter(savePath + saveFileName))
-            //{
-            //    streamWriter.Write(jsonstr);
-            //    streamWriter.Flush();
-            //    streamWriter.Close();
-            //}
             // 保存
             byte[] ivBytes = Encoding.UTF8.GetBytes(iv);
             byte[] base64Bytes = Encoding.UTF8.GetBytes(base64);

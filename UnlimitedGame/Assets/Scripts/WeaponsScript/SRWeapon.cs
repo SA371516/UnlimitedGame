@@ -12,6 +12,7 @@ public class SRWeapon : BaseWeapon
         _recustTime = 2f;
         _nowTime = 5f;
         _distance = 40f;
+        particleScr._stopTime = 0.18f;
         _recustSlider.maxValue = _recustTime;
         //===============武器のステータス反映===========
         _status = PlayerData._Data._playerStatus.weaponStatuses.Find(Item => Item.WeaponName == "SR");
@@ -29,8 +30,6 @@ public class SRWeapon : BaseWeapon
             return;
         }
         if (_nowTime >= _recustTime && Input.GetMouseButtonDown(0)) Attack();//次の弾を撃つラグ
-        else if (!Input.GetMouseButton(0))
-            particleScr.StopParticle();
         _nowTime += Time.deltaTime;
         _recustSlider.value = _nowTime;
     }

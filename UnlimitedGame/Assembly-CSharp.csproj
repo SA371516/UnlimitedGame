@@ -97,6 +97,7 @@
     <Compile Include="Assets\Scripts\Player\BasePlayer.cs" />
     <Compile Include="Assets\Scripts\Player\CameraMove.cs" />
     <Compile Include="Assets\Scripts\SaveScript.cs" />
+    <Compile Include="Assets\Scripts\Test.cs" />
     <Compile Include="Assets\Scripts\WeaponsScript\ARWeapon.cs" />
     <Compile Include="Assets\Scripts\WeaponsScript\BaseWeapon.cs" />
     <Compile Include="Assets\Scripts\WeaponsScript\SRWeapon.cs" />

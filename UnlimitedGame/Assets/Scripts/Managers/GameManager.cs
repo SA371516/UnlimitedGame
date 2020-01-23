@@ -40,6 +40,11 @@ public class GameManager : MonoBehaviour
 
     void Start()      
     {
+        if (PlayerData._Data._debug)
+        {
+            var v = PlayerData._Data.CreateUserData("Debug", "FF");
+            PlayerData._Data._playerStatus = v;
+        }
         _stop = false;
         _score = 0;
         //=========マウス処理========
