@@ -10,7 +10,9 @@ public class PlayerData : MonoBehaviour
 
     public SaveData saveData;               //Jsonに書かれているものをすべて入れる
     public PlayerStatus _playerStatus;      //遊んでいるプレイヤーの情報のみ保存する
-    public int _getPoint;
+    public int _getPoint;//リザルトに表示するポイント
+    public int _tankCount;//戦車撃破数
+    public float _probability;//Hitした確率
     public bool _debug;
 
     string savePath;                        //エディタとアプリケーションで分けるため

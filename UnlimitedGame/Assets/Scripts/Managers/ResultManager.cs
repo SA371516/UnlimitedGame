@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ResultManager : MonoBehaviour
 {
     [SerializeField]
-    Text _scoreText, _wordText, _enterText;
+    Text _scoreText, _enterText,_tankCountText, _accuracyText;
     [SerializeField]
     Sprite[] _wordBack;
     [SerializeField]
@@ -21,6 +21,8 @@ public class ResultManager : MonoBehaviour
     };
 
     int _resultScore;
+    int _tankCount;
+    float _probability;
     float _time;
     float _changeTransparency = 1f;
     float _changeTime;
@@ -32,6 +34,9 @@ public class ResultManager : MonoBehaviour
     {
         _textDisTime = Time.time;
         _resultScore = PlayerData._Data._getPoint;
+        _tankCount = PlayerData._Data._tankCount;
+        _probability = PlayerData._Data._probability;
+        _resultScore += (_tankCount / 5) * 1000 + Mathf.RoundToInt(1000 * _probability);
         PlayerData._Data.DataUpdate<int>(_resultScore);
         //_resultScore = 150000;
         Color c = new Color(1, 0, 0, 0);
@@ -42,23 +47,9 @@ public class ResultManager : MonoBehaviour
     void Update()
     {
         _scoreText.text = "Score:" + _resultScore.ToString();
-        //========スコアに応じて表示するものを変更する======
-        if (_resultScore >= 0 && _resultScore <= 1000)
-        {
-            _wordBackImg.sprite = _wordBack[0];
-            _wordText.text = _wordStr[0];
-        }
-        else if (_resultScore >= 1100 && _resultScore <= 15000)
-        {
-            _wordBackImg.sprite = _wordBack[1];
-            _wordText.text = _wordStr[1];
-        }
-        else if (_resultScore >= 15100)
-        {
-            _wordBackImg.sprite = _wordBack[2];
-            _wordText.text = _wordStr[2];
-        }
-        //==============================================
+        _tankCountText.text = "戦車大量破壊ボーナス:" + ((_tankCount / 5) * 1000).ToString();
+        _accuracyText.text = "命中率ボーナス：" + (Mathf.RoundToInt(1000 * _probability)).ToString();
+        Debug.Log(_probability);
         if (Time.time > _textDisTime + 3.0f)//5秒間待つ
         {
             TextColorChange();

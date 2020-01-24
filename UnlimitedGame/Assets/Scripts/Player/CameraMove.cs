@@ -50,11 +50,10 @@ public class CameraMove : MonoBehaviour
     public IEnumerator GameOver(Vector3 vec,float _jumpTime,int S,bool once)
     {
         _stop = true;
-        if (once)//一度しか来ないように
-        {
-            PlayerData._Data._playerStatus.Point += S;
-            PlayerData._Data._getPoint = S;
-        }
+        //if (once)//一度しか来ないように
+        //{
+        //    PlayerData._Data._getPoint = S;
+        //}
         while (_move <= 1f)
         {
             transform.LookAt(vec);

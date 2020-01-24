@@ -89,6 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3587412304627541792}
   - component: {fileID: 561888129849035451}
+  - component: {fileID: 7325127259988874157}
   m_Layer: 0
   m_Name: Tank
   m_TagString: Enemy
@@ -127,6 +128,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.483594, y: 3.2592835, z: 10.041225}
   m_Center: {x: 0.16641426, y: -1.1296418, z: -2.7669263}
+--- !u!114 &7325127259988874157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545592663964276019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d4d576572c26146a1854dd5721a733, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hitEffect: {fileID: 1564629476075284220, guid: d4aac81765f2bbc4aa1d21f361237e8c,
+    type: 3}
+  _stop: 0
+  _debug: 0
 --- !u!1 &751940556714829116
 GameObject:
   m_ObjectHideFlags: 0

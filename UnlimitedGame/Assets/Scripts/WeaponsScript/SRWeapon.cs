@@ -43,11 +43,12 @@ public class SRWeapon : BaseWeapon
         //単発銃、射程距離30ｍ
         if(Physics.Raycast(ray, out hit, _distance))
         {
+            _manager._shotNum++;
             if (hit.collider.gameObject.tag == "Enemy")
             {
                 BaseEnemy _enemy = hit.collider.GetComponent<BaseEnemy>();
-                _enemy.GetSetHP -= _Damage;
-                _manager.ObjectInctance(_particle,hit.point);
+                _enemy.HitFunction(hit.point, _Damage);
+                _manager._hitNum++;
             }
             else
             {

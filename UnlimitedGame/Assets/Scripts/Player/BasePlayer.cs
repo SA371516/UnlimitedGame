@@ -33,7 +33,6 @@ public class BasePlayer : MonoBehaviour
     BaseWeapon _haveWeapon;
     bool _Invincible;
     float _InvincibleTime;
-    GameObject obj;
     Text _keyText;
     Text _keyText2;
     GameObject _keyImg;
@@ -136,28 +135,24 @@ public class BasePlayer : MonoBehaviour
                 if (Input.GetKeyDown(_keyCodes[5]))
                 {
                     GameObject v = null;
-                    Destroy(obj);
-                    obj = null;
                     switch (hit.collider.gameObject.name)
                     {
                         case "SR(Clone)":
                             v = _Weapon.Find(item => item.gameObject.name == "P_SR");
-                            //obj = _manager.ObjectInctance(v, transform.position,gameObject);//(武器,場所)
-                            _haveWeapon = new SRWeapon(transform.GetChild(1).gameObject);//(particle)
+                            _haveWeapon = new SRWeapon(transform.GetChild(1).gameObject);//(Muzzle particle)
                             _uiManager._weapon = _haveWeapon;
                             _weaponName.Add(Weapons.SR);
                             break;
                         case "AR(Clone)":
                             v = _Weapon.Find(item => item.gameObject.name == "P_AR");
-                            //obj = _manager.ObjectInctance(v, transform.position, gameObject);
-                            _haveWeapon = new ARWeapon(transform.GetChild(1).gameObject);//(particle)
+                            _haveWeapon = new ARWeapon(transform.GetChild(1).gameObject);//(Muzzle particle)
                             _uiManager._weapon = _haveWeapon;
                             _weaponName.Add(Weapons.AR);
                             break;
                     }
                     _keyText.text = "";
                     _keyText2.text = "";
-                    Destroy(hit.collider.gameObject);
+                    Destroy(hit.collider.gameObject);//取得した武器を消去
                 }
                 break;
             default:

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BaseEnemy : MonoBehaviour
 {
+    [SerializeField]
+    GameObject _hitEffect;
+
     protected enum MoveStatus
     {
         Stop = 0,
@@ -18,11 +21,7 @@ public class BaseEnemy : MonoBehaviour
 
     protected Rigidbody rig;
     protected float _HP;
-    public float GetSetHP
-    {
-        get { return _HP; }
-        set { _HP = value; }
-    }
+    public float GetSetHP{ get { return _HP; } set { _HP = value; } }
     protected int ATK = 0;
     protected float _Speed;
     protected int _moveFlag;
@@ -31,7 +30,6 @@ public class BaseEnemy : MonoBehaviour
     protected EnemyStatus _status;
     protected Animator _animator;
     protected Transform _target;
-
 
     public bool _stop;
     public bool _debug;
@@ -107,9 +105,19 @@ public class BaseEnemy : MonoBehaviour
         if (P != null) P.DamageMove(transform.position,ATK);
     }
 
+    public virtual void HitFunction(Vector3 vec,float d)
+    {
+        _manager.ObjectInctance(_hitEffect, vec);
+        GetSetHP -= d;
+    }
+
     protected virtual void DeadFunction()
     {
         Destroy(gameObject);
         _manager.GetSetScore += _addScore;
+        if (gameObject.name == "Tank")
+        {
+            _manager.GetSetTankCount++;
+        }
     }
 }

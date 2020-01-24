@@ -31,7 +31,11 @@ public class GameManager : MonoBehaviour
     public float GetTime  {    get { return _gameTime; }   }
     bool _stop;
     int _score;
+    int _tankCount;//敵のタンクを撃破した数
+    public int _shotNum;//撃った数
+    public int _hitNum;//当たった数
     public int GetSetScore  {  get { return _score; } set { _score = value; }  }
+    public int GetSetTankCount  {  get { return _tankCount; } set { _tankCount = value; }  }
     UIManager _uiManager;
     BasePlayer _player;
     CameraMove _camera;
@@ -97,7 +101,7 @@ public class GameManager : MonoBehaviour
         }
 
         _leveltime += Time.deltaTime;
-        if (_leveltime > _gameTime)                                                                //レベル処理
+        if (_leveltime > _gameTime)                                 //レベル処理
         {
             _gameTime += 30;
             status.AddHP += 2;
@@ -105,8 +109,7 @@ public class GameManager : MonoBehaviour
         }
 
         _time += Time.deltaTime;
-                                                                                                                        //オブジェクト生成
-        if (_time > _inctanceTime)
+        if (_time > _inctanceTime) //オブジェクト生成
         {
             _weaponControll = _weaponControll.Where(j => j != null).ToList();    //Null以外を挿入
             if(_player._weaponName.Count>0)
@@ -118,13 +121,12 @@ public class GameManager : MonoBehaviour
                     {
                         case Weapons.AR:
                             _weaponControll.Add(ObjectInctance( _weapons.Find(item=>item.name=="AR"), vec));//武器を探して出現させる
-                            //_weaponControll.Add(ObjectInctance( _weapons.Where(item => item.name == "AR"), _weponlis[Random.Range(0, 4)].position));//
                             break;
                         case Weapons.SR:
                             _weaponControll.Add(ObjectInctance(_weapons.Find(item => item.name == "SR"), vec));//武器を探して出現させる
                             break;
                         default:
-                            Debug.Log("異なる値が挿入されています");
+                            Debug.Log("異なるオブジェクトが挿入されています");
                             break;
                     }
                 }
@@ -145,12 +147,6 @@ public class GameManager : MonoBehaviour
                     GameObject obj = ObjectInctance(_enemys[_id], _lis[Random.Range(0, 4)].position);                        //敵生成
                     _time = 0f;
                     _nowEnemy.Add(obj);
-                    switch (_id)
-                    {
-                        case 0:
-                            obj.AddComponent<Zonbi>();
-                            break;
-                    }
                 }
             }
             else//======普通に出現処理をする========//
@@ -158,15 +154,6 @@ public class GameManager : MonoBehaviour
                 GameObject obj = ObjectInctance(_enemys[_id], _lis[Random.Range(0, 4)].position);                        //敵生成
                 _time = 0f;
                 _nowEnemy.Add(obj);
-                switch (_id)
-                {
-                    case 0:
-                        obj.AddComponent<Zonbi>();
-                        break;
-                    case 1:
-                        obj.AddComponent<Tank>();
-                        break;
-                }
             }
         }
     }
@@ -197,9 +184,17 @@ public class GameManager : MonoBehaviour
     // プレイヤーのHPが0になった時呼ばれる
     public void GameOver(Vector3 vec,bool once)
     {
+        float _headHitProbability = 0;//敵に当たった確率
+        if (_shotNum > 30)
+        {
+            _headHitProbability = _hitNum / _shotNum;
+        }
         _stop = true;
         Stop(_stop);
         Cursor.lockState = CursorLockMode.None;
+        PlayerData._Data._getPoint = _score;
+        PlayerData._Data._tankCount = this._tankCount;
+        PlayerData._Data._probability = _headHitProbability;
         StartCoroutine(_camera.GameOver(vec,3f, _score,once));
     }
 }
