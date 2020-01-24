@@ -28,12 +28,14 @@ public class GameManager : MonoBehaviour
     float _leveltime;                                                                                   //レベルの管理
     float _inctanceTime = 2f;                                                                   //リスタイム
     float _gameTime = 10f;                                                                      //次のレベルまでの
-    public float GetTime  {    get { return _gameTime; }   }
     bool _stop;
     int _score;
     int _tankCount;//敵のタンクを撃破した数
     public float _shotNum;//撃った数
     public float _hitNum;//当たった数
+    public float _exitTime;//一定時間とどまる必要がある
+    public bool _goalChack;
+    public float GetTime { get { return _gameTime; } }
     public int GetSetScore  {  get { return _score; } set { _score = value; }  }
     public int GetSetTankCount  {  get { return _tankCount; } set { _tankCount = value; }  }
     UIManager _uiManager;
@@ -76,6 +78,7 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {
+        //コンフィグ画面表示時に、敵を止める処理
         _stop = Confug._confug.GetConfugStatus<bool>(_stop);
         if (_stop)                                                                                                  //操作中はゲームを止める
         {
@@ -111,6 +114,16 @@ public class GameManager : MonoBehaviour
             _gameTime += 30;
             status.AddHP += 2;
             status.AddATK += 1;
+        }
+        //脱出処理
+        if (_goalChack)
+        {
+            if (_exitTime >= 20f)
+            {
+                GameClear();
+            }
+            else { _exitTime += Time.deltaTime; }
+
         }
 
         _time += Time.deltaTime;
@@ -187,9 +200,21 @@ public class GameManager : MonoBehaviour
         return _obj;
     }
     // プレイヤーのHPが0になった時呼ばれる
+    //死亡したらスコアが入らない
     public void GameOver(Vector3 vec,bool once)
     {
-        float _headHitProbability = 0;//敵に当たった確率
+        _stop = true;
+        Stop(_stop);
+        Cursor.lockState = CursorLockMode.None;
+        PlayerData._Data._getPoint = 0;
+        PlayerData._Data._tankCount = 0;
+        PlayerData._Data._probability = 0;
+        StartCoroutine(_camera.GameOver(vec,3f, _score,once));
+    }
+    //脱出した時に呼ばれる
+    public void GameClear()
+    {
+        float _headHitProbability = 0f;
         if (_shotNum > 30)
         {
             _headHitProbability = _hitNum / _shotNum;
@@ -200,6 +225,7 @@ public class GameManager : MonoBehaviour
         PlayerData._Data._getPoint = _score;
         PlayerData._Data._tankCount = this._tankCount;
         PlayerData._Data._probability = _headHitProbability;
-        StartCoroutine(_camera.GameOver(vec,3f, _score,once));
+        UIManager ui = GetComponent<UIManager>();
+        StartCoroutine(ui.BlackOut());
     }
 }
