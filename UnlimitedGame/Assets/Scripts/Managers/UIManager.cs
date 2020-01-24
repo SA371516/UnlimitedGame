@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     Text _weaponName, _bulletNum,_levelText;
     [SerializeField]
-    Slider  _hp,_levelSlider;
+    Slider _hp, _levelSlider, _dushSlider;
     [SerializeField]
     Text _gameTime,_scoreText;
     [SerializeField]
@@ -30,6 +30,7 @@ public class UIManager : MonoBehaviour
         _manager = GameObject.Find("Manager").GetComponent<GameManager>();
         _hp.maxValue = _playerInfo.GetSetHP;
         _levelSlider.maxValue = _manager.GetTime;
+        _dushSlider.maxValue = _playerInfo.GetSetDush;
         _stop = false;
 
         Color _color = new Color();
@@ -81,6 +82,7 @@ public class UIManager : MonoBehaviour
     void SliderFunction()
     {
         _levelSlider.value = time;
+        _dushSlider.value = _playerInfo.GetSetDush;
         _hp.value = _playerInfo.GetSetHP;
         if (_levelSlider.value >= _levelSlider.maxValue)//次のレベルまでのスライダー処理
         {

@@ -46,11 +46,12 @@ public class ARWeapon : BaseWeapon
         //連射銃、射程距離15ｍ
         if (Physics.Raycast(ray, out hit, _distance))
         {
+            _manager._shotNum++;
             if (hit.collider.gameObject.tag == "Enemy")
             {
                 BaseEnemy _enemy = hit.collider.GetComponent<BaseEnemy>();
-                _enemy.GetSetHP -= _Damage;
-                _manager.ObjectInctance(_particle, hit.point);
+                _enemy.HitFunction(hit.point, _Damage);
+                _manager._hitNum++;
             }
             else
             {

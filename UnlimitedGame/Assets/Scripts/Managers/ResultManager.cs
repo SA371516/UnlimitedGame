@@ -49,7 +49,6 @@ public class ResultManager : MonoBehaviour
         _scoreText.text = "Score:" + _resultScore.ToString();
         _tankCountText.text = "戦車大量破壊ボーナス:" + ((_tankCount / 5) * 1000).ToString();
         _accuracyText.text = "命中率ボーナス：" + (Mathf.RoundToInt(1000 * _probability)).ToString();
-        Debug.Log(_probability);
         if (Time.time > _textDisTime + 3.0f)//5秒間待つ
         {
             TextColorChange();

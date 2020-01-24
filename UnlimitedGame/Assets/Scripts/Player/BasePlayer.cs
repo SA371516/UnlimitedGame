@@ -12,6 +12,12 @@ public class BasePlayer : MonoBehaviour
     KeyCode[] _keyCodes;
 
     protected int _hp;
+    protected float _dushValume = 5f;
+    public float GetSetDush
+    {
+        get { return _dushValume; }
+        set { _dushValume = value; }
+    }
     public int GetSetHP
     {
         get { return _hp; }
@@ -21,6 +27,7 @@ public class BasePlayer : MonoBehaviour
     protected Rigidbody rig;
     protected float speed;
     protected bool _once;
+    protected bool _dushChack;
 
     [SerializeField]//プレイヤーに知らせるため
     GameObject _getLog;
@@ -55,6 +62,7 @@ public class BasePlayer : MonoBehaviour
         _confug = Confug._confug;
         _keyCodes = _confug.GetConfugStatus<KeyCode[]>(new KeyCode[4]);
         speed = 5f;
+        _dushValume = 5f;
         _manager = GameObject.Find("Manager").GetComponent<GameManager>();
         _uiManager = GameObject.Find("Manager").GetComponent<UIManager>();
         _Camera = transform.GetChild(0).GetComponent<Camera>();
@@ -84,15 +92,32 @@ public class BasePlayer : MonoBehaviour
         else if (Input.GetKey(_keyCodes[1])) v = -1f;//下
         if (Input.GetKey(_keyCodes[2])) h = -1f;//左
         else if (Input.GetKey(_keyCodes[3])) h = 1f;//右
-        if (Input.GetKey(_keyCodes[4]))
+        if (Input.GetKey(_keyCodes[4]) && GetSetDush > 0f&&_dushChack)//ダッシュ
         {
+            GetSetDush -= Time.deltaTime;
             if (Input.GetKeyDown(_keyCodes[4]))
             {
                 speed *= 2;
             }
-        }//ダッシュ
-        else speed = 5f;
-        rig.velocity = v * transform.forward * speed + h * transform.right * speed;
+            if (GetSetDush <= 0f && _dushChack) { speed = 5f; _dushChack = false; }//走る限界に達した時
+        }
+        else if (!_dushChack)
+        {
+            speed = 5f;
+            _dushValume += Time.deltaTime;
+            if (_dushValume >= 5f)
+            {
+                _dushValume = 5f;
+                _dushChack = true;
+            }
+        }
+        else
+        {//何も入力されていない
+            speed = 5f;
+            _dushValume += Time.deltaTime;
+            if (_dushValume >= 5f) _dushValume = 5f;
+        }
+            rig.velocity = v * transform.forward * speed + h * transform.right * speed;
         //攻撃
         if (_haveWeapon != null)
         {

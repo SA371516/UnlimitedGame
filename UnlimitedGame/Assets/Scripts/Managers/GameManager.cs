@@ -32,8 +32,8 @@ public class GameManager : MonoBehaviour
     bool _stop;
     int _score;
     int _tankCount;//敵のタンクを撃破した数
-    public int _shotNum;//撃った数
-    public int _hitNum;//当たった数
+    public float _shotNum;//撃った数
+    public float _hitNum;//当たった数
     public int GetSetScore  {  get { return _score; } set { _score = value; }  }
     public int GetSetTankCount  {  get { return _tankCount; } set { _tankCount = value; }  }
     UIManager _uiManager;
