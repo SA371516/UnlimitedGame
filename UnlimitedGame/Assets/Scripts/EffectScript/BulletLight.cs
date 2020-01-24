@@ -5,7 +5,7 @@ using UnityEngine;
 public class BulletLight : ParticleScr
 {
     WFX_LightFlicker _light;
-    float _partrcleTime;
+    public float Stoptime;
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -16,14 +16,24 @@ public class BulletLight : ParticleScr
     }
     public override void PlayParticle()
     {
-        if (!_particleSystem.isPlaying) _particleSystem.Play();
+        if (!_particleSystem.isPlaying) {
+            _particleSystem.time = 0f;
+            Debug.Log(_particleSystem.time);
+            _particleSystem.Play();
+        }
         _light._ok = true;
-        _partrcleTime = Time.time;
     }
-
+    private void Update()
+    {
+        if (_light._ok)
+        {
+            StopParticle();
+        }
+    }
+    //ARやSRで止める時間を変える必要がある
     public override void StopParticle()
     {
-        if (_partrcleTime <= Time.time - 0.05)
+        if (_particleSystem.time > _stopTime)
         {
             _particleSystem.Stop();
             _light._ok = false;

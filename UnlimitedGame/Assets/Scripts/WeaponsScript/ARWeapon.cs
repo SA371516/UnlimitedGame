@@ -9,9 +9,10 @@ public class ARWeapon : BaseWeapon
     public ARWeapon(GameObject p):base(p)
     {
         //=========基本ステータス=========
-        _recustTime = 0.05f;
+        _recustTime = 0.2f;
         _nowTime = 0f;
         _distance = 15f;
+        particleScr._stopTime = 0.09f;
         _recustSlider.maxValue = _recustTime;
         //====武器ステータスを反映======
         _status = PlayerData._Data._playerStatus.weaponStatuses.Find(Item => Item.WeaponName == "AR");
@@ -45,12 +46,11 @@ public class ARWeapon : BaseWeapon
         //連射銃、射程距離15ｍ
         if (Physics.Raycast(ray, out hit, _distance))
         {
-            _manager._shotNum++;
             if (hit.collider.gameObject.tag == "Enemy")
             {
                 BaseEnemy _enemy = hit.collider.GetComponent<BaseEnemy>();
-                _enemy.HitFunction(hit.point, _Damage);
-                _manager._hitNum++;
+                _enemy.GetSetHP -= _Damage;
+                _manager.ObjectInctance(_particle, hit.point);
             }
             else
             {

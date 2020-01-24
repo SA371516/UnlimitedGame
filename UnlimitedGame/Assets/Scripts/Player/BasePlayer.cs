@@ -26,7 +26,7 @@ public class BasePlayer : MonoBehaviour
     GameObject _getLog;
     [SerializeField]
     Vector3 _playerGravity;
-    [SerializeField]
+    [SerializeField]//プレイヤーの近くに銃があるようにしたい
     List<GameObject> _Weapon = new List<GameObject>();
 
     Camera _Camera;

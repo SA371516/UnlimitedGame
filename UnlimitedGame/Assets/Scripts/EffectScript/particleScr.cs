@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class ParticleScr : MonoBehaviour
 {
     protected ParticleSystem _particleSystem;
+    public float _stopTime;
     // Start is called before the first frame update
     protected virtual void Start()
     {
