@@ -133,15 +133,15 @@ public class UIManager : MonoBehaviour
     public IEnumerator BlackOut()
     {
         float _alpha = 0;
-        float _time = 1;
+        float _time = 0;
         float add = (1.0f / 3.0f) * Time.deltaTime;
         while (_time <= 0.8f)
         {
-            _alpha = Mathf.Lerp(0, 0.5f, _time);
+            _alpha = Mathf.Lerp(1f, 0f, _time);
             Color a = new Color();
             a = Color.black;
             a = _blackOut.color;
-            a.a -= _alpha;
+            a.a = _alpha;
             _blackOut.color = a;
             _time -= add;
             yield return new WaitForFixedUpdate();
