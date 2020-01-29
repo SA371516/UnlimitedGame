@@ -11,7 +11,6 @@ public class BulletLight : ParticleScr
     {
         base.Start();
         _light = transform.GetChild(1).GetComponent<WFX_LightFlicker>();
-        Debug.Log(gameObject.name);
         StopParticle();
     }
     public override void PlayParticle()

@@ -47,13 +47,9 @@ public class CameraMove : MonoBehaviour
     }
     
     //カメラを一定時間見下ろした形にするため//何度もこの関数に来させる//プレイヤーの位置にカメラを向けるため
-    public IEnumerator GameOver(Vector3 vec,float _jumpTime,int S,bool once)
+    public IEnumerator GameOver(Vector3 vec,float _jumpTime)
     {
         _stop = true;
-        //if (once)//一度しか来ないように
-        //{
-        //    PlayerData._Data._getPoint = S;
-        //}
         while (_move <= 1f)
         {
             transform.LookAt(vec);

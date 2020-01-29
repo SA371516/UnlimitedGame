@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     float _inctanceTime = 2f;                                                                   //リスタイム
     float _gameTime = 10f;                                                                      //次のレベルまでの
     bool _stop;
+    bool once;
     int _score;
     int _tankCount;//敵のタンクを撃破した数
     public float _shotNum;//撃った数
@@ -75,6 +76,7 @@ public class GameManager : MonoBehaviour
             int _weaponsID = i % _weapons.Count;                                                    //二つ出すため
             _weaponControll.Add(ObjectInctance(_weapons[_weaponsID], vec));
         }
+        once = true;
     }
     void Update()
     {
@@ -201,7 +203,7 @@ public class GameManager : MonoBehaviour
     }
     // プレイヤーのHPが0になった時呼ばれる
     //死亡したらスコアが入らない
-    public void GameOver(Vector3 vec,bool once)
+    public void GameOver(Vector3 vec)
     {
         _stop = true;
         Stop(_stop);
@@ -209,7 +211,7 @@ public class GameManager : MonoBehaviour
         PlayerData._Data._getPoint = 0;
         PlayerData._Data._tankCount = 0;
         PlayerData._Data._probability = 0;
-        StartCoroutine(_camera.GameOver(vec,3f, _score,once));
+        StartCoroutine(_camera.GameOver(vec, 3f));
     }
     //脱出した時に呼ばれる
     public void GameClear()
@@ -226,6 +228,10 @@ public class GameManager : MonoBehaviour
         PlayerData._Data._tankCount = this._tankCount;
         PlayerData._Data._probability = _headHitProbability;
         UIManager ui = GetComponent<UIManager>();
-        StartCoroutine(ui.BlackOut());
+        if (once)
+        {
+            once = false;
+            StartCoroutine(ui.BlackOut());
+        }
     }
 }
