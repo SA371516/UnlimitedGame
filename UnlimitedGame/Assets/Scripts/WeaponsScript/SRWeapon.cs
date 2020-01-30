@@ -30,6 +30,7 @@ public class SRWeapon : BaseWeapon
             return;
         }
         if (_nowTime >= _recustTime && Input.GetMouseButtonDown(0)) Attack();//次の弾を撃つラグ
+        else if(_nowTime<=_recustTime)SoundManager._soundManager.PlaySESound(SoundManager.SE.SRReload,0,2f);
         _nowTime += Time.deltaTime;
         _recustSlider.value = _nowTime;
     }
@@ -43,6 +44,7 @@ public class SRWeapon : BaseWeapon
         if(Physics.Raycast(ray, out hit, _distance))
         {
             _manager._shotNum++;
+            SoundManager._soundManager.PlaySESound(SoundManager.SE.SRShot,0);
             if (hit.collider.gameObject.tag == "Enemy")
             {
                 BaseEnemy _enemy = hit.collider.GetComponent<BaseEnemy>();

@@ -31,7 +31,10 @@ public class ARWeapon : BaseWeapon
         }
         if (Input.GetMouseButton(0) && _nowTime >= _recustTime) Attack();//次の弾を撃つラグ
         else if (!Input.GetMouseButton(0))
+        {
             particleScr.StopParticle();
+            SoundManager._soundManager.StopSESound(0);
+        }
         _nowTime += Time.deltaTime;
         _recustSlider.value = _nowTime;
 
@@ -40,13 +43,14 @@ public class ARWeapon : BaseWeapon
     {
         _nowTime = 0f;
         _bulletNum--;
+        _manager._shotNum++;
         Ray ray = GetBulletItem(_accuracy);
         //if (!_bulletParticle.isPlaying) _bulletParticle.Play();
         particleScr.PlayParticle();
         //連射銃、射程距離15ｍ
         if (Physics.Raycast(ray, out hit, _distance))
         {
-            _manager._shotNum++;
+            SoundManager._soundManager.PlaySESound(SoundManager.SE.ARShot,0,1f);
             if (hit.collider.gameObject.tag == "Enemy")
             {
                 BaseEnemy _enemy = hit.collider.GetComponent<BaseEnemy>();

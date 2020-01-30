@@ -91,6 +91,7 @@
     <Compile Include="Assets\Scripts\Managers\PlayerData.cs" />
     <Compile Include="Assets\Scripts\Managers\ResultManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SceneLoadManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\SoundManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TeamingManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TitleManager.cs" />
     <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
