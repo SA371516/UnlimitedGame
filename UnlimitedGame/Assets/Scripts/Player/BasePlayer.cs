@@ -164,13 +164,13 @@ public class BasePlayer : MonoBehaviour
                     {
                         case "SR(Clone)":
                             v = _Weapon.Find(item => item.gameObject.name == "P_SR");
-                            _haveWeapon = new SRWeapon(transform.GetChild(1).gameObject);//(Muzzle particle)
+                            _haveWeapon = new SRWeapon(transform.GetChild(0).GetChild(0).gameObject);//(Muzzle particle)
                             _uiManager._weapon = _haveWeapon;
                             _weaponName.Add(Weapons.SR);
                             break;
                         case "AR(Clone)":
                             v = _Weapon.Find(item => item.gameObject.name == "P_AR");
-                            _haveWeapon = new ARWeapon(transform.GetChild(1).gameObject);//(Muzzle particle)
+                            _haveWeapon = new ARWeapon(transform.GetChild(0).GetChild(0).gameObject);//(Muzzle particle)
                             _uiManager._weapon = _haveWeapon;
                             _weaponName.Add(Weapons.AR);
                             break;

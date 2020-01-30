@@ -118,6 +118,7 @@
     <None Include="Assets\Effect\JMO Assets\WarFX\Shaders\WFX_S Multiply Soft.shader" />
     <None Include="Assets\Font\Genkai-Mincho-font\ReadMe.txt" />
     <None Include="Assets\Effect\JMO Assets\WarFX\Shaders\WFX_S Alpha-Diffuse TintColor.shader" />
+    <None Include="Assets\SkySerie Freebie\Hdri setup.txt" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/student/Desktop/UG/UnlimitedGame/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
