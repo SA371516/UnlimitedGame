@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     List<GameObject> _enemys = new List<GameObject>();
     [SerializeField,Header("武器オブジェクト")]
     List<GameObject> _weapons = new List<GameObject>();
+    [SerializeField]
+    GameObject Goal;
 
     List<Transform> _lis = new List<Transform>();                               //敵のリス位置
     List<GameObject> _weaponControll = new List<GameObject>();  //武器の出現状況
@@ -32,6 +34,7 @@ public class GameManager : MonoBehaviour
     bool once;
     int _score;
     int _tankCount;//敵のタンクを撃破した数
+
     public float _shotNum;//撃った数
     public float _hitNum;//当たった数
     public float _exitTime;//一定時間とどまる必要がある
@@ -39,6 +42,7 @@ public class GameManager : MonoBehaviour
     public float GetTime { get { return _gameTime; } }
     public int GetSetScore  {  get { return _score; } set { _score = value; }  }
     public int GetSetTankCount  {  get { return _tankCount; } set { _tankCount = value; }  }
+
     UIManager _uiManager;
     BasePlayer _player;
     CameraMove _camera;
@@ -65,6 +69,7 @@ public class GameManager : MonoBehaviour
         {
             _lis.Add(v);
         }
+        //武器出現
         for(int i=0;i<_weapons.Count*2;++i)                                                                 //武器の出現（二つずつ）
         {
             Vector3 vec =
@@ -76,39 +81,47 @@ public class GameManager : MonoBehaviour
             int _weaponsID = i % _weapons.Count;                                                    //二つ出すため
             _weaponControll.Add(ObjectInctance(_weapons[_weaponsID], vec));
         }
+        //ゴール位置初期化
+        Vector3 _goalpos = new Vector3(0, 0, 0);
+        if ( Random.Range(0, 2) == 0)
+        {
+            _goalpos.z = Random.Range(_Wp[0].position.z, _Wp[1].position.z);
+            if (Random.Range(0, 2) == 0)
+                _goalpos.x = _Wp[0].position.x;
+            else
+                _goalpos.x = _Wp[1].position.x;
+        }
+        else
+        {
+            _goalpos.x = Random.Range(_Wp[0].position.x, _Wp[1].position.x);
+            if (Random.Range(0, 2) == 0)
+                _goalpos.z = _Wp[0].position.z;
+            else
+                _goalpos.z = _Wp[1].position.z;
+        }
+        ObjectInctance(Goal, _goalpos);
         once = true;
     }
     void Update()
     {
         //コンフィグ画面表示時に、敵を止める処理
         _stop = Confug._confug.GetConfugStatus<bool>(_stop);
+        Stop(_stop);
+        foreach (var v in _nowEnemy)
+        {
+            if (v != null)
+            {
+                BaseEnemy _e = v.GetComponent<BaseEnemy>();
+                v.GetComponent<BaseEnemy>()._stop = _stop;
+            }
+        }
         if (_stop)                                                                                                  //操作中はゲームを止める
         {
-            Stop(_stop);
             Cursor.lockState = CursorLockMode.None;
-            foreach (var v in _nowEnemy)
-            {
-                if (v != null)
-                {
-                    BaseEnemy _e = v.GetComponent<BaseEnemy>();
-                    v.GetComponent<BaseEnemy>()._stop = _stop;
-                }
-            }
             return;
         }
         else
-        {
-            Stop(_stop);
             Cursor.lockState = CursorLockMode.Locked;
-            foreach (var v in _nowEnemy)
-            {
-                if (v != null)
-                {
-                    BaseEnemy _e = v.GetComponent<BaseEnemy>();
-                    v.GetComponent<BaseEnemy>()._stop = false;
-                }
-            }
-        }
 
         _leveltime += Time.deltaTime;
         if (_leveltime > _gameTime)                                 //レベル処理
@@ -151,12 +164,11 @@ public class GameManager : MonoBehaviour
                     }
                 }
                 _player._weaponName.Clear();
-            }                                                 //敵管理
+            }      
+            //敵管理
             _nowEnemy = _nowEnemy.Where(j => j != null).ToList();                  //Null以外を挿入
-
             int _Enemycount = _nowEnemy.Count;
             if (_Enemycount > 10) return;
-
             int _id = Random.Range(0,_enemys.Count);
             //=============戦車は一度に一体しか出現しない================//
             if (_nowEnemy.Find(Item=>Item.name=="Tank"))
@@ -186,35 +198,8 @@ public class GameManager : MonoBehaviour
         _camera._stop = B;
         _uiManager._stop = B;
     }
-    //================オブジェクト生成関数(マネージャがすべてのインスタンスを行うため)=================
-    public GameObject ObjectInctance(GameObject o,Vector3 pos,GameObject parent=null)
-    {
-        GameObject _obj = Instantiate(o, pos, Quaternion.identity);
-        if (parent != null)//このままだと武器以外の対応が出来ない
-        {
-            _obj.transform.parent = parent.transform;
-            _obj.transform.rotation = Quaternion.identity;
-            //Vector3 vec = o.transform.position;
-            //_obj.transform.position += vec;
-            //_obj.transform.rotation = parent.transform.rotation;
-            //_obj.transform.rotation = Quaternion.Euler(0, -90f,0);
-        }
-        return _obj;
-    }
-    // プレイヤーのHPが0になった時呼ばれる
-    //死亡したらスコアが入らない
-    public void GameOver(Vector3 vec)
-    {
-        _stop = true;
-        Stop(_stop);
-        Cursor.lockState = CursorLockMode.None;
-        PlayerData._Data._getPoint = 0;
-        PlayerData._Data._tankCount = 0;
-        PlayerData._Data._probability = 0;
-        StartCoroutine(_camera.GameOver(vec, 3f));
-    }
     //脱出した時に呼ばれる
-    public void GameClear()
+    void GameClear()
     {
         float _headHitProbability = 0f;
         if (_shotNum > 30)
@@ -234,4 +219,28 @@ public class GameManager : MonoBehaviour
             StartCoroutine(ui.BlackOut());
         }
     }
+    //================オブジェクト生成関数(マネージャがすべてのインスタンスを行うため)=================
+    public GameObject ObjectInctance(GameObject o,Vector3 pos,GameObject parent=null)
+    {
+        GameObject _obj = Instantiate(o, pos, Quaternion.identity);
+        if (parent != null)//このままだと武器以外の対応が出来ない
+        {
+            _obj.transform.parent = parent.transform;
+            _obj.transform.rotation = Quaternion.identity;
+        }
+        return _obj;
+    }
+    // プレイヤーのHPが0になった時呼ばれる
+    //死亡したらスコアが入らない
+    public void GameOver(Vector3 vec)
+    {
+        _stop = true;
+        Stop(_stop);
+        Cursor.lockState = CursorLockMode.None;
+        PlayerData._Data._getPoint = 0;
+        PlayerData._Data._tankCount = 0;
+        PlayerData._Data._probability = 0;
+        StartCoroutine(_camera.GameOver(vec, 3f));
+    }
+
 }

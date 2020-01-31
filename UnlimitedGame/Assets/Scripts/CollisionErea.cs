@@ -13,7 +13,7 @@ public class CollisionErea : MonoBehaviour
             {
                 BasePlayer p = other.transform.parent.GetComponent<BasePlayer>();
                 p.GetSetHP = 0;
-            }else if (gameObject.name == "ExitErea")
+            }else if (gameObject.name == "ExitErea(Clone)")
             {
                 GameManager gm = GameObject.Find("Manager").GetComponent<GameManager>();
                 gm._goalChack = true;

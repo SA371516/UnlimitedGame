@@ -6,13 +6,11 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField]
-    Text _weaponName, _bulletNum,_levelText;
-    [SerializeField]
+    [SerializeField, Header("テキスト")]
+    Text _weaponName, _bulletNum, _levelText, _gameTime, _scoreText;
+    [SerializeField,Header("Slider")]
     Slider _hp, _levelSlider, _dushSlider, _goalSlider;
-    [SerializeField]
-    Text _gameTime,_scoreText;
-    [SerializeField]
+    [SerializeField,Header("画像")]
     Image _damage,_gunImg, _blackOut;
     [SerializeField]
     List<Sprite> _gunSprites = new List<Sprite>();
@@ -106,15 +104,15 @@ public class UIManager : MonoBehaviour
         }
     }
 
-     public void DamageFunction()
+    public void DamageFunction()
     {
         Color _color = new Color();
         _color = _damage.color;
         _color.a = 0.5f;
         _damage.color = _color;
-        StartCoroutine(Ttransparency());
+        StartCoroutine(Transparency());
     }
-    IEnumerator Ttransparency()
+    IEnumerator Transparency()
     {
         float _alpha = 0;
         float _time = 1;
@@ -135,7 +133,6 @@ public class UIManager : MonoBehaviour
         float _alpha = 0;
         float _time = 1;
         float add = (1.0f / 2.0f) * Time.deltaTime;
-        Debug.Log("呼ばれた");
         while (_time >= 0f)
         {
             _alpha = Mathf.Lerp(1f, 0f, _time);
@@ -144,8 +141,6 @@ public class UIManager : MonoBehaviour
             a.a = _alpha;
             _blackOut.color = a;
             _time -= add;
-            Debug.Log("透明度" + _blackOut.color.a);
-            Debug.Log("経過時間" + _time);
             yield return new WaitForFixedUpdate();
             //if (a.a <= 0f) break;
         }
