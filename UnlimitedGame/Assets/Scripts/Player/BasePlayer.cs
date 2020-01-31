@@ -80,9 +80,11 @@ public class BasePlayer : MonoBehaviour
     {
         if (_stop) return;//ゲームを止める
         else if (_hp<=0) {
-            _manager.GameOver(transform.position, _once);
+            _manager.GameOver(transform.position);//プレイヤーの位置を向かせるため
             if (_once)
+            {
                 _once = false;
+            }
             return;
         }
         _keyCodes = _confug.GetConfugStatus<KeyCode[]>(new KeyCode[4]);

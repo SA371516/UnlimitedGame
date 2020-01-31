@@ -6,14 +6,12 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField]
-    Text _weaponName, _bulletNum,_levelText;
-    [SerializeField]
-    Slider _hp, _levelSlider, _dushSlider;
-    [SerializeField]
-    Text _gameTime,_scoreText;
-    [SerializeField]
-    Image _damage,_gunImg;
+    [SerializeField, Header("テキスト")]
+    Text _weaponName, _bulletNum, _levelText, _gameTime, _scoreText;
+    [SerializeField,Header("Slider")]
+    Slider _hp, _levelSlider, _dushSlider, _goalSlider;
+    [SerializeField,Header("画像")]
+    Image _damage,_gunImg, _blackOut;
     [SerializeField]
     List<Sprite> _gunSprites = new List<Sprite>();
     BasePlayer _playerInfo;
@@ -27,7 +25,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         _playerInfo = GameObject.FindWithTag("Player").GetComponent<BasePlayer>();
-        _manager = GameObject.Find("Manager").GetComponent<GameManager>();
+        _manager = GetComponent<GameManager>();
         _hp.maxValue = _playerInfo.GetSetHP;
         _levelSlider.maxValue = _manager.GetTime;
         _dushSlider.maxValue = _playerInfo.GetSetDush;
@@ -37,6 +35,9 @@ public class UIManager : MonoBehaviour
         _color = _damage.color;
         _color.a = 0;
         _damage.color = _color;
+        _color = _blackOut.color;
+        _color.a = 0;
+        _blackOut.color = _color;
     }
 
     void Update()
@@ -90,30 +91,60 @@ public class UIManager : MonoBehaviour
             _levelSlider.maxValue *= 2;
             _level++;
         }
+        //ゴールスライダー処理
+        if (_manager._goalChack)
+        {
+            _goalSlider.gameObject.SetActive(true);
+            _goalSlider.value = _manager._exitTime;
+        }
+        else
+        {
+            _goalSlider.maxValue = 20f;
+            _goalSlider.gameObject.SetActive(false);
+        }
     }
 
-     public void DamageFunction()
+    public void DamageFunction()
     {
         Color _color = new Color();
         _color = _damage.color;
         _color.a = 0.5f;
         _damage.color = _color;
-        StartCoroutine(Ttransparency());
+        StartCoroutine(Transparency());
     }
-    IEnumerator Ttransparency()
+    IEnumerator Transparency()
     {
-        float f = 0;
-        float t = 1;
+        float _alpha = 0;
+        float _time = 1;
         float add = (1.0f / 3.0f) * Time.deltaTime;
-        while (t>=0)
+        while (_time>=0)
         {
-            f = Mathf.Lerp(0, 0.5f, t);
+            _alpha = Mathf.Lerp(0, 0.5f, _time);
             Color _color = new Color();
             _color = _damage.color;
-            _color.a = f;
+            _color.a = _alpha;
             _damage.color = _color;
-            t -= add;//無敵時間
+            _time -= add;//無敵時間
             yield return new WaitForFixedUpdate();
         }
+    }
+    public IEnumerator BlackOut()
+    {
+        float _alpha = 0;
+        float _time = 1;
+        float add = (1.0f / 2.0f) * Time.deltaTime;
+        while (_time >= 0f)
+        {
+            _alpha = Mathf.Lerp(1f, 0f, _time);
+            Color a = new Color();
+            a = _blackOut.color;
+            a.a = _alpha;
+            _blackOut.color = a;
+            _time -= add;
+            yield return new WaitForFixedUpdate();
+            //if (a.a <= 0f) break;
+        }
+        SceneLoadManager._loadManager.SceneLoadFunction((int)SceneLoadManager.Scenes.Result);
+        yield return new WaitForFixedUpdate();
     }
 }

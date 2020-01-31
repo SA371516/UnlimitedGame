@@ -76,7 +76,7 @@
     <Compile Include="Assets\Effect\JMO Assets\WarFX\Scripts\WFX_BulletHoleDecal.cs" />
     <Compile Include="Assets\Effect\JMO Assets\WarFX\Scripts\WFX_LightFlicker.cs" />
     <Compile Include="Assets\Effect\JMO Assets\WarFX\Spawn System\CFX_SpawnSystem.cs" />
-    <Compile Include="Assets\Scripts\DesErea.cs" />
+    <Compile Include="Assets\Scripts\CollisionErea.cs" />
     <Compile Include="Assets\Scripts\EffectScript\BulletLight.cs" />
     <Compile Include="Assets\Scripts\EffectScript\OnceParticle.cs" />
     <Compile Include="Assets\Scripts\EffectScript\particleScr.cs" />
@@ -84,7 +84,6 @@
     <Compile Include="Assets\Scripts\Enemy\EnemyStatus.cs" />
     <Compile Include="Assets\Scripts\Enemy\Tank.cs" />
     <Compile Include="Assets\Scripts\Enemy\Zonbi.cs" />
-    <Compile Include="Assets\Scripts\Human.cs" />
     <Compile Include="Assets\Scripts\Managers\Confug.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Managers\PassManager.cs" />
@@ -97,6 +96,7 @@
     <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
     <Compile Include="Assets\Scripts\Player\BasePlayer.cs" />
     <Compile Include="Assets\Scripts\Player\CameraMove.cs" />
+    <Compile Include="Assets\Scripts\Player\Human.cs" />
     <Compile Include="Assets\Scripts\SaveScript.cs" />
     <Compile Include="Assets\Scripts\Test.cs" />
     <Compile Include="Assets\Scripts\WeaponsScript\ARWeapon.cs" />
@@ -365,6 +365,9 @@
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>C:/Users/student/Desktop/UG/UnlimitedGame/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Purchasing">
+      <HintPath>C:/Users/student/Desktop/UG/UnlimitedGame/Library/PackageCache/com.unity.purchasing@2.0.6/UnityEngine.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>D:/Unity2019_2_01/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
