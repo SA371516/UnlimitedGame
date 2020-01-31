@@ -118,9 +118,9 @@ public class BasePlayer : MonoBehaviour
             if (_dushValume >= 5f) _dushValume = 5f;
         }
         //SE
-        if (speed == 10f) SoundManager._soundManager.PlaySESound(SoundManager.SE.Dush, 1);
-        else if (h != 0 || v != 0) SoundManager._soundManager.PlaySESound(SoundManager.SE.Walk, 1);
-        else SoundManager._soundManager.StopSESound(1);
+        if (speed == 10f) SoundManager._soundManager.PlaySESound(SoundManager.SE.Dush, 2);
+        else if (h != 0 || v != 0) SoundManager._soundManager.PlaySESound(SoundManager.SE.Walk, 2);
+        else SoundManager._soundManager.StopSESound(0);
         rig.velocity = v * transform.forward * speed + h * transform.right * speed;
         //攻撃
         if (_haveWeapon != null)

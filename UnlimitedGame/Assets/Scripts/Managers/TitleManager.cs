@@ -17,6 +17,7 @@ public class TitleManager : MonoBehaviour
             _name = PlayerData._Data._playerStatus.UserName;
             UserNameDis.text = _name + "さん、お疲れ様です！！";
         }
+        SoundManager._soundManager.PlayBGMSound(SoundManager.BGM.Title);
     }
     public void OnClick(int i)
     {

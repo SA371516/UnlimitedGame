@@ -18,7 +18,6 @@ public class BulletLight : ParticleScr
     {
         if (!_particleSystem.isPlaying) {
             _particleSystem.time = 0f;
-            Debug.Log(_particleSystem.time);
             _particleSystem.Play();
         }
         _light._ok = true;

@@ -47,6 +47,7 @@ public class TeamingManager : MonoBehaviour
         //===========加える変数を初期化====================
         ValumeReset();
         //=================================================
+        SoundManager._soundManager.PlayBGMSound(SoundManager.BGM.Teaming);
         //_Point = 10000;
     }
 

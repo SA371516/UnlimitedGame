@@ -41,6 +41,7 @@ public class ResultManager : MonoBehaviour
         //_resultScore = 150000;
         Color c = new Color(1, 0, 0, 0);
         _enterText.color = c;
+        SoundManager._soundManager.PlayBGMSound(SoundManager.BGM.Result);
     }
 
     // Update is called once per frame

@@ -9,7 +9,7 @@ public class SRWeapon : BaseWeapon
     public SRWeapon(GameObject p):base(p)
     {
         //================武器の初期化==================
-        _recustTime = 2f;
+        _recustTime = 2.5f;
         _nowTime = 5f;
         _distance = 40f;
         particleScr._stopTime = 0.18f;
@@ -30,7 +30,6 @@ public class SRWeapon : BaseWeapon
             return;
         }
         if (_nowTime >= _recustTime && Input.GetMouseButtonDown(0)) Attack();//次の弾を撃つラグ
-        else if(_nowTime<=_recustTime)SoundManager._soundManager.PlaySESound(SoundManager.SE.SRReload,0,2f);
         _nowTime += Time.deltaTime;
         _recustSlider.value = _nowTime;
     }
@@ -38,13 +37,14 @@ public class SRWeapon : BaseWeapon
     {
         _nowTime = 0f;
         _bulletNum--;
+        SoundManager._soundManager.PlaySESound(SoundManager.SE.SRShot, 0);
+        SoundManager._soundManager.PlaySESound(SoundManager.SE.SRReload, 1, 1f);
         Ray ray = GetBulletItem(_accuracy);
         particleScr.PlayParticle();
         //単発銃、射程距離30ｍ
         if(Physics.Raycast(ray, out hit, _distance))
         {
             _manager._shotNum++;
-            SoundManager._soundManager.PlaySESound(SoundManager.SE.SRShot,0);
             if (hit.collider.gameObject.tag == "Enemy")
             {
                 BaseEnemy _enemy = hit.collider.GetComponent<BaseEnemy>();

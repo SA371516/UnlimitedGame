@@ -73,6 +73,7 @@ public class GameManager : MonoBehaviour
             int _weaponsID = i % _weapons.Count;                                                    //二つ出すため
             _weaponControll.Add(ObjectInctance(_weapons[_weaponsID], vec));
         }
+        SoundManager._soundManager.StopBGM();
         SoundManager._soundManager.GameSetInit();
     }
     void Update()

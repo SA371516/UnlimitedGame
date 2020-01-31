@@ -1177,8 +1177,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bce1f7eff66a92e49ae18195ad6e624d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BGMClip: []
-  SEClip: []
+  _seSound: {fileID: 0}
+  _moveSound: {fileID: 0}
+  BGMClip:
+  - {fileID: 8300000, guid: 88f2960a768c2ea4a9adaee2427683b4, type: 3}
+  - {fileID: 8300000, guid: 67dbf14c42d0f074888d224566b6df54, type: 3}
+  - {fileID: 8300000, guid: 8197e5badea9c1745aa3859c767ba2fc, type: 3}
+  SEClip:
+  - {fileID: 8300000, guid: 7b6fc0b1d148c2c409c65213ab8d710d, type: 3}
+  - {fileID: 8300000, guid: f94f4d5f9c626b945ad7c0aebf401207, type: 3}
+  - {fileID: 8300000, guid: e1b8d17a70dd9de4ab11d98d498b8db2, type: 3}
+  - {fileID: 8300000, guid: 1c23324535c76d04e881539844752ec1, type: 3}
+  - {fileID: 8300000, guid: 68ec1905b2a5c63458de3421b3d2c2be, type: 3}
 --- !u!1 &4087964222225703493
 GameObject:
   m_ObjectHideFlags: 0

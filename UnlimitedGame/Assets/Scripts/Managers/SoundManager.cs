@@ -8,7 +8,8 @@ public class SoundManager : MonoBehaviour
     public static SoundManager _soundManager;
     AudioSource _bgmSound;
     [SerializeField]
-    AudioSource _seSound, _moveSound;
+    AudioSource  _moveSound;
+    AudioSource[] _gunSound=new AudioSource[2];
     public enum BGM
     {
         Title=0,
@@ -56,8 +57,9 @@ public class SoundManager : MonoBehaviour
     public void GameSetInit()
     {
         GameObject p = GameObject.FindWithTag("Player");
-        _seSound = p.GetComponent<AudioSource>();
-        _moveSound = p.transform.GetChild(1).GetComponent<AudioSource>();
+        _gunSound[0] = p.GetComponent<AudioSource>();
+        _gunSound[1] = p.transform.GetChild(1).GetComponent<AudioSource>();
+        _moveSound = p.transform.GetChild(2).GetComponent<AudioSource>();
     }
 
     public void PlayBGMSound(BGM b)
@@ -65,19 +67,30 @@ public class SoundManager : MonoBehaviour
         _bgmSound.clip = BGMClip[(int)b];
         _bgmSound.Play();
     }
-    public void PlaySESound(SE s, int id, float delayTime = 0f)
+    public void StopBGM()
+    {
+        _bgmSound.Stop();
+    }
+    public void PlaySESound(SE s, int id,float delay=0f)
     {
         switch (id)
         {
             case 0:
-                if (!_seSound.isPlaying || oldSE != s)
+                Debug.Log(_gunSound[id].isPlaying);
+                if (!_gunSound[id].isPlaying)
                 {
-                    oldSE = s;
-                    _seSound.clip = SEClip[(int)s];
-                    _seSound.Play();
+                    _gunSound[id].clip = SEClip[(int)s];
+                    _gunSound[id].Play();
                 }
                 break;
             case 1:
+                if (!_gunSound[id].isPlaying)
+                {
+                    _gunSound[id].clip = SEClip[(int)s];
+                    _gunSound[id].PlayDelayed(delay);
+                }
+                break;
+            case 2://走る状態と歩く状態があるから
                 if (!_moveSound.isPlaying || oldSE != s)
                 {
                     oldSE = s;
@@ -93,9 +106,12 @@ public class SoundManager : MonoBehaviour
         switch (id)
         {
             case 0:
-                _seSound.Stop();
+                _gunSound[id].Stop();
                 break;
             case 1:
+                _gunSound[id].Stop();
+                break;
+            case 2:
                 _moveSound.Stop();
                 break;
         }
