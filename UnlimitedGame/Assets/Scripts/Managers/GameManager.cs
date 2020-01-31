@@ -100,6 +100,7 @@ public class GameManager : MonoBehaviour
                 _goalpos.z = _Wp[1].position.z;
         }
         ObjectInctance(Goal, _goalpos);
+        SoundManager._soundManager.GameSetInit();
         once = true;
     }
     void Update()
