@@ -19,6 +19,7 @@ public class PlayerData : MonoBehaviour
 
     string savePath;                        //エディタとアプリケーションで分けるため
     const string saveFileName = "savedata.json";
+    //暗号化用
     const string EncryptKey = "c6eahbq9sjuawhvdr9kvhpsm5qv393ga";
     const string PasswordChars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static readonly int PasswordCharsLength = PasswordChars.Length;
