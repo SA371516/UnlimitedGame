@@ -5,8 +5,7 @@ using UnityEngine;
 public class BulletLight : ParticleScr
 {
     WFX_LightFlicker _light;
-    public float Stoptime;
-    // Start is called before the first frame update
+
     protected override void Start()
     {
         base.Start();

@@ -12,7 +12,7 @@ public class ARWeapon : BaseWeapon
         _recustTime = 0.2f;
         _nowTime = 0f;
         _distance = 15f;
-        particleScr._stopTime = 0.09f;
+        particleScr._stopTime = 0.2f;
         _recustSlider.maxValue = _recustTime;
         //====武器ステータスを反映======
         _status = PlayerData._Data._playerStatus.weaponStatuses.Find(Item => Item.WeaponName == "AR");
@@ -47,7 +47,6 @@ public class ARWeapon : BaseWeapon
         _manager._shotNum++;
         SoundManager._soundManager.PlaySESound(SoundManager.SE.ARShot, 0);
         Ray ray = GetBulletItem(_accuracy);
-        //if (!_bulletParticle.isPlaying) _bulletParticle.Play();
         particleScr.PlayParticle();
         //連射銃、射程距離15ｍ
         if (Physics.Raycast(ray, out hit, _distance))

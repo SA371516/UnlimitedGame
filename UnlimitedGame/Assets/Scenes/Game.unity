@@ -3464,11 +3464,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tree_03
       objectReference: {fileID: 0}
-    - target: {fileID: 4305214277475524225, guid: 8a0cd4097b8c6fa489e6788fd770ac19,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
-      objectReference: {fileID: 0}
     - target: {fileID: 1001039691287932050, guid: 8a0cd4097b8c6fa489e6788fd770ac19,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4973,7 +4968,7 @@ PrefabInstance:
     - target: {fileID: 5191220732584175203, guid: c6c97e878e1e7d94ea7e4c5bfcee5b83,
         type: 3}
       propertyPath: _debug
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6c97e878e1e7d94ea7e4c5bfcee5b83, type: 3}

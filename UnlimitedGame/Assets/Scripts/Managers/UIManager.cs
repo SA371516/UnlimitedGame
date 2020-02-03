@@ -117,7 +117,7 @@ public class UIManager : MonoBehaviour
         float _alpha = 0;
         float _time = 1;
         float add = (1.0f / 3.0f) * Time.deltaTime;
-        while (_time>=0)
+        while (_time >= 0)
         {
             _alpha = Mathf.Lerp(0, 0.5f, _time);
             Color _color = new Color();
@@ -132,7 +132,7 @@ public class UIManager : MonoBehaviour
     {
         float _alpha = 0;
         float _time = 1;
-        float add = (1.0f / 2.0f) * Time.deltaTime;
+        float add = 0.01f;
         while (_time >= 0f)
         {
             _alpha = Mathf.Lerp(1f, 0f, _time);
@@ -144,6 +144,7 @@ public class UIManager : MonoBehaviour
             yield return new WaitForFixedUpdate();
             //if (a.a <= 0f) break;
         }
+        Debug.Log("シーン移動");
         SceneLoadManager._loadManager.SceneLoadFunction((int)SceneLoadManager.Scenes.Result);
         yield return new WaitForFixedUpdate();
     }

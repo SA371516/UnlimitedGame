@@ -76,7 +76,6 @@ public class SoundManager : MonoBehaviour
         switch (id)
         {
             case 0:
-                Debug.Log(_gunSound[id].isPlaying);
                 if (!_gunSound[id].isPlaying)
                 {
                     _gunSound[id].clip = SEClip[(int)s];

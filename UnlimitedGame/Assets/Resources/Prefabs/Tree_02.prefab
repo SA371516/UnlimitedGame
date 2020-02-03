@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8327099010619067927}
   - component: {fileID: 2356302918455341806}
   - component: {fileID: 8864274004607764922}
+  - component: {fileID: 8769524022011165047}
   m_Layer: 0
   m_Name: Tree_02
   m_TagString: Untagged
@@ -96,3 +97,16 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!65 &8769524022011165047
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4075637857076446770}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.301834, y: 6.2736797, z: 1.9636027}
+  m_Center: {x: -0.20971584, y: 3.05684, z: -0.0964604}

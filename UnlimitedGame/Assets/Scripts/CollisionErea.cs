@@ -25,7 +25,7 @@ public class CollisionErea : MonoBehaviour
     {
         if (other.gameObject.name == "HitBox")
         {
-            if (gameObject.name == "ExitErea")
+            if (gameObject.name == "ExitErea(Clone)")
             {
                 GameManager gm = GameObject.Find("Manager").GetComponent<GameManager>();
                 gm._goalChack = false;

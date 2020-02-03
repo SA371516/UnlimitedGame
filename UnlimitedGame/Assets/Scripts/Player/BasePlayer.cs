@@ -187,7 +187,7 @@ public class BasePlayer : MonoBehaviour
                 }
                 break;
             default:
-                Debug.Log(hit.collider.gameObject.name);
+                //Debug.Log(hit.collider.gameObject.name);
                 break;
         }
     }

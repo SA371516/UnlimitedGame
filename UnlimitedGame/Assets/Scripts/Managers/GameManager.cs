@@ -139,7 +139,6 @@ public class GameManager : MonoBehaviour
                 GameClear();
             }
             else { _exitTime += Time.deltaTime; }
-
         }
 
         _time += Time.deltaTime;
@@ -213,11 +212,10 @@ public class GameManager : MonoBehaviour
         PlayerData._Data._getPoint = _score;
         PlayerData._Data._tankCount = this._tankCount;
         PlayerData._Data._probability = _headHitProbability;
-        UIManager ui = GetComponent<UIManager>();
         if (once)
         {
             once = false;
-            StartCoroutine(ui.BlackOut());
+            StartCoroutine(_uiManager.BlackOut());
         }
     }
     //================オブジェクト生成関数(マネージャがすべてのインスタンスを行うため)=================
