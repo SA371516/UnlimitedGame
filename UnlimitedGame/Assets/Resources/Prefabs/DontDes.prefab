@@ -1295,7 +1295,7 @@ MonoBehaviour:
   _getPoint: 0
   _tankCount: 0
   _probability: 0
-  _debug: 1
+  _debug: 0
 --- !u!82 &204364295365524555
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3091,7 +3091,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6081401935513902259}
   m_HandleRect: {fileID: 3591223636853239487}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0.99999976
   m_Size: 0.6366994
   m_NumberOfSteps: 0
   m_OnValueChanged:

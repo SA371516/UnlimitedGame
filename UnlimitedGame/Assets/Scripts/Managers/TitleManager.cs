@@ -21,6 +21,7 @@ public class TitleManager : MonoBehaviour
     }
     public void OnClick(int i)
     {
-       SceneLoadManager._loadManager.SceneLoadFunction(i);
+        SoundManager._soundManager.StopBGM();
+        SceneLoadManager._loadManager.SceneLoadFunction(i);
     }
 }
